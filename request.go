@@ -3,7 +3,7 @@ package upbit
 import "github.com/dgrijalva/jwt-go"
 
 type Request struct {
-	Jwt string
+	Jwt    string
 	Method string
 	Url    string
 	Claims Claims
@@ -11,7 +11,6 @@ type Request struct {
 }
 
 func NewRequest(secretKey string, method, url string, claims Claims, query Query) (*Request, error) {
-	// Generate and Get JWT
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secretKey))
 	if err != nil {
 		return nil, err

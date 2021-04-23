@@ -15,7 +15,6 @@ func NewResponse(client *http.Client, req *http.Request) (Response, error) {
 	}
 	defer resp.Body.Close()
 
-	// Get response text from *http.Response.Body
 	text, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -23,10 +22,11 @@ func NewResponse(client *http.Client, req *http.Request) (Response, error) {
 
 	var response Response
 
-	// Get mapped response
 	switch rune(text[0]) {
-	case '[': response = make([]interface{}, 0)
-	case '{': response = make(map[string]interface{})
+	case '[':
+		response = make([]interface{}, 0)
+	case '{':
+		response = make(map[string]interface{})
 	}
 
 	err = json.Unmarshal(text, &response)
