@@ -24,7 +24,7 @@ const (
 
 	// 판매/구입 비중 (첫 코인 구입시도 동일비율 적용)
 	// 'A' 코인에 10 만큼 할당이 되었을 때, `R` 이 1.0 이라면 100% 사용하여 주문
-	R = 0.45
+	R = 0.49
 )
 
 const (
@@ -98,6 +98,12 @@ func (s *Strategy) B(markets map[string]float64, logging chan string, errLog cha
 			// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
 			// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
 			orderBalance := maxBalance * R
+
+			if orderBalance < 5000 {
+				errLog <- fmt.Errorf(
+					"[error] order-balance must more than 5000, but `%s` is `%f`",
+					coin, orderBalance)
+			}
 
 			logging <- fmt.Sprintf(
 				"[info] started watching for buying `%s`, max-balance: %f, order-balance: %f...",
@@ -206,8 +212,8 @@ func (s *Strategy) S(markets map[string]float64, logging chan string, errLog cha
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= H {
-					// 전량 매도. (일단 전량매도 전략 실험)
-					uuid, err := s.Client.Order("KRW-"+coin, "ask", coinBalance, price)
+					// 절반 매도. (일단 절반매도 전략 실험)
+					uuid, err := s.Client.Order("KRW-"+coin, "ask", math.Floor(coinBalance / 2), price)
 					if err != nil {
 						errLog <- err
 					}
