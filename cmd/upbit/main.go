@@ -12,12 +12,13 @@ const (
 )
 
 func main() {
-	bot, err := upbit.NewBot(
+	strategy, err := upbit.NewStrategy(
 		&upbit.Client{AccessKey: accessKey, SecretKey: secretKey},
 		&upbit.QuotationClient{Client: &http.Client{}})
 	if err != nil {
 		log.Panic(err)
 	}
 
-	bot.Buy("BTT")
+	bot := upbit.NewBot(strategy)
+	bot.Run()
 }
