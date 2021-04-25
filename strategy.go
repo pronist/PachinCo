@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/boltdb/bolt"
+	"log"
 	"math"
 	"time"
 )
@@ -23,7 +24,7 @@ const (
 
 	// 판매/구입 비중 (첫 코인 구입시도 동일비율 적용)
 	// 'A' 코인에 10 만큼 할당이 되었을 때, `R` 이 1.0 이라면 100% 사용하여 주문
-	R = 1.0
+	R = 0.45
 )
 
 const (
@@ -61,6 +62,8 @@ func NewStrategy(c *Client, qc *QuotationClient) (*Strategy, error) {
 				return err
 			}
 
+			log.Printf("[info] started with `%f` KRW...\n", krw)
+
 			// 가장 초창기 자금 (투입된 모든 자금)
 			err = bucket.Put([]byte("i"), Float64bytes(krw))
 			if err != nil {
@@ -81,22 +84,26 @@ func NewStrategy(c *Client, qc *QuotationClient) (*Strategy, error) {
 func (s *Strategy) B(markets map[string]float64, logging chan string, errLog chan error, coin string) {
 	// 매수 코인 목록에 있어야 한다.
 	if r, ok := markets[coin]; ok {
-		for {
-			err := s.Db.View(func(tx *bolt.Tx) error {
-				bucket := tx.Bucket([]byte(balancesBucket))
+		err := s.Db.View(func(tx *bolt.Tx) error {
+			bucket := tx.Bucket([]byte(balancesBucket))
 
-				// 초기 자금 얻기
-				i := bucket.Get([]byte("i"))
+			// 초기 자금 얻기
+			i := bucket.Get([]byte("i"))
 
-				// `maxBalance` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
-				// 예를 들어 'KRW-BTT' 의 현재 값이 .1 이므로
-				// 초기자금 대비 10% 에 대해서만 구입하도록 하기 위한 것이다.
-				maxBalance := Float64FromBytes(i) * r
+			// `maxBalance` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
+			// 예를 들어 'KRW-BTT' 의 현재 값이 .1 이므로
+			// 초기자금 대비 10% 에 대해서만 구입하도록 하기 위한 것이다.
+			maxBalance := Float64FromBytes(i) * r
 
-				// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
-				// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
-				orderBalance := maxBalance * R
+			// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
+			// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
+			orderBalance := maxBalance * R
 
+			logging <- fmt.Sprintf(
+				"[info] started watching for buying `%s`, max-balance: %f, order-balance: %f...",
+				coin, maxBalance, orderBalance)
+
+			for {
 				accounts, err := s.Client.GetAccounts()
 				if err != nil {
 					return err
@@ -111,6 +118,8 @@ func (s *Strategy) B(markets map[string]float64, logging chan string, errLog cha
 					return err
 				}
 
+				volume := math.Floor(orderBalance / price)
+
 				// 현재 코인의 보유 여부
 				if coinBalance, ok := balances[coin]; ok {
 					avgBuyPrice, err := s.Client.GetAverageBuyPrice(accounts, coin) // 매수 평균가
@@ -121,16 +130,15 @@ func (s *Strategy) B(markets map[string]float64, logging chan string, errLog cha
 					p := price / avgBuyPrice // 매수평균가 대비 변화율
 
 					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
-					if p-1 <= L && balances["KRW"] > orderBalance && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
-						uuid, err := s.Client.Order("KRW-"+coin, "bid", math.Floor(orderBalance/price), price)
+					// 5000 KRW 은 업비트의 최소주문 금액이다.
+					if p-1 <= L && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
+						uuid, err := s.Client.Order("KRW-"+coin, "bid", volume, price)
 						if err != nil {
 							return err
 						}
-						///
 						logging <- fmt.Sprintf(
-							"Buy; maxBalance: %f, Balance: %f, Order: %f, avg: %f, price: %f, rate: %f\n",
-							maxBalance, coinBalance, orderBalance, avgBuyPrice, price, p-1)
-						///
+							"[event]―ORDER(B):: %s; order: %f, volume: %f, price: %f",
+							"KRW-"+coin, orderBalance, volume, price)
 
 						s.Client.WaitUntilCompletedOrder(errLog, uuid)
 					}
@@ -142,28 +150,24 @@ func (s *Strategy) B(markets map[string]float64, logging chan string, errLog cha
 					}
 
 					// 전액 하락률을 기준으로 매수
-					if changeRate <= F && balances["KRW"] > orderBalance {
-						uuid, err := s.Client.Order("KRW-"+coin, "bid", math.Floor(orderBalance/price), price)
+					if changeRate <= F && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 {
+						uuid, err := s.Client.Order("KRW-"+coin, "bid", volume, price)
 						if err != nil {
 							return err
 						}
-						///
 						logging <- fmt.Sprintf(
-							"Buy; maxBalance: %f, Balance: %f, Order: %f\n",
-							maxBalance, coinBalance, orderBalance)
-						///
+							"[event]―ORDER(B):: %s; order: %f, volume: %f, price: %f",
+							"KRW-"+coin, orderBalance, volume, price)
 
 						s.Client.WaitUntilCompletedOrder(errLog, uuid)
 					}
 				}
 
-				return nil
-			})
-			if err != nil {
-				errLog <- err
+				time.Sleep(1 * time.Second)
 			}
-
-			time.Sleep(1 * time.Second)
+		})
+		if err != nil {
+			errLog <- err
 		}
 	} else {
 		errLog <- fmt.Errorf("not found coin '%s' in supported markets", coin)
@@ -173,6 +177,8 @@ func (s *Strategy) B(markets map[string]float64, logging chan string, errLog cha
 // 봇의 '매도' 전략이 담겨있다.
 func (s *Strategy) S(markets map[string]float64, logging chan string, errLog chan error, coin string) {
 	if _, ok := markets[coin]; ok {
+		logging <- fmt.Sprintf("[info] started watching for selling `%s`", coin)
+
 		for {
 			accounts, err := s.Client.GetAccounts()
 			if err != nil {
@@ -200,14 +206,14 @@ func (s *Strategy) S(markets map[string]float64, logging chan string, errLog cha
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= H {
-					///
-					logging <- fmt.Sprintf("Sell; avg: %f, price: %f, p: %f\n", avgBuyPrice, price, p)
-					///
 					// 전량 매도. (일단 전량매도 전략 실험)
 					uuid, err := s.Client.Order("KRW-"+coin, "ask", coinBalance, price)
 					if err != nil {
 						errLog <- err
 					}
+					logging <- fmt.Sprintf(
+						"[event]―ORDER(S):: %s; volume: %f, price %f",
+						"KRW-"+coin, coinBalance, price)
 
 					s.Client.WaitUntilCompletedOrder(errLog, uuid)
 				}
@@ -226,31 +232,9 @@ func (s *Strategy) Watch(logging chan string, errLog chan error, coin string) {
 		if err != nil {
 			errLog <- err
 		}
-		logging <- fmt.Sprintf("[info]―CR(Y) %s: %f", "KRW-"+coin, changeRate)
-
-		accounts, err := s.Client.GetAccounts()
-		if err != nil {
-			errLog <- err
-		}
-		balances, err := s.Client.GetBalances(accounts)
-		if err != nil {
-			errLog <- err
-		}
-		if _, ok := balances[coin]; ok {
-			avgBuyPrice, err := s.Client.GetAverageBuyPrice(accounts, coin) // 매수평균가
-			if err != nil {
-				errLog <- err
-			}
-			price, err := s.GetPrice("KRW-" + coin)
-			if err != nil {
-				errLog <- err
-			}
-
-			p := price / avgBuyPrice
-
-			logging <- fmt.Sprintf("[info]―CR(F.A) %s: %f", "KRW-"+coin, p)
-		}
+		logging <- fmt.Sprintf("[info]―CR(Y):: %s; %f", "KRW-"+coin, changeRate)
 
 		time.Sleep(1 * time.Second)
 	}
+	// GetAccounts() 에 대한 요청이 너무 많아 여기서는 생략.
 }
