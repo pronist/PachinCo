@@ -1,9 +1,5 @@
 package upbit
 
-import (
-	"log"
-)
-
 // 몰빵이 아닌 분산 투자 전략을 위한 것
 // 총 자금이 100, 'A' 코인에 최대 10 만큼의 자금 할당시 'A' => 0.1 (비중)
 var coins = map[string]float64{
@@ -23,29 +19,34 @@ type Bot struct {
 	Strategy *Strategy
 
 	// 고루틴에서 보고하기 위한 각종 채널
-	Logging chan string
-	Err     chan error
+	Ticker  chan Log
+	Logging chan Log
+	Err     chan Log
 }
 
 func NewBot(strategy *Strategy) *Bot {
-	return &Bot{strategy, make(chan string), make(chan error)}
+	return &Bot{strategy, make(chan Log), make(chan Log), make(chan Log)}
 }
 
 func (b *Bot) Run() {
-	log.Println("[info] bot started...")
-
 	for coin := range coins {
-		go b.Strategy.Watch(b.Logging, b.Err, coin)
+		go b.Strategy.Watch(b.Ticker, b.Err, coin)
 		go b.Strategy.B(coins, b.Logging, b.Err, coin)
 		go b.Strategy.S(coins, b.Logging, b.Err, coin)
 	}
 
 	for {
 		select {
+		case t := <-b.Ticker:
+			stdLogger.WithFields(t.fields).Info(t.msg)
 		case l := <-b.Logging:
-			log.Println(l)
-		case err := <-b.Err:
-			log.Panic(err)
+			logLogger.WithFields(l.fields).Warn(l.msg)
+		case e := <-b.Err:
+			if e.terminate {
+				errLogger.WithFields(e.fields).Fatal(e.msg)
+			} else {
+				errLogger.WithFields(e.fields).Error(e.msg)
+			}
 		}
 	}
 }

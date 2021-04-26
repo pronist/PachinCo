@@ -109,24 +109,23 @@ func (c *Client) Order(market, side string, volume, price float64) (string, erro
 }
 
 // 주문이 체결될 때까지 기다리기.
-func (c *Client) WaitUntilCompletedOrder(errLog chan error, uuid string) {
+func (c *Client) waitUntilCompletedOrder(errLog chan Log, uuid string) {
 	for {
 		order, err := c.callWith("GET", "/order", Query{"uuid": uuid})
 		if err != nil {
-			errLog <- err
+			errLog <- Log{msg: err.Error()}
 		}
 		if order, ok := order.(map[string]interface{}); ok {
 			if order["state"].(string) == "done" {
 				return
 			}
 		}
-
 		time.Sleep(1 * time.Second)
 	}
 }
 
 // 계좌
-func (c *Client) GetAccounts() ([]map[string]interface{}, error) {
+func (c *Client) getAccounts() ([]map[string]interface{}, error) {
 	var acts []map[string]interface{}
 
 	accounts, err := c.call("GET", "/accounts")
@@ -134,7 +133,7 @@ func (c *Client) GetAccounts() ([]map[string]interface{}, error) {
 		return nil, err
 	}
 	if accounts, ok := accounts.([]interface{}); ok {
-		for idx, _ := range accounts {
+		for idx := range accounts {
 			if acc, ok := accounts[idx].(map[string]interface{}); ok {
 				acts = append(acts, acc)
 			}
@@ -145,7 +144,7 @@ func (c *Client) GetAccounts() ([]map[string]interface{}, error) {
 }
 
 // 현재 자금의 현황
-func (c *Client) GetBalances(accounts []map[string]interface{}) (Balances, error) {
+func (c *Client) getBalances(accounts []map[string]interface{}) (Balances, error) {
 	// 가지고 있는 자금의 현황 매핑
 	balances := make(Balances)
 
@@ -162,7 +161,7 @@ func (c *Client) GetBalances(accounts []map[string]interface{}) (Balances, error
 }
 
 // 매수 평균가
-func (c *Client) GetAverageBuyPrice(accounts []map[string]interface{}, coin string) (float64, error) {
+func (c *Client) getAverageBuyPrice(accounts []map[string]interface{}, coin string) (float64, error) {
 	var avgBuyPrice float64
 
 	for _, acc := range accounts {

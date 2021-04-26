@@ -19,7 +19,7 @@ func (qc *QuotationClient) get(url string, query Query) (Response, error) {
 }
 
 // 전일 종가대비 변화율
-func (qc *QuotationClient) GetChangeRate(market string) (float64, error) {
+func (qc *QuotationClient) getChangeRate(market string) (float64, error) {
 	day, err := qc.get("/candles/days", map[string]string{
 		"market": market, "count": "1",
 	})
@@ -37,7 +37,7 @@ func (qc *QuotationClient) GetChangeRate(market string) (float64, error) {
 }
 
 // 코인의 현재 가격
-func (qc *QuotationClient) GetPrice(market string) (float64, error) {
+func (qc *QuotationClient) getPrice(market string) (float64, error) {
 	ticker, err := qc.get("/ticker", Query{"markets": market})
 	if err != nil {
 		return 0, err
