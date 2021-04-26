@@ -1,7 +1,1 @@
-*.db
-*.db.lock
 *.exe
-*.log
-
-# Configuration
-config.yml

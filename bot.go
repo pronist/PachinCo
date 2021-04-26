@@ -20,8 +20,8 @@ type Bot struct {
 
 	// 고루틴에서 보고하기 위한 각종 채널
 	Ticker  chan Log
-	Logging chan Log
 	Err     chan Log
+	Logging chan Log
 }
 
 func NewBot(strategy *Strategy) *Bot {
@@ -34,13 +34,12 @@ func (b *Bot) Run() {
 		go b.Strategy.B(coins, b.Logging, b.Err, coin)
 		go b.Strategy.S(coins, b.Logging, b.Err, coin)
 	}
-
 	for {
 		select {
 		case t := <-b.Ticker:
 			stdLogger.WithFields(t.fields).Info(t.msg)
 		case l := <-b.Logging:
-			logLogger.WithFields(l.fields).Warn(l.msg)
+			logLogger.WithFields(l.fields).Warning(l.msg)
 		case e := <-b.Err:
 			if e.terminate {
 				errLogger.WithFields(e.fields).Fatal(e.msg)

@@ -1,7 +1,6 @@
 package upbit
 
 import (
-	"errors"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"math"
@@ -11,7 +10,6 @@ import (
 type Strategy struct {
 	*Client
 	*QuotationClient
-	//Db *bolt.DB
 }
 
 type Balances map[string]float64
@@ -36,7 +34,7 @@ func NewStrategy(c *Client, qc *QuotationClient) (*Strategy, error) {
 		return nil, err
 	}
 	if len(balances) == 0 {
-		return nil, errors.New("Balances is empty")
+		logrus.Panic("Balances is empty")
 	}
 
 	return &Strategy{c, qc}, nil
@@ -55,18 +53,11 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 			errLog <- Log{msg: err.Error()}
 		}
 
-		var totalBalance float64 // 초기 자금
-
-		for coin, balance := range balances {
-			if coin != "KRW" {
-				avgBuyPrice, err := s.Client.getAverageBuyPrice(accounts, coin) // 매수평균가
-				if err != nil {
-					errLog <- Log{msg: err.Error()}
-				}
-				totalBalance += balance * avgBuyPrice
-			}
+		// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
+		totalBalance, err := s.Client.getAccountBalance(accounts, balances) // 초기 자금
+		if err != nil {
+			errLog <- Log{msg: err.Error()}
 		}
-		totalBalance += balances["KRW"]
 
 		// `maxBalance` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
 		// 예를 들어 'KRW-BTT' 의 현재 값이 .1 이므로
@@ -79,15 +70,15 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 
 		if orderBalance < 5000 {
 			errLog <- Log{
-				msg: fmt.Sprintf("Order balance must more than 5000"),
+				msg: fmt.Sprintf("Order(B) balance must more than 5000"),
 				fields: logrus.Fields{
-					"coin": coin, "maxBalance": maxBalance, "order-balance": orderBalance,
+					"coin": coin, "max-balance": maxBalance, "order-balance": orderBalance,
 				},
 				terminate: true,
 			}
 		}
 		logging <- Log{
-			msg: fmt.Sprintf("Started watching for buying `%s`", coin),
+			msg: fmt.Sprintf("Watching (Buying) `%s`", coin),
 			fields: logrus.Fields{
 				"total-balance": totalBalance, "max-balance": maxBalance, "order-balance": orderBalance,
 			},
@@ -127,7 +118,7 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 						errLog <- Log{msg: err.Error()}
 					}
 					logging <- Log{
-						msg: fmt.Sprintf("-ORDER(B):: `%s`", "KRW-"+coin),
+						msg: fmt.Sprintf("Buy `%s`", "KRW-"+coin),
 						fields: logrus.Fields{
 							"balance": orderBalance, "volume": volume, "price": price,
 						},
@@ -147,7 +138,7 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 						errLog <- Log{msg: err.Error()}
 					}
 					logging <- Log{
-						msg: fmt.Sprintf("-ORDER(B):: `%s`", "KRW-"+coin),
+						msg: fmt.Sprintf("Buy `%s`", "KRW-"+coin),
 						fields: logrus.Fields{
 							"balance": orderBalance, "volume": volume, "price": price,
 						},
@@ -158,7 +149,9 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 			time.Sleep(1 * time.Second)
 		}
 	} else {
-		errLog <- Log{msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin)}
+		errLog <- Log{
+			msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
+		}
 	}
 }
 
@@ -166,7 +159,7 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 func (s *Strategy) S(markets map[string]float64, logging chan Log, errLog chan Log, coin string) {
 	if _, ok := markets[coin]; ok {
 		logging <- Log{
-			msg: fmt.Sprintf("started watching for selling `%s`", coin),
+			msg: fmt.Sprintf("Watching (Sales) `%s`", coin),
 		}
 		for {
 			accounts, err := s.Client.getAccounts()
@@ -192,16 +185,17 @@ func (s *Strategy) S(markets map[string]float64, logging chan Log, errLog chan L
 				}
 
 				p := price / avgBuyPrice
+				orderBalance := coinBalance * price
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-				if p-1 >= H {
+				if p-1 >= H && orderBalance > 5000 {
 					// 전량 매도. (일단 전량매도 전략 실험)
 					uuid, err := s.Client.Order("KRW-"+coin, "ask", coinBalance, price)
 					if err != nil {
 						errLog <- Log{msg: err.Error(), fields: logrus.Fields{}}
 					}
 					logging <- Log{
-						msg: fmt.Sprintf("-ORDER(S):: `%s`", "KRW-"+coin),
+						msg: fmt.Sprintf("Sell `%s`", "KRW-"+coin),
 						fields: logrus.Fields{
 							"volume": coinBalance, "price": price,
 						},
@@ -225,9 +219,9 @@ func (s *Strategy) Watch(logging chan Log, errLog chan Log, coin string) {
 			errLog <- Log{msg: err.Error()}
 		}
 		logging <- Log{
-			msg: fmt.Sprintf("―CR(Y):: %s", "KRW-"+coin),
+			msg: fmt.Sprintf("CR(Y):: %s", coin),
 			fields: logrus.Fields{
-				"change-rate": changeRate,
+				"change-rate": fmt.Sprintf("%.2f%%", changeRate * 100),
 			},
 		}
 		time.Sleep(1 * time.Second)

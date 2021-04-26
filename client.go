@@ -143,6 +143,23 @@ func (c *Client) getAccounts() ([]map[string]interface{}, error) {
 	return acts, nil
 }
 
+func (c *Client) getAccountBalance(accounts []map[string]interface{}, balances Balances) (float64, error) {
+	var totalBalance float64
+
+	for coin, balance := range balances {
+		if coin != "KRW" {
+			avgBuyPrice, err := c.getAverageBuyPrice(accounts, coin) // 매수평균가
+			if err != nil {
+				return 0, nil
+			}
+			totalBalance += balance * avgBuyPrice
+		}
+	}
+	totalBalance += balances["KRW"]
+
+	return totalBalance, nil
+}
+
 // 현재 자금의 현황
 func (c *Client) getBalances(accounts []map[string]interface{}) (Balances, error) {
 	// 가지고 있는 자금의 현황 매핑
