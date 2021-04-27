@@ -88,7 +88,7 @@ func (c *Client) callWith(method, url string, query Query) (Response, error) {
 }
 
 // 주문
-func (c *Client) Order(market, side string, volume, price float64) (string, error) {
+func (c *Client) order(market, side string, volume, price float64) (string, error) {
 	q := Query{
 		"market":   market,
 		"side":     side,

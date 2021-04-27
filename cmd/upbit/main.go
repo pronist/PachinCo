@@ -6,14 +6,11 @@ import (
 	"net/http"
 )
 
-const (
-	accessKey = "UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4"
-	secretKey = "2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn"
-)
-
 func main() {
+	config := upbit.NewConfig("upbit.config.yml")
+
 	strategy, err := upbit.NewStrategy(
-		&upbit.Client{AccessKey: accessKey, SecretKey: secretKey},
+		&upbit.Client{AccessKey: config.Bot.AccessKey, SecretKey: config.Bot.SecretKey},
 		&upbit.QuotationClient{Client: &http.Client{}})
 	if err != nil {
 		log.Panic(err)

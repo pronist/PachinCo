@@ -6,6 +6,7 @@ require (
 	github.com/ahmetb/go-linq/v3 v3.2.0 // indirect
 	github.com/boltdb/bolt v1.3.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/jinzhu/configor v1.2.1
 	github.com/mattn/go-colorable v0.1.8
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.8.1

@@ -113,7 +113,7 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 				// 5000 KRW 은 업비트의 최소주문 금액이다.
 				// 해당 코인의 총 매수금액은 maxBalance 를 벗어나면 안 된다.
 				if p-1 <= L && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
-					uuid, err := s.Client.Order("KRW-"+coin, "bid", volume, price)
+					uuid, err := s.Client.order("KRW-"+coin, "bid", volume, price)
 					if err != nil {
 						errLog <- Log{msg: err.Error()}
 					}
@@ -133,7 +133,7 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 				}
 				// 전액 하락률을 기준으로 매수
 				if changeRate <= F && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 {
-					uuid, err := s.Client.Order("KRW-"+coin, "bid", volume, price)
+					uuid, err := s.Client.order("KRW-"+coin, "bid", volume, price)
 					if err != nil {
 						errLog <- Log{msg: err.Error()}
 					}
@@ -190,7 +190,7 @@ func (s *Strategy) S(markets map[string]float64, logging chan Log, errLog chan L
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= H && orderBalance > 5000 {
 					// 전량 매도. (일단 전량매도 전략 실험)
-					uuid, err := s.Client.Order("KRW-"+coin, "ask", coinBalance, price)
+					uuid, err := s.Client.order("KRW-"+coin, "ask", coinBalance, price)
 					if err != nil {
 						errLog <- Log{msg: err.Error(), fields: logrus.Fields{}}
 					}
