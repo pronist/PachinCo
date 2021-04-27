@@ -2,17 +2,15 @@ package upbit
 
 import (
 	"fmt"
+	"github.com/pronist/upbit/api"
 	"github.com/sirupsen/logrus"
 	"math"
 	"time"
 )
 
 type Strategy struct {
-	*Client
-	*QuotationClient
+	Api *api.API
 }
-
-type Balances map[string]float64
 
 const (
 	F = -0.05 // 보유하지 않은 코인 구입시 고려할 하락 기준, (상승한 것은 구입하지 않음)
@@ -24,39 +22,53 @@ const (
 	R = 0.49
 )
 
-func NewStrategy(c *Client, qc *QuotationClient) (*Strategy, error) {
-	accounts, err := c.getAccounts()
+func (s *Strategy) order(logging chan Log, errLog chan Log, coin, side string, volume, price float64) (*api.Accounts, map[string]float64) {
+	uuid, err := s.Api.Order("KRW-"+coin, side, volume, price)
 	if err != nil {
-		return nil, err
+		errLog <- Log{Msg: err.Error()}
 	}
-	balances, err := c.getBalances(accounts)
+	logging <- Log{
+		Msg: fmt.Sprintf("ORDER(`%s`) `%s`", side, "KRW-"+coin),
+		Fields: logrus.Fields{
+			"volume": volume, "price": price,
+		},
+	}
+	// 주문이 체결 될 때까지 기다린다.
+	err = s.Api.WaitUntilCompletedOrder(uuid)
 	if err != nil {
-		return nil, err
-	}
-	if len(balances) == 0 {
-		logrus.Panic("Balances is empty")
+		errLog <- Log{Msg: err.Error()}
 	}
 
-	return &Strategy{c, qc}, nil
+	// 주문이 체결 된 이후 자금 추적을 위해 변경된 정보를 다시 얻어야 한다.
+	accounts, err := s.Api.NewAccounts()
+	if err != nil {
+		errLog <- Log{Msg: err.Error()}
+	}
+	balances, err := accounts.GetBalances()
+	if err != nil {
+		errLog <- Log{Msg: err.Error()}
+	}
+
+	return accounts, balances
 }
 
 // 봇의 '매수' 전략이 담겨있다.
 func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan Log, coin string) {
 	// 매수 코인 목록에 있어야 한다.
 	if r, ok := markets[coin]; ok {
-		accounts, err := s.Client.getAccounts()
+		accounts, err := s.Api.NewAccounts()
 		if err != nil {
-			errLog <- Log{msg: err.Error()}
+			errLog <- Log{Msg: err.Error()}
 		}
-		balances, err := s.Client.getBalances(accounts) // 자금 현황
+		balances, err := accounts.GetBalances()
 		if err != nil {
-			errLog <- Log{msg: err.Error()}
+			errLog <- Log{Msg: err.Error()}
 		}
 
 		// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
-		totalBalance, err := s.Client.getAccountBalance(accounts, balances) // 초기 자금
+		totalBalance, err := accounts.GetTotalBalance(balances) // 초기 자금
 		if err != nil {
-			errLog <- Log{msg: err.Error()}
+			errLog <- Log{Msg: err.Error()}
 		}
 
 		// `maxBalance` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
@@ -70,41 +82,33 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 
 		if orderBalance < 5000 {
 			errLog <- Log{
-				msg: fmt.Sprintf("Order(B) balance must more than 5000"),
-				fields: logrus.Fields{
+				Msg: fmt.Sprintf("Order(B) balance must more than 5000"),
+				Fields: logrus.Fields{
 					"coin": coin, "max-balance": maxBalance, "order-balance": orderBalance,
 				},
-				terminate: true,
+				Terminate: true,
 			}
 		}
 		logging <- Log{
-			msg: fmt.Sprintf("Watching (Buying) `%s`", coin),
-			fields: logrus.Fields{
+			Msg: fmt.Sprintf("Start watching for buying `%s`...", coin),
+			Fields: logrus.Fields{
 				"total-balance": totalBalance, "max-balance": maxBalance, "order-balance": orderBalance,
 			},
 		}
-		for {
-			accounts, err := s.Client.getAccounts()
-			if err != nil {
-				errLog <- Log{msg: err.Error()}
-			}
-			balances, err := s.Client.getBalances(accounts) // 자금 현황
-			if err != nil {
-				errLog <- Log{msg: err.Error()}
-			}
 
-			price, err := s.QuotationClient.getPrice("KRW-" + coin) // 현재 코인 가격
+		for {
+			price, err := s.Api.GetPrice("KRW-" + coin) // 현재 코인 가격
 			if err != nil {
-				errLog <- Log{msg: err.Error()}
+				errLog <- Log{Msg: err.Error()}
 			}
 
 			volume := math.Floor(orderBalance / price)
 
 			// 현재 코인의 보유 여부
 			if coinBalance, ok := balances[coin]; ok {
-				avgBuyPrice, err := s.Client.getAverageBuyPrice(accounts, coin) // 매수 평균가
+				avgBuyPrice, err := accounts.GetAverageBuyPrice(coin) // 매수 평균가
 				if err != nil {
-					errLog <- Log{msg: err.Error()}
+					errLog <- Log{Msg: err.Error()}
 				}
 
 				p := price / avgBuyPrice // 매수평균가 대비 변화율
@@ -113,44 +117,24 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 				// 5000 KRW 은 업비트의 최소주문 금액이다.
 				// 해당 코인의 총 매수금액은 maxBalance 를 벗어나면 안 된다.
 				if p-1 <= L && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
-					uuid, err := s.Client.order("KRW-"+coin, "bid", volume, price)
-					if err != nil {
-						errLog <- Log{msg: err.Error()}
-					}
-					logging <- Log{
-						msg: fmt.Sprintf("Buy `%s`", "KRW-"+coin),
-						fields: logrus.Fields{
-							"balance": orderBalance, "volume": volume, "price": price,
-						},
-					}
-					s.Client.waitUntilCompletedOrder(errLog, uuid)
+					accounts, balances = s.order(logging, errLog, coin, "bid", volume, price)
 				}
 			} else {
 				// 해당 코인을 처음 사는 경우
-				changeRate, err := s.QuotationClient.getChangeRate("KRW-" + coin) // 전날 대비
+				changeRate, err := s.Api.GetChangeRate("KRW-" + coin) // 전날 대비
 				if err != nil {
-					errLog <- Log{msg: err.Error()}
+					errLog <- Log{Msg: err.Error()}
 				}
 				// 전액 하락률을 기준으로 매수
 				if changeRate <= F && balances["KRW"] > orderBalance && balances["KRW"] >= 5000 {
-					uuid, err := s.Client.order("KRW-"+coin, "bid", volume, price)
-					if err != nil {
-						errLog <- Log{msg: err.Error()}
-					}
-					logging <- Log{
-						msg: fmt.Sprintf("Buy `%s`", "KRW-"+coin),
-						fields: logrus.Fields{
-							"balance": orderBalance, "volume": volume, "price": price,
-						},
-					}
-					s.Client.waitUntilCompletedOrder(errLog, uuid)
+					accounts, balances = s.order(logging, errLog, coin, "bid", volume, price)
 				}
 			}
 			time.Sleep(1 * time.Second)
 		}
 	} else {
 		errLog <- Log{
-			msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
+			Msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
 		}
 	}
 }
@@ -159,29 +143,29 @@ func (s *Strategy) B(markets map[string]float64, logging chan Log, errLog chan L
 func (s *Strategy) S(markets map[string]float64, logging chan Log, errLog chan Log, coin string) {
 	if _, ok := markets[coin]; ok {
 		logging <- Log{
-			msg: fmt.Sprintf("Watching (Sales) `%s`", coin),
+			Msg: fmt.Sprintf("Start watching for sale `%s`", coin),
 		}
+
+		accounts, err := s.Api.NewAccounts()
+		if err != nil {
+			errLog <- Log{Msg: err.Error()}
+		}
+		balances, err := accounts.GetBalances()
+		if err != nil {
+			errLog <- Log{Msg: err.Error()}
+		}
+
 		for {
-			accounts, err := s.Client.getAccounts()
-			if err != nil {
-				errLog <- Log{msg: err.Error()}
-			}
-
-			balances, err := s.Client.getBalances(accounts)
-			if err != nil {
-				errLog <- Log{msg: err.Error()}
-			}
-
 			// 판매하려면 코인을 가지고 있어야 한다.
 			if coinBalance, ok := balances[coin]; ok {
-				avgBuyPrice, err := s.Client.getAverageBuyPrice(accounts, coin) // 매수평균가
+				avgBuyPrice, err := accounts.GetAverageBuyPrice(coin) // 매수평균가
 				if err != nil {
-					errLog <- Log{msg: err.Error()}
+					errLog <- Log{Msg: err.Error()}
 				}
 
-				price, err := s.getPrice("KRW-" + coin)
+				price, err := s.Api.GetPrice("KRW-" + coin)
 				if err != nil {
-					errLog <- Log{msg: err.Error()}
+					errLog <- Log{Msg: err.Error()}
 				}
 
 				p := price / avgBuyPrice
@@ -190,39 +174,26 @@ func (s *Strategy) S(markets map[string]float64, logging chan Log, errLog chan L
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= H && orderBalance > 5000 {
 					// 전량 매도. (일단 전량매도 전략 실험)
-					uuid, err := s.Client.order("KRW-"+coin, "ask", coinBalance, price)
-					if err != nil {
-						errLog <- Log{msg: err.Error(), fields: logrus.Fields{}}
-					}
-					logging <- Log{
-						msg: fmt.Sprintf("Sell `%s`", "KRW-"+coin),
-						fields: logrus.Fields{
-							"volume": coinBalance, "price": price,
-						},
-					}
-					s.Client.waitUntilCompletedOrder(errLog, uuid)
+					accounts, balances = s.order(logging, errLog, coin, "ask", coinBalance, price)
 				}
 			}
 			time.Sleep(1 * time.Second)
 		}
 	} else {
 		errLog <- Log{
-			msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
+			Msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
 		}
 	}
 }
 
 func (s *Strategy) Watch(logging chan Log, errLog chan Log, coin string) {
 	for {
-		changeRate, err := s.QuotationClient.getChangeRate("KRW-" + coin)
+		changeRate, err := s.Api.GetChangeRate("KRW-" + coin)
 		if err != nil {
-			errLog <- Log{msg: err.Error()}
+			errLog <- Log{Msg: err.Error()}
 		}
-		logging <- Log{
-			msg: fmt.Sprintf("CR(Y):: %s", coin),
-			fields: logrus.Fields{
-				"change-rate": fmt.Sprintf("%.2f%%", changeRate * 100),
-			},
+		logging <- Log{Msg: coin, Fields: logrus.Fields{
+			"change-rate": fmt.Sprintf("%.2f%%", changeRate*100)},
 		}
 		time.Sleep(1 * time.Second)
 	}

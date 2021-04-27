@@ -2,20 +2,17 @@ package main
 
 import (
 	"github.com/pronist/upbit"
-	"log"
+	"github.com/pronist/upbit/api"
+	"github.com/pronist/upbit/gateway"
 	"net/http"
 )
 
 func main() {
 	config := upbit.NewConfig("upbit.config.yml")
 
-	strategy, err := upbit.NewStrategy(
-		&upbit.Client{AccessKey: config.Bot.AccessKey, SecretKey: config.Bot.SecretKey},
-		&upbit.QuotationClient{Client: &http.Client{}})
-	if err != nil {
-		log.Panic(err)
-	}
-
-	bot := upbit.NewBot(strategy)
+	bot := upbit.NewBot(&upbit.Strategy{Api: &api.API{
+		Client: &gateway.Client{AccessKey: config.Bot.AccessKey, SecretKey: config.Bot.SecretKey},
+		QuotationClient: &gateway.QuotationClient{Client: &http.Client{}},
+	}})
 	bot.Run()
 }

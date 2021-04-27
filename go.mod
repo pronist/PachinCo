@@ -3,7 +3,7 @@ module github.com/pronist/upbit
 go 1.15
 
 require (
-	github.com/ahmetb/go-linq/v3 v3.2.0 // indirect
+	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/boltdb/bolt v1.3.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/jinzhu/configor v1.2.1

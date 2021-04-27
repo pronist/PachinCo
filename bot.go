@@ -1,5 +1,7 @@
 package upbit
 
+import "github.com/sirupsen/logrus"
+
 // 몰빵이 아닌 분산 투자 전략을 위한 것
 // 총 자금이 100, 'A' 코인에 최대 10 만큼의 자금 할당시 'A' => 0.1 (비중)
 var coins = map[string]float64{
@@ -16,12 +18,12 @@ var coins = map[string]float64{
 }
 
 type Bot struct {
-	Strategy *Strategy
+	strategy *Strategy
 
 	// 고루틴에서 보고하기 위한 각종 채널
-	Ticker  chan Log
-	Err     chan Log
-	Logging chan Log
+	ticker  chan Log
+	err     chan Log
+	logging chan Log
 }
 
 func NewBot(strategy *Strategy) *Bot {
@@ -30,22 +32,33 @@ func NewBot(strategy *Strategy) *Bot {
 
 func (b *Bot) Run() {
 	for coin := range coins {
-		go b.Strategy.Watch(b.Ticker, b.Err, coin)
-		go b.Strategy.B(coins, b.Logging, b.Err, coin)
-		go b.Strategy.S(coins, b.Logging, b.Err, coin)
+		go b.strategy.Watch(b.ticker, b.err, coin)
+		go b.strategy.B(coins, b.logging, b.err, coin)
+		go b.strategy.S(coins, b.logging, b.err, coin)
 	}
+
+	errLogger, err := NewLogger("logs/error.log", logrus.ErrorLevel)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	logLogger, err := NewLogger("logs/log.log", logrus.WarnLevel)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	stdLogger, err := NewLogger("", logrus.InfoLevel)
+
 	for {
 		select {
-		case t := <-b.Ticker:
-			stdLogger.WithFields(t.fields).Info(t.msg)
-		case l := <-b.Logging:
-			logLogger.WithFields(l.fields).Warning(l.msg)
-		case e := <-b.Err:
-			if e.terminate {
-				errLogger.WithFields(e.fields).Fatal(e.msg)
+		case t := <-b.ticker:
+			stdLogger.WithFields(t.Fields).Info(t.Msg)
+		case e := <-b.err:
+			if e.Terminate {
+				errLogger.WithFields(e.Fields).Fatal(e.Msg)
 			} else {
-				errLogger.WithFields(e.fields).Error(e.msg)
+				errLogger.WithFields(e.Fields).Error(e.Msg)
 			}
+		case l := <-b.logging:
+			logLogger.WithFields(l.Fields).Warning(l.Msg)
 		}
 	}
 }
