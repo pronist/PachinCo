@@ -1,5 +1,7 @@
 package api
 
+import "fmt"
+
 // 전일 종가대비 변화율
 func (api *API) GetChangeRate(market string) (float64, error) {
 	day, err := api.QuotationClient.Do("/candles/days", map[string]string{
@@ -10,9 +12,11 @@ func (api *API) GetChangeRate(market string) (float64, error) {
 	}
 	if day, ok := day.([]interface{}); ok {
 		if candle, ok := day[0].(map[string]interface{}); ok {
-			return candle["change_rate"].(float64), nil
+			if changeRate, ok := candle["change_rate"].(float64); ok {
+				return changeRate, nil
+			}
 		}
 	}
 
-	return 0, nil
+	return 0, fmt.Errorf("%#v", day)
 }

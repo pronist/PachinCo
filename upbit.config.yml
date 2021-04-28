@@ -1,3 +1,19 @@
-bot:
+keypair:
   accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4
   secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn
+
+# 몰빵이 아닌 분산 투자 전략을 위한 것
+# 총 자금이 100, 'A' 코인에 최대 10 만큼의 자금 할당시 'A' => 0.1 (비중)
+coins:
+  BTT: 1.0 # 비트토렌트
+  AHT: 1.0 # 아하토큰
+  TRX: 1.0 # 트론
+  EOS: 1.0 # 이오스
+  XRP: 1.0 # 리플
+
+f: -0.03 # 코인을 처음 구매할 떄 고려할 하락 기준
+l: -0.03 # 구입 하락 기준
+h:  0.03 # 판매 상승 기준
+
+# 'A' 코인에 10 만큼 할당이 되었을 때, `R` 이 1.0 이라면 100% 사용하여 주문
+r: 0.1

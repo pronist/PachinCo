@@ -29,14 +29,14 @@ func (api *API) NewAccounts() (*Accounts, error) {
 func (acc *Accounts) GetTotalBalance(balances map[string]float64) (float64, error) {
 	totalBalance := balances["KRW"]
 
-	delete(balances, "KRW")
-
 	for coin, balance := range balances {
-		avgBuyPrice, err := acc.GetAverageBuyPrice(coin)
-		if err != nil {
-			return 0, nil
+		if coin != "KRW" {
+			avgBuyPrice, err := acc.GetAverageBuyPrice(coin)
+			if err != nil {
+				return 0, nil
+			}
+			totalBalance += avgBuyPrice * balance
 		}
-		totalBalance += avgBuyPrice * balance
 	}
 
 	return totalBalance, nil
@@ -59,11 +59,10 @@ func (acc *Accounts) GetBalances() (map[string]float64, error) {
 
 func (acc *Accounts) GetAverageBuyPrice(coin string) (float64, error) {
 	var avgBuyPrice float64
+	var err error
 
 	for _, account := range acc.accounts {
-		if account["currency"].(string) == coin {
-			var err error
-
+		if currency, ok := account["currency"].(string); ok && currency == coin {
 			avgBuyPrice, err = strconv.ParseFloat(account["avg_buy_price"].(string), 64)
 			if err != nil {
 				return 0, err

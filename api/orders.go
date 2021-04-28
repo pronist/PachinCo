@@ -19,8 +19,10 @@ func (api *API) Order(market, side string, volume, price float64) (string, error
 	}
 
 	if order, ok := order.(map[string]interface{}); ok {
-		return order["uuid"].(string), nil
+		if uuid, ok := order["uuid"].(string); ok {
+			return uuid, nil
+		}
 	}
 
-	return "", err
+	return "", fmt.Errorf("%#v", order)
 }

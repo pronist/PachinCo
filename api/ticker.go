@@ -1,6 +1,9 @@
 package api
 
-import "github.com/pronist/upbit/gateway"
+import (
+	"fmt"
+	"github.com/pronist/upbit/gateway"
+)
 
 func (api *API) GetPrice(market string) (float64, error) {
 	ticker, err := api.QuotationClient.Do("/ticker", gateway.Query{"markets": market})
@@ -9,9 +12,11 @@ func (api *API) GetPrice(market string) (float64, error) {
 	}
 	if ticker, ok := ticker.([]interface{}); ok {
 		if tick, ok := ticker[0].(map[string]interface{}); ok {
-			return tick["trade_price"].(float64), nil
+			if tradePrice, ok := tick["trade_price"].(float64); ok {
+				return tradePrice, nil
+			}
 		}
 	}
 
-	return 0, err
+	return 0, fmt.Errorf("%#v", ticker)
 }

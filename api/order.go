@@ -11,8 +11,9 @@ func (api *API) WaitUntilCompletedOrder(uuid string) error {
 		if err != nil {
 			return err
 		}
+
 		if order, ok := order.(map[string]interface{}); ok {
-			if order["state"].(string) == "done" {
+			if state, ok := order["state"].(string); ok && state == "done" {
 				return nil
 			}
 		}

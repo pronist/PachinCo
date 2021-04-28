@@ -7,17 +7,6 @@ import (
 	"time"
 )
 
-type Strategy interface {
-	Buying(args map[string]interface{}) (bool, error)
-	BuyingIfNotExistCoin(args map[string]interface{}) (bool, error)
-	Sell(args map[string]interface{}) (bool, error)
-}
-
-const (
-	// 'A' 코인에 10 만큼 할당이 되었을 때, `R` 이 1.0 이라면 100% 사용하여 주문
-	R = 0.5
-)
-
 func (b *Bot) order(coin, side string, volume, price float64) (*api.Accounts, map[string]float64) {
 	uuid, err := b.api.Order("KRW-"+coin, side, volume, price)
 	if err != nil {
@@ -74,7 +63,7 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 
 		// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
 		// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
-		orderBalance := maxBalance * R
+		orderBalance := maxBalance * b.config.R
 
 		if orderBalance < 5000 {
 			b.err <- Log{
@@ -108,25 +97,22 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 				}
 				if balances["KRW"] > orderBalance && balances["KRW"] >= 5000 && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
 					// 해당 코인의 총 매수금액은 `maxBalance` 를 벗어나면 안 된다.
-					ok, err := b.strategy.Buying(map[string]interface{}{
-						"avgBuyPrice": avgBuyPrice, "price": price,
-					})
-					if err != nil {
-						b.err <- Log{Msg: err.Error()}
-					}
-					if ok {
+					p := price / avgBuyPrice // 매수평균가 대비 변화율
+
+					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
+					if p-1 <= b.config.L {
 						accounts, balances = b.order(coin, "bid", volume, price)
 					}
 				}
 			} else {
 				if balances["KRW"] > orderBalance && balances["KRW"] >= 5000 {
-					ok, err := b.strategy.BuyingIfNotExistCoin(map[string]interface{}{
-						"api": b.api, "coin": coin,
-					})
+					changeRate, err := b.api.GetChangeRate("KRW-" + coin) // 전날 대비
 					if err != nil {
 						b.err <- Log{Msg: err.Error()}
 					}
-					if ok {
+
+					// 전액 하락률을 기준으로 매수
+					if changeRate <= b.config.F {
 						accounts, balances = b.order(coin, "bid", volume, price)
 					}
 				}
@@ -166,14 +152,15 @@ func (b *Bot) S(markets map[string]float64, coin string) {
 
 				orderBalance := coinBalance * price
 
-				ok, err := b.strategy.Sell(map[string]interface{}{
-					"accounts": accounts, "price": price, "coin": coin,
-				})
+				avgBuyPrice, err := accounts.GetAverageBuyPrice(coin) // 매수평균가
 				if err != nil {
 					b.err <- Log{Msg: err.Error()}
 				}
+
+				p := price / avgBuyPrice
+
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-				if ok && orderBalance > 5000 {
+				if p-1 >= b.config.H && orderBalance > 5000 {
 					// 전량 매도. (일단 전량매도 전략 실험)
 					accounts, balances = b.order(coin, "ask", coinBalance, price)
 				}
