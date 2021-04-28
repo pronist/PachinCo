@@ -27,18 +27,17 @@ func (api *API) NewAccounts() (*Accounts, error) {
 }
 
 func (acc *Accounts) GetTotalBalance(balances map[string]float64) (float64, error) {
-	var totalBalance float64
+	totalBalance := balances["KRW"]
+
+	delete(balances, "KRW")
 
 	for coin, balance := range balances {
-		if coin != "KRW" {
-			avgBuyPrice, err := acc.GetAverageBuyPrice(coin)
-			if err != nil {
-				return 0, nil
-			}
-			totalBalance += avgBuyPrice*balance
+		avgBuyPrice, err := acc.GetAverageBuyPrice(coin)
+		if err != nil {
+			return 0, nil
 		}
+		totalBalance += avgBuyPrice * balance
 	}
-	totalBalance += balances["KRW"]
 
 	return totalBalance, nil
 }

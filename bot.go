@@ -1,6 +1,9 @@
 package upbit
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/pronist/upbit/api"
+	"github.com/sirupsen/logrus"
+)
 
 // 몰빵이 아닌 분산 투자 전략을 위한 것
 // 총 자금이 100, 'A' 코인에 최대 10 만큼의 자금 할당시 'A' => 0.1 (비중)
@@ -18,7 +21,8 @@ var coins = map[string]float64{
 }
 
 type Bot struct {
-	strategy *Strategy
+	strategy Strategy
+	api      *api.API
 
 	// 고루틴에서 보고하기 위한 각종 채널
 	ticker  chan Log
@@ -26,15 +30,15 @@ type Bot struct {
 	logging chan Log
 }
 
-func NewBot(strategy *Strategy) *Bot {
-	return &Bot{strategy, make(chan Log), make(chan Log), make(chan Log)}
+func NewBot(strategy Strategy, api *api.API) *Bot {
+	return &Bot{strategy, api, make(chan Log), make(chan Log), make(chan Log)}
 }
 
 func (b *Bot) Run() {
 	for coin := range coins {
-		go b.strategy.Watch(b.ticker, b.err, coin)
-		go b.strategy.B(coins, b.logging, b.err, coin)
-		go b.strategy.S(coins, b.logging, b.err, coin)
+		go b.Watch(coin)
+		go b.B(coins, coin)
+		go b.S(coins, coin)
 	}
 
 	errLogger, err := NewLogger("logs/error.log", logrus.ErrorLevel)
