@@ -46,7 +46,9 @@ func (b *Bot) Run() {
 		logrus.Fatal(err)
 	}
 	stdLogger, err := NewLogger("", logrus.InfoLevel)
-
+	if err != nil {
+		logrus.Fatal(err)
+	}
 	for {
 		select {
 		case t := <-b.ticker:
