@@ -10,28 +10,26 @@ import (
 func (b *Bot) order(coin, side string, volume, price float64) (*api.Accounts, map[string]float64) {
 	uuid, err := b.api.Order("KRW-"+coin, side, volume, price)
 	if err != nil {
-		b.err <- Log{Msg: err.Error()}
+		ErrLogger.Error(err)
 	}
-	b.logging <- Log{
-		Msg: fmt.Sprintf("ORDER(`%s`) `%s`", side, "KRW-"+coin),
-		Fields: logrus.Fields{
-			"volume": volume, "price": price,
-		},
-	}
+	LogLogger.
+		WithFields(logrus.Fields{"volume": volume, "price": price }).
+		Warn(fmt.Sprintf("ORDER(`%s`) `%s`", side, "KRW-"+coin))
+
 	// 주문이 체결 될 때까지 기다린다.
 	err = b.api.WaitUntilCompletedOrder(uuid)
 	if err != nil {
-		b.err <- Log{Msg: err.Error()}
+		ErrLogger.Error(err)
 	}
 
 	// 주문이 체결 된 이후 자금 추적을 위해 변경된 정보를 다시 얻어야 한다.
 	accounts, err := b.api.NewAccounts()
 	if err != nil {
-		b.err <- Log{Msg: err.Error()}
+		ErrLogger.Error(err)
 	}
 	balances, err := accounts.GetBalances()
 	if err != nil {
-		b.err <- Log{Msg: err.Error()}
+		ErrLogger.Error(err)
 	}
 
 	return accounts, balances
@@ -43,17 +41,17 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 	if r, ok := markets[coin]; ok {
 		accounts, err := b.api.NewAccounts()
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
 		balances, err := accounts.GetBalances()
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
 
 		// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
 		totalBalance, err := accounts.GetTotalBalance(balances) // 초기 자금
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
 
 		// `maxBalance` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
@@ -66,25 +64,22 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 		orderBalance := maxBalance * b.config.R
 
 		if orderBalance < 5000 {
-			b.err <- Log{
-				Msg: fmt.Sprintf("Order(`bid`) balance must more than 5000"),
-				Fields: logrus.Fields{
-					"coin": coin, "max-balance": maxBalance, "order-balance": orderBalance,
-				},
-				Terminate: true,
-			}
+			errMsg := fmt.Sprintf("Order(`bid`) balance must more than 5000")
+
+			ErrLogger.
+				WithFields(logrus.Fields{"coin": coin, "max-balance": maxBalance, "order-balance": orderBalance}).
+				Error(errMsg)
+
+			Exit <- errMsg
 		}
-		b.logging <- Log{
-			Msg: fmt.Sprintf("Start watching for buying `%s`...", coin),
-			Fields: logrus.Fields{
-				"total-balance": totalBalance, "max-balance": maxBalance, "order-balance": orderBalance,
-			},
-		}
+		LogLogger.
+			WithFields(logrus.Fields{"total-balance": totalBalance, "max-balance": maxBalance, "order-balance": orderBalance}).
+			Warn(fmt.Sprintf("Start watching for buying `%s`...", coin))
 
 		for {
 			price, err := b.api.GetPrice("KRW-" + coin) // 현재 코인 가격
 			if err != nil {
-				b.err <- Log{Msg: err.Error()}
+				ErrLogger.Error(err)
 			}
 
 			volume := orderBalance / price
@@ -93,7 +88,7 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 			if coinBalance, ok := balances[coin]; ok {
 				avgBuyPrice, err := accounts.GetAverageBuyPrice(coin) // 매수 평균가
 				if err != nil {
-					b.err <- Log{Msg: err.Error()}
+					ErrLogger.Error(err)
 				}
 				if balances["KRW"] > orderBalance && balances["KRW"] >= 5000 && (avgBuyPrice*coinBalance)+orderBalance <= maxBalance {
 					// 해당 코인의 총 매수금액은 `maxBalance` 를 벗어나면 안 된다.
@@ -108,7 +103,7 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 				if balances["KRW"] > orderBalance && balances["KRW"] >= 5000 {
 					changeRate, err := b.api.GetChangeRate("KRW-" + coin) // 전날 대비
 					if err != nil {
-						b.err <- Log{Msg: err.Error()}
+						ErrLogger.Error(err)
 					}
 
 					// 전액 하락률을 기준으로 매수
@@ -120,26 +115,22 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 			time.Sleep(1 * time.Second)
 		}
 	} else {
-		b.err <- Log{
-			Msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
-		}
+		ErrLogger.Error(fmt.Sprintf("Not found coin '%s' in supported markets", coin),)
 	}
 }
 
 // 봇의 '매도' 전략이 담겨있다.
 func (b *Bot) S(markets map[string]float64, coin string) {
 	if _, ok := markets[coin]; ok {
-		b.logging <- Log{
-			Msg: fmt.Sprintf("Start watching for sale `%s`", coin),
-		}
+		LogLogger.Warn(fmt.Sprintf("Start watching for sale `%s`", coin))
 
 		accounts, err := b.api.NewAccounts()
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
 		balances, err := accounts.GetBalances()
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
 
 		for {
@@ -147,14 +138,14 @@ func (b *Bot) S(markets map[string]float64, coin string) {
 			if coinBalance, ok := balances[coin]; ok {
 				price, err := b.api.GetPrice("KRW-" + coin)
 				if err != nil {
-					b.err <- Log{Msg: err.Error()}
+					ErrLogger.Error(err)
 				}
 
 				orderBalance := coinBalance * price
 
 				avgBuyPrice, err := accounts.GetAverageBuyPrice(coin) // 매수평균가
 				if err != nil {
-					b.err <- Log{Msg: err.Error()}
+					ErrLogger.Error(err)
 				}
 
 				p := price / avgBuyPrice
@@ -168,9 +159,7 @@ func (b *Bot) S(markets map[string]float64, coin string) {
 			time.Sleep(1 * time.Second)
 		}
 	} else {
-		b.err <- Log{
-			Msg: fmt.Sprintf("Not found coin '%s' in supported markets", coin),
-		}
+		ErrLogger.Error(fmt.Sprintf("Not found coin '%s' in supported markets", coin))
 	}
 }
 
@@ -178,11 +167,13 @@ func (b *Bot) Watch(coin string) {
 	for {
 		changeRate, err := b.api.GetChangeRate("KRW-" + coin)
 		if err != nil {
-			b.err <- Log{Msg: err.Error()}
+			ErrLogger.Error(err)
 		}
-		b.ticker <- Log{Msg: coin, Fields: logrus.Fields{
-			"change-rate": fmt.Sprintf("%.2f%%", changeRate*100)},
-		}
+
+		StdLogger.
+			WithFields(logrus.Fields{"change-rate": fmt.Sprintf("%.2f%%", changeRate*100)}).
+			Info(coin)
+
 		time.Sleep(1 * time.Second)
 	}
 }

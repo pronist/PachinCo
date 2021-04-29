@@ -18,7 +18,7 @@ type config struct {
 	R     float64            `required:"true"`
 }
 
-func NewConfig(filename string) (*config, error) {
+func newConfig(filename string) (*config, error) {
 	conf := config{}
 
 	err := configor.New(&configor.Config{Silent: true}).Load(&conf, filename)

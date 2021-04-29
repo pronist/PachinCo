@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-type Log struct {
-	Msg       string
-	Fields    logrus.Fields
-	Terminate bool
-}
+var (
+	ErrLogger = NewLogger("logs/error.log", logrus.ErrorLevel, true)
+	LogLogger = NewLogger("logs/log.log", logrus.WarnLevel, false)
+	StdLogger = NewLogger("", logrus.InfoLevel, false)
+)
 
-func NewLogger(filename string, level logrus.Level) (*logrus.Logger, error) {
+func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger {
 	rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
 		Filename:   filename,
-		MaxSize:    50, // megabytes
+		MaxSize:    10, // megabytes
 		MaxBackups: 3,
 		MaxAge:     28, //days
 		Level:      level,
@@ -25,7 +25,7 @@ func NewLogger(filename string, level logrus.Level) (*logrus.Logger, error) {
 		},
 	})
 	if err != nil {
-		return nil, err
+		Exit <- err.Error()
 	}
 
 	logger := &logrus.Logger{
@@ -35,7 +35,8 @@ func NewLogger(filename string, level logrus.Level) (*logrus.Logger, error) {
 		},
 		Hooks: map[logrus.Level][]logrus.Hook{level: {rotateFileHook}},
 		Level: level,
+		ReportCaller: caller,
 	}
 
-	return logger, nil
+	return logger
 }
