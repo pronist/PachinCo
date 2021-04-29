@@ -13,7 +13,7 @@ func (b *Bot) order(coin, side string, volume, price float64) (*api.Accounts, ma
 		ErrLogger.Error(err)
 	}
 	LogLogger.
-		WithFields(logrus.Fields{"volume": volume, "price": price }).
+		WithFields(logrus.Fields{"volume": volume, "price": price}).
 		Warn(fmt.Sprintf("ORDER(`%s`) `%s`", side, "KRW-"+coin))
 
 	// 주문이 체결 될 때까지 기다린다.
@@ -115,7 +115,7 @@ func (b *Bot) B(markets map[string]float64, coin string) {
 			time.Sleep(1 * time.Second)
 		}
 	} else {
-		ErrLogger.Error(fmt.Sprintf("Not found coin '%s' in supported markets", coin),)
+		ErrLogger.Error(fmt.Sprintf("Not found coin '%s' in supported markets", coin))
 	}
 }
 

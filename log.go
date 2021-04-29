@@ -33,8 +33,8 @@ func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger 
 		Formatter: &logrus.TextFormatter{
 			ForceColors: true, FullTimestamp: true, TimestampFormat: time.RFC822,
 		},
-		Hooks: map[logrus.Level][]logrus.Hook{level: {rotateFileHook}},
-		Level: level,
+		Hooks:        map[logrus.Level][]logrus.Hook{level: {rotateFileHook}},
+		Level:        level,
 		ReportCaller: caller,
 	}
 
