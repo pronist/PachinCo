@@ -1,26 +1,20 @@
 package api
 
 import (
+	"github.com/pronist/upbit/client"
 	"strconv"
 )
 
 func (api *API) NewAccounts() ([]map[string]interface{}, error) {
-	var acc []map[string]interface{}
-
 	accounts, err := api.Client.Call("GET", "/accounts")
 	if err != nil {
 		return nil, err
 	}
-	if accounts, ok := accounts.([]interface{}); ok {
-		for _, account := range accounts {
-			if account, ok := account.(map[string]interface{}); ok {
-				acc = append(acc, account)
-			}
-		}
-	}
 
-	return acc, nil
+	return client.TransformArrayMap(accounts), nil
 }
+
+/////
 
 func (api *API) GetTotalBalance(accounts []map[string]interface{}, balances map[string]float64) (float64, error) {
 	totalBalance := balances["KRW"]

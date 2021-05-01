@@ -5,8 +5,6 @@ import (
 )
 
 func (api *API) GetMarkets() ([]map[string]interface{}, error) {
-	var m []map[string]interface{}
-
 	markets, err := api.QuotationClient.Do("/market/all", client.Query{
 		"isDetails": "false",
 	})
@@ -14,13 +12,7 @@ func (api *API) GetMarkets() ([]map[string]interface{}, error) {
 		return nil, err
 	}
 
-	if markets, ok := markets.([]interface{}); ok {
-		for _, market := range markets {
-			if market, ok := market.(map[string]interface{}); ok {
-				m = append(m, market)
-			}
-		}
-	}
-
-	return m, nil
+	return client.TransformArrayMap(markets), nil
 }
+
+/////

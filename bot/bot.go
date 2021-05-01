@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-var exit = make(chan string)
-
 var (
-	ErrorLogger = upbit.NewLogger("logs/error.log", logrus.ErrorLevel, true)
-	EventLogger = upbit.NewLogger("logs/log.log", logrus.WarnLevel, false)
+	errLogChan = make(chan upbit.Log)
+	eventLogChan = make(chan upbit.Log)
+	stdLogChan = make(chan upbit.Log)
+	exitLogChan = make(chan upbit.Log)
 )
 
 type Bot struct {
@@ -34,9 +34,25 @@ func New() *Bot {
 
 func (b *Bot) Run() {
 	for coin := range b.config.Coins {
-		go b.B(b.config.Coins, coin)
-		go b.S(b.config.Coins, coin)
+		go b.Tracking(b.config.Coins, coin)
 	}
 
-	logrus.Panic(<-exit)
+	b.Logging()
+}
+
+func (b *Bot) Logging()  {
+	exitLogger := upbit.NewLogger("logs/exit.log", logrus.PanicLevel, true)
+
+	errLogger := upbit.NewLogger("logs/error.log", logrus.ErrorLevel, true)
+	eventLogger := upbit.NewLogger("logs/log.log", logrus.WarnLevel, false)
+	stdLogger := upbit.NewLogger("", logrus.InfoLevel, false)
+
+	for {
+		select {
+		case errLog := <-errLogChan: errLogger.WithFields(errLog.Fields).WithError(errLog.Msg.(error))
+		case eventLog := <-eventLogChan: eventLogger.WithFields(eventLog.Fields).Warn(eventLog.Msg)
+		case stdLog := <-stdLogChan: stdLogger.WithFields(stdLog.Fields).Info(stdLog.Msg)
+		case exitLog := <-exitLogChan: exitLogger.Panic(exitLog.Msg)
+		}
+	}
 }

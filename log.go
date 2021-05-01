@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+type Log struct {
+	Msg    interface{}
+	Fields logrus.Fields
+}
+
 func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger {
 	rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
 		Filename:   filename,
