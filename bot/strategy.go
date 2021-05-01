@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pronist/upbit"
 	"github.com/sirupsen/logrus"
+	"math"
 	"time"
 )
 
@@ -11,21 +12,21 @@ const (
 	MinimumOrderPrice = 5000
 )
 
-func (b *Bot) updateBalances(coin string, coinRate float64) ([]map[string]interface{}, map[string]float64, float64, float64) {
+func (b *Bot) update(coin string, coinRate float64) ([]map[string]interface{}, map[string]float64, float64, float64) {
 	// 주문이 체결 된 이후 자금 추적을 위해 변경된 정보를 다시 얻어야 한다.
 	accounts, err := b.api.NewAccounts()
 	if err != nil {
-		errLogChan <-upbit.Log{Msg: err}
+		errLogChan <- upbit.Log{Msg: err}
 	}
 	balances, err := b.api.GetBalances(accounts)
 	if err != nil {
-		errLogChan <-upbit.Log{Msg: err}
+		errLogChan <- upbit.Log{Msg: err}
 	}
 
 	// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
 	totalBalance, err := b.api.GetTotalBalance(accounts, balances) // 초기 자금
 	if err != nil {
-		errLogChan <-upbit.Log{Msg: err}
+		errLogChan <- upbit.Log{Msg: err}
 	}
 
 	// `limitOrderPrice` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
@@ -37,7 +38,7 @@ func (b *Bot) updateBalances(coin string, coinRate float64) ([]map[string]interf
 	// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
 	orderBuyingPrice := limitOrderPrice * b.config.R
 
-	eventLogChan <-upbit.Log{
+	eventLogChan <- upbit.Log{
 		Msg: "UPDATE",
 		Fields: logrus.Fields{
 			"coin": coin, "total-balance": totalBalance, "limit-order-price": limitOrderPrice, "order-buying-price": orderBuyingPrice,
@@ -50,18 +51,18 @@ func (b *Bot) updateBalances(coin string, coinRate float64) ([]map[string]interf
 func (b *Bot) order(coin, side string, coinRate float64, volume, price float64) ([]map[string]interface{}, map[string]float64, float64, float64) {
 	uuid, err := b.api.Order("KRW-"+coin, side, volume, price)
 	if err != nil {
-		errLogChan <-upbit.Log{Msg: err}
+		errLogChan <- upbit.Log{Msg: err}
 	}
-	eventLogChan <-upbit.Log{
+	eventLogChan <- upbit.Log{
 		Msg: "ORDER",
 		Fields: logrus.Fields{
-			"side": side, "market": "KRW-"+coin, "volume": volume, "price": price,
+			"side": side, "market": "KRW-" + coin, "volume": volume, "price": price,
 		},
 	}
 
 	done := make(chan int)
 
-	timer := time.NewTimer(b.config.Timeout)
+	timer := time.NewTimer(time.Second * b.config.Timeout)
 
 	go b.api.Wait(done, uuid)
 
@@ -69,25 +70,25 @@ func (b *Bot) order(coin, side string, coinRate float64, volume, price float64) 
 	case <-timer.C:
 		err := b.api.CancelOrder(uuid)
 		if err != nil {
-			errLogChan <-upbit.Log{Msg: err}
+			errLogChan <- upbit.Log{Msg: err}
 		}
-		eventLogChan <-upbit.Log{
+		eventLogChan <- upbit.Log{
 			Msg: "CANCEL",
 			Fields: logrus.Fields{
-				"coin": coin, "side": side, "timeout": b.config.Timeout,
+				"coin": coin, "side": side, "timeout": time.Second * b.config.Timeout,
 			},
 		}
-		return b.updateBalances(coin, coinRate)
+		return b.update(coin, coinRate)
 	case <-done:
-		return b.updateBalances(coin, coinRate)
+		return b.update(coin, coinRate)
 	}
 }
 
 func (b *Bot) Tracking(markets map[string]float64, coin string) {
 	if r, ok := markets[coin]; ok {
-		accounts, balances, limitOrderPrice, orderBuyingPrice := b.updateBalances(coin, r)
+		accounts, balances, limitOrderPrice, orderBuyingPrice := b.update(coin, r)
 
-		stdLogChan <-upbit.Log{
+		stdLogChan <- upbit.Log{
 			Msg: "Start watching for Buying and Selling...",
 			Fields: logrus.Fields{
 				"coin": coin,
@@ -97,12 +98,24 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 		for {
 			price, err := b.api.GetPrice("KRW-" + coin) // 현재 코인 가격
 			if err != nil {
-				errLogChan <-upbit.Log{Msg: err}
+				errLogChan <- upbit.Log{Msg: err}
 			}
+			changeRate, err := b.api.GetChangeRate("KRW-" + coin) // 전날 대비
+			if err != nil {
+				errLogChan <- upbit.Log{Msg: err}
+			}
+
+			stdLogChan <- upbit.Log{Msg: coin, Fields: logrus.Fields{
+				"change-rate": fmt.Sprintf("%.2f%%", changeRate*100), "price": price,
+			}}
 
 			///// 매수 전략
 			if balances["KRW"] >= MinimumOrderPrice && balances["KRW"] > orderBuyingPrice && orderBuyingPrice > MinimumOrderPrice {
 				volume := orderBuyingPrice / price
+
+				if math.IsInf(volume, 0) {
+					exitLogChan <- upbit.Log{Msg: "division by zero"}
+				}
 
 				if coinBalance, ok := balances[coin]; ok {
 					////// 코인이 있을 때 매수 전략
@@ -110,14 +123,18 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					// 매수 평균가
 					avgBuyPrice, err := b.api.GetAverageBuyPrice(accounts, coin)
 					if err != nil {
-						errLogChan <-upbit.Log{Msg: err}
+						errLogChan <- upbit.Log{Msg: err}
 					}
 
 					if avgBuyPrice <= 0 {
-						exitLogChan <-upbit.Log{Msg: fmt.Sprintf("`avgBuyPrice` must not have value `0`")}
+						exitLogChan <- upbit.Log{Msg: fmt.Sprintf("`avgBuyPrice` must not have value `0`")}
 					}
 
 					p := price / avgBuyPrice
+
+					if math.IsInf(p, 0) {
+						exitLogChan <- upbit.Log{Msg: "division by zero"}
+					}
 
 					// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
 
@@ -128,9 +145,9 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 				} else {
 					////// 코인을 처음 살 떄의 매수 전략
 
-					orders, err := b.api.GetOrderList("KRW-" + coin, "done")
+					orders, err := b.api.GetOrderList("KRW-"+coin, "done")
 					if err != nil {
-						errLogChan <-upbit.Log{Msg: err}
+						errLogChan <- upbit.Log{Msg: err}
 					}
 
 					// 이 매도에는 시장가 매도가 제외된다. 즉, 웹에서 시장가에 매도한 것이 아니라
@@ -139,11 +156,6 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 
 					if len(askOrders) == 0 {
 						// 해당 코인을 매도한 적이 없는 경우.
-
-						changeRate, err := b.api.GetChangeRate("KRW-" + coin) // 전날 대비
-						if err != nil {
-							errLogChan <-upbit.Log{Msg: err}
-						}
 
 						// 전날 하락률을 기준으로 매수
 						if changeRate <= b.config.F {
@@ -154,14 +166,18 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 
 						latestAskPrice, err := b.api.GetLatestAskPrice(orders)
 						if err != nil {
-							errLogChan <-upbit.Log{Msg: err}
+							errLogChan <- upbit.Log{Msg: err}
 						}
 
 						if latestAskPrice <= 0 {
-							exitLogChan <-upbit.Log{Msg: fmt.Sprintf("`latestAskPrice` must not have value `0`")}
+							exitLogChan <- upbit.Log{Msg: fmt.Sprintf("`latestAskPrice` must not have value `0`")}
 						}
 
 						pp := price / latestAskPrice // 마지막 매도가 대비 변화율
+
+						if math.IsInf(pp, 0) {
+							exitLogChan <- upbit.Log{Msg: "division by zero"}
+						}
 
 						// 마지막으로 매도한 가격을 기준으로 매수
 						if pp-1 <= b.config.F {
@@ -170,7 +186,7 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					}
 				}
 			} else {
-				exitLogChan <-upbit.Log{
+				exitLogChan <- upbit.Log{
 					Msg: "Minimum order price is `5000 KRW`, insufficient for Buying and Selling",
 					Fields: logrus.Fields{
 						"coin": coin, "limit-order-price": limitOrderPrice, "order-buying-price": orderBuyingPrice,
@@ -184,14 +200,14 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 				// 매수 평균가
 				avgBuyPrice, err := b.api.GetAverageBuyPrice(accounts, coin)
 				if err != nil {
-					errLogChan <-upbit.Log{Msg: err}
-				}
-
-				if avgBuyPrice <= 0 {
-					exitLogChan <-upbit.Log{Msg: fmt.Sprintf("`avgBuyPrice` must not have value `0`")}
+					errLogChan <- upbit.Log{Msg: err}
 				}
 
 				p := price / avgBuyPrice
+
+				if math.IsInf(p, 0) {
+					exitLogChan <- upbit.Log{Msg: "division by zero"}
+				}
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= b.config.H && orderSellingPrice > MinimumOrderPrice {
@@ -202,7 +218,7 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					// 절반 매도 전략 (실험 중)
 					// Config.H 만큼 올라갔을 때 절반을 매도, 이후 또 다시 그 만큼 올라가면 매도가능.
 					// 전량 매도 전략보다는 더 공격적인 전략
-					if orderSellingPrice / 2 > MinimumOrderPrice {
+					if orderSellingPrice/2 > MinimumOrderPrice {
 						coinBalance = coinBalance / 2
 					}
 
@@ -212,7 +228,7 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 			time.Sleep(1 * time.Second)
 		}
 	} else {
-		errLogChan <-upbit.Log{
+		exitLogChan <- upbit.Log{
 			Msg: fmt.Errorf("Not found coin '%s' in supported markets", coin),
 		}
 	}

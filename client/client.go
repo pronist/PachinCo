@@ -88,4 +88,3 @@ func (c *Client) CallWith(method, url string, query Query) (interface{}, error) 
 
 	return c.Do(req)
 }
-

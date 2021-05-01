@@ -32,5 +32,5 @@ func (r *Response) ByMap() (interface{}, error) {
 		return nil, err
 	}
 
-	return response, err
+	return response, nil
 }

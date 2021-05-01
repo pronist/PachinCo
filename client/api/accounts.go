@@ -32,7 +32,7 @@ func (api *API) GetTotalBalance(accounts []map[string]interface{}, balances map[
 	return totalBalance, nil
 }
 
-func (api *API) GetBalances(accounts []map[string]interface{}, ) (map[string]float64, error) {
+func (api *API) GetBalances(accounts []map[string]interface{}) (map[string]float64, error) {
 	balances := make(map[string]float64)
 
 	for _, acc := range accounts {
