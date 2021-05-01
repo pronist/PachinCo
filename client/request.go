@@ -1,4 +1,4 @@
-package gateway
+package client
 
 import "github.com/dgrijalva/jwt-go"
 

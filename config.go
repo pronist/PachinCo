@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-type config struct {
+type Config struct {
 	KeyPair struct {
 		AccessKey string `required:"true"`
 		SecretKey string `required:"true"`
@@ -18,11 +18,11 @@ type config struct {
 	R     float64            `required:"true"`
 }
 
-func newConfig(filename string) (*config, error) {
-	conf := config{}
+func NewConfig(filename string) (*Config, error) {
+	conf := Config{}
 
 	err := configor.New(&configor.Config{Silent: true}).Load(&conf, filename)
-	if reflect.DeepEqual(conf, config{}) {
+	if reflect.DeepEqual(conf, Config{}) {
 		return nil, fmt.Errorf("Failed to find configuration `%s`", filename)
 	}
 	if err != nil {

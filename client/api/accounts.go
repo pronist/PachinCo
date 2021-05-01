@@ -4,12 +4,8 @@ import (
 	"strconv"
 )
 
-type Accounts struct {
-	accounts []map[string]interface{}
-}
-
-func (api *API) NewAccounts() (*Accounts, error) {
-	acc := Accounts{}
+func (api *API) NewAccounts() ([]map[string]interface{}, error) {
+	var acc []map[string]interface{}
 
 	accounts, err := api.Client.Call("GET", "/accounts")
 	if err != nil {
@@ -18,20 +14,20 @@ func (api *API) NewAccounts() (*Accounts, error) {
 	if accounts, ok := accounts.([]interface{}); ok {
 		for _, account := range accounts {
 			if account, ok := account.(map[string]interface{}); ok {
-				acc.accounts = append(acc.accounts, account)
+				acc = append(acc, account)
 			}
 		}
 	}
 
-	return &acc, nil
+	return acc, nil
 }
 
-func (acc *Accounts) GetTotalBalance(balances map[string]float64) (float64, error) {
+func (api *API) GetTotalBalance(accounts []map[string]interface{}, balances map[string]float64) (float64, error) {
 	totalBalance := balances["KRW"]
 
 	for coin, balance := range balances {
 		if coin != "KRW" {
-			avgBuyPrice, err := acc.GetAverageBuyPrice(coin)
+			avgBuyPrice, err := api.GetAverageBuyPrice(accounts, coin)
 			if err != nil {
 				return 0, nil
 			}
@@ -42,10 +38,10 @@ func (acc *Accounts) GetTotalBalance(balances map[string]float64) (float64, erro
 	return totalBalance, nil
 }
 
-func (acc *Accounts) GetBalances() (map[string]float64, error) {
+func (api *API) GetBalances(accounts []map[string]interface{}, ) (map[string]float64, error) {
 	balances := make(map[string]float64)
 
-	for _, acc := range acc.accounts {
+	for _, acc := range accounts {
 		balance, err := strconv.ParseFloat(acc["balance"].(string), 64)
 		if err != nil {
 			return nil, err
@@ -57,11 +53,11 @@ func (acc *Accounts) GetBalances() (map[string]float64, error) {
 	return balances, nil
 }
 
-func (acc *Accounts) GetAverageBuyPrice(coin string) (float64, error) {
+func (api *API) GetAverageBuyPrice(accounts []map[string]interface{}, coin string) (float64, error) {
 	var avgBuyPrice float64
 	var err error
 
-	for _, account := range acc.accounts {
+	for _, account := range accounts {
 		if currency, ok := account["currency"].(string); ok && currency == coin {
 			avgBuyPrice, err = strconv.ParseFloat(account["avg_buy_price"].(string), 64)
 			if err != nil {

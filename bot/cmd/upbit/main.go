@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/bot"
 )
 
 func main() {
-	bot := upbit.NewBot()
+	bot := bot.New()
 	bot.Run()
 }

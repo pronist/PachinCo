@@ -7,12 +7,6 @@ import (
 	"time"
 )
 
-var (
-	ErrLogger = NewLogger("logs/error.log", logrus.ErrorLevel, true)
-	LogLogger = NewLogger("logs/log.log", logrus.WarnLevel, false)
-	StdLogger = NewLogger("", logrus.InfoLevel, false)
-)
-
 func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger {
 	rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
 		Filename:   filename,
@@ -25,7 +19,7 @@ func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger 
 		},
 	})
 	if err != nil {
-		Exit <- err.Error()
+		logrus.Panic(err)
 	}
 
 	logger := &logrus.Logger{

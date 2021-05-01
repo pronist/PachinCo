@@ -2,11 +2,11 @@ package api
 
 import (
 	"fmt"
-	"github.com/pronist/upbit/gateway"
+	"github.com/pronist/upbit/client"
 )
 
 func (api *API) GetPrice(market string) (float64, error) {
-	ticker, err := api.QuotationClient.Do("/ticker", gateway.Query{"markets": market})
+	ticker, err := api.QuotationClient.Do("/ticker", client.Query{"markets": market})
 	if err != nil {
 		return 0, err
 	}

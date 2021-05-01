@@ -2,11 +2,12 @@ package api
 
 import (
 	"fmt"
-	"github.com/pronist/upbit/gateway"
+	"github.com/pronist/upbit/client"
+	"time"
 )
 
 func (api *API) Order(market, side string, volume, price float64) (string, error) {
-	q := gateway.Query{
+	q := client.Query{
 		"market":   market,
 		"side":     side,
 		"volume":   fmt.Sprintf("%f", volume),
@@ -25,4 +26,21 @@ func (api *API) Order(market, side string, volume, price float64) (string, error
 	}
 
 	return "", fmt.Errorf("%#v", order)
+}
+
+func (api *API) WaitUntilCompletedOrder(uuid string) error {
+	for {
+		order, err := api.Client.CallWith("GET", "/order", client.Query{"uuid": uuid})
+		if err != nil {
+			return err
+		}
+
+		if order, ok := order.(map[string]interface{}); ok {
+			if state, ok := order["state"].(string); ok && state == "done" {
+				return nil
+			}
+		}
+
+		time.Sleep(1 * time.Second)
+	}
 }
