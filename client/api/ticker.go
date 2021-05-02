@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"github.com/pronist/upbit/client"
 )
 
@@ -13,5 +12,5 @@ func (api *API) GetPrice(market string) (float64, error) {
 		return 0, err
 	}
 
-	return client.GetValueFromArray(ticker, 0, "trade_price").(float64), fmt.Errorf("%#v", ticker)
+	return client.GetValueFromArray(ticker, 0, "trade_price").(float64), nil
 }

@@ -14,5 +14,3 @@ func (api *API) GetMarkets() ([]map[string]interface{}, error) {
 
 	return client.TransformArrayMap(markets), nil
 }
-
-/////
