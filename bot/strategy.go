@@ -90,41 +90,37 @@ func (b *Bot) order(coin, side string, coinRate float64, volume, price float64) 
 	}
 }
 
-// 매도 시점을 기준으로 하는 '매수 전략'
-func (b *Bot) buyableSinceSelling(coin string, price float64) bool {
-	var buyable bool
+// penetration 메서드는 '변동성 돌파' 전략을 구현한다.
+func (b *Bot) penetration(daysCandles []map[string]interface{}, price float64) bool {
+	K := 0.5
 
-	// 이 경우는 매도 가격을 기준으로 한다.
-	orders, err := b.api.GetOrderList("KRW-"+coin, "done")
-	if err != nil {
-		errLogChan <- upbit.Log{Msg: err}
-	}
+	r := daysCandles[1]["high_price"].(float64) - daysCandles[1]["low_price"].(float64) // 전일 고가, 저가
+	openPrice := daysCandles[0]["opening_price"].(float64) // 오늘의 시가
 
-	// 이 매도에는 시장가 매도가 제외된다. 즉, 웹에서 시장가에 매도한 것이 아니라
-	// 봇에서 지정가에 매도한 것만 처리된다.
-	askOrders := b.api.GetAskOrders(orders)
-
-	if len(askOrders) > 0 {
-		latestAskPrice, err := b.api.GetLatestAskPrice(orders)
-		if err != nil {
-			errLogChan <- upbit.Log{Msg: err}
-		}
-
-		pp := price / latestAskPrice // 마지막 매도가 대비 변화율
-
-		if math.IsInf(pp, 0) {
-			exitLogChan <- upbit.Log{Msg: "division by zero"}
-		}
-
-		// 마지막으로 매도한 가격을 기준으로 매수
-		buyable = pp-1 <= b.config.F
-	}
-
-	return buyable
+	return openPrice + (r * K) < price
 }
 
-func (b *Bot) Tracking(markets map[string]float64, coin string) {
-	if r, ok := markets[coin]; ok {
+// 단순한 분할 매수 전략이다. 싸게사서 조금 더 고가에 파는 기본에 충실한 전략이다.
+// 매도보다 매수를 더 우선으로 처리한다.
+//
+// ***매수
+// * 변동성 돌파의 경우 제약없이 매수
+// 코인이 없을 때
+// * 실시간 가격이 전일 `종가`보다 n% 하락하면 매수
+// * 실시간 가격이 직전 `매도`보다 n% 하락하면 매수
+// 코인이 있을 때
+// * 실시간 가격이 매수 `평균`보다 n% 하락하면 매수
+// *** 매도
+// * 변동성 돌파의 경우 `평균`보다 (n + m)% 상승하면 매도
+// * 실시간 가격이 매수 `평균`보다 n% 상승하면 매도
+//
+// *** 장점
+// * 하락에 대해 일정 비율로 분산 매수하므로 평단가 낮추기에 기여한다.
+// *** 단점
+// * 매도에 대해서는 손절매를 하지 않고 기다리기 때문에 봇이 활동적으로 움직이지 않는다.
+// * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
+func (b *Bot) Tracking(coins map[string]float64, coin string) {
+	if r, ok := coins[coin]; ok {
 		accounts, balances, limitOrderPrice, orderBuyingPrice := b.update(coin, r)
 
 		for {
@@ -133,13 +129,11 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 				errLogChan <- upbit.Log{Msg: err}
 			}
 
-			daysCandles, err := b.api.GetCandlesDays("KRW-" + coin, "2")
+			avgBuyPrice, err := b.api.GetAverageBuyPrice(accounts, coin)
 			if err != nil {
 				errLogChan <- upbit.Log{Msg: err}
 			}
-
-			// 매수 평균가
-			avgBuyPrice, err := b.api.GetAverageBuyPrice(accounts, coin)
+			daysCandles, err := b.api.GetCandlesDays("KRW-" + coin, "1")
 			if err != nil {
 				errLogChan <- upbit.Log{Msg: err}
 			}
@@ -151,6 +145,7 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					exitLogChan <- upbit.Log{Msg: "division by zero"}
 				}
 
+				// '하락'
 				if coinBalance, ok := balances[coin]; ok {
 					////// 코인이 있을 때 매수 전략
 
@@ -166,13 +161,38 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					if avgBuyPrice*coinBalance+orderBuyingPrice <= limitOrderPrice {
 						if p-1 <= b.config.L {
 							accounts, balances, limitOrderPrice, orderBuyingPrice = b.order(coin, "bid", r, volume, price)
-
-							// 주문이 끝난 뒤에는 반드시 처음으로 돌아가 값을 갱신해야 한다.
 							continue
 						}
 					}
 				} else {
 					////// 코인을 처음 살 떄의 매수 전략
+					var buyable bool
+
+					// 이 경우는 매도 가격을 기준으로 한다.
+					orders, err := b.api.GetOrderList("KRW-"+coin, "done")
+					if err != nil {
+						errLogChan <- upbit.Log{Msg: err}
+					}
+
+					// 이 매도에는 시장가 매도가 제외된다. 즉, 웹에서 시장가에 매도한 것이 아니라
+					// 봇에서 지정가에 매도한 것만 처리된다.
+					askOrders := b.api.GetAskOrders(orders)
+
+					if len(askOrders) > 0 {
+						latestAskPrice, err := b.api.GetLatestAskPrice(orders)
+						if err != nil {
+							errLogChan <- upbit.Log{Msg: err}
+						}
+
+						pp := price / latestAskPrice // 마지막 매도가 대비 변화율
+
+						if math.IsInf(pp, 0) {
+							exitLogChan <- upbit.Log{Msg: "division by zero"}
+						}
+						// 마지막으로 매도한 가격을 기준으로 매수
+						buyable = pp-1 <= b.config.F
+					}
+
 					changeRate, ok := daysCandles[0]["change_rate"].(float64)
 					if !ok {
 						errLogChan <- upbit.Log{
@@ -181,10 +201,16 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 					}
 
 					// 전날 또는 매도 이후 변동을 기준으로 매수
-					if (changeRate <= b.config.F) || b.buyableSinceSelling(coin, price) {
+					if (changeRate <= b.config.F) || buyable {
 						accounts, balances, limitOrderPrice, orderBuyingPrice = b.order(coin, "bid", r, volume, price)
 						continue
 					}
+				}
+
+				// '상승' 변동성 돌파가 된 경우
+				if b.penetration(daysCandles, price) {
+					accounts, balances, limitOrderPrice, orderBuyingPrice = b.order(coin, "bid", r, volume, price)
+					continue
 				}
 			}
 
@@ -208,7 +234,7 @@ func (b *Bot) Tracking(markets map[string]float64, coin string) {
 				}
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-				if p-1 >= b.config.H && orderSellingPrice > MinimumOrderPrice {
+				if p-1 >= b.config.H || (b.penetration(daysCandles, price) && p-1 >= b.config.H + 0.02) && orderSellingPrice > MinimumOrderPrice {
 					if orderSellingPrice/2 > MinimumOrderPrice {
 						coinBalance = coinBalance / 2
 					}

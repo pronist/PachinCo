@@ -28,8 +28,8 @@ func New() *Bot {
 
 	// 요청 자체는 최대 동시에 10번 까지 처리할 수 있는 듯하나,
 	// 매수/매도를 체크할 때 요청을 두 번하는 경우가 있어서 추적마켓을 줄일 필요가 있음.
-	if len(config.Coins) > 5 {
-		logrus.Panic("Tracking markets must less than 6")
+	if len(config.Coins) > 10 {
+		logrus.Panic("Tracking markets must less than 11")
 	}
 
 	return &Bot{config, &api.API{
