@@ -133,7 +133,7 @@ func (b *Bot) Tracking(coins map[string]float64, coin string) {
 			if err != nil {
 				errLogChan <- upbit.Log{Msg: err}
 			}
-			daysCandles, err := b.api.GetCandlesDays("KRW-" + coin, "1")
+			daysCandles, err := b.api.GetCandlesDays("KRW-" + coin, "2")
 			if err != nil {
 				errLogChan <- upbit.Log{Msg: err}
 			}
