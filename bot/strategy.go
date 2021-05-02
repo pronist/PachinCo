@@ -208,10 +208,10 @@ func (b *Bot) Tracking(coins map[string]float64, coin string) {
 				}
 
 				// '상승' 변동성 돌파가 된 경우
-				if b.penetration(daysCandles, price) {
-					accounts, balances, limitOrderPrice, orderBuyingPrice = b.order(coin, "bid", r, volume, price)
-					continue
-				}
+				//if b.penetration(daysCandles, price) {
+				//	accounts, balances, limitOrderPrice, orderBuyingPrice = b.order(coin, "bid", r, volume, price)
+				//	continue
+				//}
 			}
 
 			if coinBalance, ok := balances[coin]; ok {
@@ -234,7 +234,7 @@ func (b *Bot) Tracking(coins map[string]float64, coin string) {
 				}
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-				if p-1 >= b.config.H || (b.penetration(daysCandles, price) && p-1 >= b.config.H + 0.02) && orderSellingPrice > MinimumOrderPrice {
+				if p-1 >= b.config.H && orderSellingPrice > MinimumOrderPrice {
 					if orderSellingPrice/2 > MinimumOrderPrice {
 						coinBalance = coinBalance / 2
 					}
