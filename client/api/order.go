@@ -7,6 +7,15 @@ import (
 	"time"
 )
 
+func (api *API) GetOrderChance(market string) (map[string]interface{}, error) {
+	chance, err := api.Client.CallWith("GET", "/orders/chance", client.Query{"market": market})
+	if err != nil {
+		return nil, err
+	}
+
+	return chance.(map[string]interface{}), nil
+}
+
 func (api *API) GetOrderList(market, state string) ([]map[string]interface{}, error) {
 	orders, err := api.Client.CallWith("GET", "/orders", client.Query{
 		"market": market, "state": state,

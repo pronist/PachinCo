@@ -5,6 +5,18 @@ import (
 	"github.com/pronist/upbit/client"
 )
 
+func (api *API) GetCandlesMinutes(unit, market, count string) ([]map[string]interface{}, error) {
+	minutesCandles, err := api.QuotationClient.Do("/candles/minutes/"+unit, client.Query{
+		"market": market, "count": count,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return client.TransformArrayMap(minutesCandles), nil
+}
+
 /////
 
 func (api *API) GetChangeRate(market string) (float64, error) {
