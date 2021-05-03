@@ -1,4 +1,4 @@
-package upbit
+package bot
 
 import (
 	"github.com/mattn/go-colorable"
@@ -7,18 +7,22 @@ import (
 	"time"
 )
 
+const LogFileName = "logs/log.log"
+
+var Logger *logrus.Logger
+
 type Log struct {
 	Msg    interface{}
 	Fields logrus.Fields
+	Level  logrus.Level
 }
 
-func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger {
+func init() {
 	rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
-		Filename:   filename,
+		Filename:   LogFileName,
 		MaxSize:    10, // megabytes
 		MaxBackups: 3,
 		MaxAge:     28, //days
-		Level:      level,
 		Formatter: &logrus.JSONFormatter{
 			TimestampFormat: time.RFC822,
 		},
@@ -27,15 +31,14 @@ func NewLogger(filename string, level logrus.Level, caller bool) *logrus.Logger 
 		logrus.Panic(err)
 	}
 
-	logger := &logrus.Logger{
+	Logger = &logrus.Logger{
 		Out: colorable.NewColorableStdout(),
 		Formatter: &logrus.TextFormatter{
 			ForceColors: true, FullTimestamp: true, TimestampFormat: time.RFC822,
 		},
-		Hooks:        map[logrus.Level][]logrus.Hook{level: {rotateFileHook}},
-		Level:        level,
-		ReportCaller: caller,
+		Hooks: map[logrus.Level][]logrus.Hook{
+			logrus.WarnLevel: {rotateFileHook}, logrus.ErrorLevel: {rotateFileHook}, logrus.FatalLevel: {rotateFileHook},
+		},
+		Level: logrus.InfoLevel,
 	}
-
-	return logger
 }

@@ -1,6 +1,1 @@
-.idea
-
-logs/*.log
 *.exe
-*.db
-*.db.lock

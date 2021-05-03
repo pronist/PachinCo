@@ -1,6 +1,5 @@
-keypair:
-  accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4
-  secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn
+# 주문이 대기 중인 경우 최대 대기시간
+timeout: 30 # 초
 
 # 몰빵이 아닌 분산 투자 전략을 위한 것
 # 총 자금이 100, 'A' 코인에 최대 10 만큼의 자금 할당시 'A' => 0.1 (비중)
@@ -22,6 +21,3 @@ r: 0.1
 f: -0.03 # 코인을 처음 구매할 떄 고려할 하락 기준
 l: -0.03 # 구입 하락 기준
 h: 0.03 # 판매 상승 기준
-
-# 주문이 대기 중인 경우 최대 대기시간
-timeout: 30 # 초

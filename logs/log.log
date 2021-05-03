@@ -1,0 +1,11 @@
+{"level":"error","limit-order-price":62033.67895377001,"msg":"XRP","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377001,"msg":"EOS","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377001,"msg":"QTUM","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377001,"msg":"TRX","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377,"msg":"DOGE","order-buying-price":6203.367895377,"time":"03 May 21 22:26 KST","total-balance":62033.67895377}
+{"level":"error","limit-order-price":62033.67895377,"msg":"ETC","order-buying-price":6203.367895377,"time":"03 May 21 22:26 KST","total-balance":62033.67895377}
+{"level":"error","limit-order-price":62033.67895377,"msg":"BTT","order-buying-price":6203.367895377,"time":"03 May 21 22:26 KST","total-balance":62033.67895377}
+{"level":"error","limit-order-price":62033.67895377001,"msg":"MED","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377001,"msg":"VET","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
+{"level":"error","limit-order-price":62033.67895377,"msg":"CHZ","order-buying-price":6203.367895377,"time":"03 May 21 22:26 KST","total-balance":62033.67895377}
+{"level":"warning","market":"KRW-VET","msg":"ORDER","price":256,"side":"bid","time":"03 May 21 22:48 KST","volume":24.23190584131641}
