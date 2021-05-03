@@ -25,7 +25,11 @@ import (
 // *** 단점
 // * 매도에 대해서는 손절매를 하지 않고 기다리기 때문에 봇이 활동적으로 움직이지 않는다.
 // * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
-type Basic struct{}
+type Basic struct {
+	F float64 // 코인을 처음 구매할 때 고려할 하락 기준
+	L float64 // 구입 하락 기준
+	H float64 // 판매 상승 기준
+}
 
 func (b *Basic) Tracking(coins map[string]float64, coin string) {
 	if r, ok := coins[coin]; ok {
@@ -64,7 +68,7 @@ func (b *Basic) Tracking(coins map[string]float64, coin string) {
 					}
 
 					if avgBuyPrice*coinBalance+orderBuyingPrice <= limitOrderPrice {
-						if p-1 <= upbit.Config.L {
+						if p-1 <= b.L {
 							accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "bid", r, volume, price)
 							continue
 						}
@@ -85,7 +89,7 @@ func (b *Basic) Tracking(coins map[string]float64, coin string) {
 					}
 
 					// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-					if p-1 >= upbit.Config.H && orderSellingPrice > upbit.MinimumOrderPrice {
+					if p-1 >= b.H && orderSellingPrice > upbit.MinimumOrderPrice {
 						accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "ask", r, coinBalance, price)
 						continue
 					}
@@ -116,7 +120,7 @@ func (b *Basic) Tracking(coins map[string]float64, coin string) {
 						}
 
 						// 마지막으로 매도한 가격을 기준으로 매수
-						isBuyable = pp-1 <= upbit.Config.F
+						isBuyable = pp-1 <= b.F
 					}
 
 					daysCandles, err := upbit.API.GetCandlesDays("KRW-"+coin, "1")
@@ -125,7 +129,7 @@ func (b *Basic) Tracking(coins map[string]float64, coin string) {
 					}
 
 					// 전날 또는 매도 이후 변동을 기준으로 매수
-					if (daysCandles[0]["change_rate"].(float64) <= upbit.Config.F) || isBuyable {
+					if (daysCandles[0]["change_rate"].(float64) <= b.F) || isBuyable {
 						accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "bid", r, volume, price)
 						continue
 					}
