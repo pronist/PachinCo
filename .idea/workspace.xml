@@ -20,19 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce35b2ee-f97b-433c-9288-9ff58054c4e1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/bot.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/cmd/upbit/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/cmd/upbit/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/strategy.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/candles.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/api/candles.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/market.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/api/market.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/observer/cmd/observer/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/observer/cmd/observer/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/observer/observer.go" beforeDir="false" afterPath="$PROJECT_DIR$/observer/observer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/upbit.config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/upbit.config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/api/ticker.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/api/ticker.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/log.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/log.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy/basic.go" beforeDir="false" afterPath="$PROJECT_DIR$/strategy/basic.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,25 +107,25 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620043060003" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1620050274587">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1620050605613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050274587" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1620050274587">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050605613" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1620050605613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050274587" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1620050274587">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050605613" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1620050605613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050274587" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1620050274587">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050605613" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1620050605613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050274587" />
-    <state x="668" y="223" width="584" height="618" key="find.popup" timestamp="1620049224836">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050605613" />
+    <state x="668" y="223" width="584" height="618" key="find.popup" timestamp="1620050867729">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="223" width="584" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620049224836" />
+    <state x="668" y="223" width="584" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620050867729" />
   </component>
 </project>

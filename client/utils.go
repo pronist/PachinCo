@@ -13,15 +13,3 @@ func TransformArrayMap(array interface{}) []map[string]interface{} {
 
 	return arrayMap
 }
-
-func GetValueFromArray(array interface{}, index int, key string) interface{} {
-	var value interface{}
-
-	if array, ok := array.([]interface{}); ok {
-		if item, ok := array[index].(map[string]interface{}); ok {
-			value = item[key]
-		}
-	}
-
-	return value
-}

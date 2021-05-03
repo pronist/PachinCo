@@ -60,6 +60,20 @@ func (api *API) CancelOrder(uuid string) error {
 
 /////
 
+func (api *API) Wait(done chan int, uuid string) {
+	for {
+		order, _ := api.Client.CallWith("GET", "/order", client.Query{"uuid": uuid})
+
+		if order, ok := order.(map[string]interface{}); ok {
+			if state, ok := order["state"].(string); ok && state == "done" {
+				done <- 1
+			}
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+}
+
 func (api *API) GetAskOrders(orders []map[string]interface{}) []map[string]interface{} {
 	var o []map[string]interface{}
 
@@ -90,18 +104,4 @@ func (api *API) GetLatestAskPrice(orders []map[string]interface{}) (float64, err
 	}
 
 	return latestAskPrice, nil
-}
-
-func (api *API) Wait(done chan int, uuid string) {
-	for {
-		order, _ := api.Client.CallWith("GET", "/order", client.Query{"uuid": uuid})
-
-		if order, ok := order.(map[string]interface{}); ok {
-			if state, ok := order["state"].(string); ok && state == "done" {
-				done <- 1
-			}
-		}
-
-		time.Sleep(1 * time.Second)
-	}
 }

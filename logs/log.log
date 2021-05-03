@@ -9,3 +9,56 @@
 {"level":"error","limit-order-price":62033.67895377001,"msg":"VET","order-buying-price":6203.367895377001,"time":"03 May 21 22:26 KST","total-balance":62033.67895377001}
 {"level":"error","limit-order-price":62033.67895377,"msg":"CHZ","order-buying-price":6203.367895377,"time":"03 May 21 22:26 KST","total-balance":62033.67895377}
 {"level":"warning","market":"KRW-VET","msg":"ORDER","price":256,"side":"bid","time":"03 May 21 22:48 KST","volume":24.23190584131641}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"fatal","msg":"division by zero","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}

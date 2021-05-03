@@ -4,13 +4,11 @@ import (
 	"github.com/pronist/upbit/client"
 )
 
-/////
-
-func (api *API) GetPrice(market string) (float64, error) {
+func (api API) GetTicker(market string) ([]map[string]interface{}, error) {
 	ticker, err := api.QuotationClient.Do("/ticker", client.Query{"markets": market})
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return client.GetValueFromArray(ticker, 0, "trade_price").(float64), nil
+	return client.TransformArrayMap(ticker), nil
 }

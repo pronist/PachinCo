@@ -32,10 +32,12 @@ func (b *Basic) Tracking(coins map[string]float64, coin string) {
 		accounts, balances, limitOrderPrice, orderBuyingPrice := update(coin, r)
 
 		for {
-			price, err := upbit.API.GetPrice("KRW-" + coin) // 현재 코인 가격
+			ticker, err := upbit.API.GetTicker("KRW-" + coin)
 			if err != nil {
 				bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
 			}
+
+			price := ticker[0]["trade_price"].(float64)
 
 			if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > orderBuyingPrice && orderBuyingPrice > upbit.MinimumOrderPrice {
 				volume := orderBuyingPrice / price
