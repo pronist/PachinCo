@@ -5,6 +5,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// 외부에서 사용하게 될 로그 채널이다.
+// upbit.API, upbit.Config 와 함께 strategy 에서 불릴 것이다.
 var LogChan = make(chan Log)
 
 type Bot struct {
