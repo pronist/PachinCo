@@ -1,7 +1,6 @@
 package strategy
 
 import (
-	"fmt"
 	"github.com/pronist/upbit"
 	"github.com/pronist/upbit/bot"
 	"github.com/sirupsen/logrus"
@@ -10,7 +9,20 @@ import (
 )
 
 // 단순한 분할 매수 전략이다. 싸게사서 조금 더 고가에 파는 기본에 충실한 전략이다.
-// 매도보다 매수를 더 우선으로 처리한다.
+type Basic struct {
+	coin *bot.Coin
+
+	F float64 // 코인을 처음 구매할 때 고려할 하락 기준
+	L float64 // 구입 하락 기준
+	H float64 // 판매 상승 기준
+}
+
+func (b *Basic) Attach(coin *bot.Coin) { b.coin = coin }
+func (b *Basic) Detach()               { b.coin = nil }
+func (b *Basic) Notify(side string, volume, price float64) {
+	b.coin.Update(side, volume, price)
+}
+
 //
 // 코인이 없을 때
 // * 실시간 가격이 전일 `종가`보다 n% 하락하면 매수
@@ -25,122 +37,115 @@ import (
 // *** 단점
 // * 매도에 대해서는 손절매를 하지 않고 기다리기 때문에 봇이 활동적으로 움직이지 않는다.
 // * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
-type Basic struct {
-	F float64 // 코인을 처음 구매할 때 고려할 하락 기준
-	L float64 // 구입 하락 기준
-	H float64 // 판매 상승 기준
-}
+func (b *Basic) Run(coin *bot.Coin) {
+	for {
+		ticker, err := upbit.API.GetTicker("KRW-" + coin.Name)
+		if err != nil {
+			bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+		}
 
-func (b *Basic) Tracking(coins map[string]float64, coin string) {
-	if r, ok := coins[coin]; ok {
-		accounts, balances, limitOrderPrice, orderBuyingPrice := update(coin, r)
+		price := ticker[0]["trade_price"].(float64)
 
-		for {
-			ticker, err := upbit.API.GetTicker("KRW-" + coin)
-			if err != nil {
-				bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+		balances, err := upbit.API.GetBalances(bot.Accounts)
+		if err != nil {
+			bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+		}
+
+		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.Order && coin.Order > upbit.MinimumOrderPrice {
+			volume := coin.Order / price
+
+			if math.IsInf(volume, 0) {
+				bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 			}
 
-			price := ticker[0]["trade_price"].(float64)
+			if coinBalance, ok := balances[coin.Name]; ok {
+				avgBuyPrice, err := upbit.API.GetAverageBuyPrice(bot.Accounts, coin.Name)
+				if err != nil {
+					bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+				}
 
-			if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > orderBuyingPrice && orderBuyingPrice > upbit.MinimumOrderPrice {
-				volume := orderBuyingPrice / price
+				p := price / avgBuyPrice
 
-				if math.IsInf(volume, 0) {
+				////// 매수 전략
+
+				// 1. 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
+				// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
+
+				if math.IsInf(p, 0) {
 					bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 				}
 
-				if coinBalance, ok := balances[coin]; ok {
-					avgBuyPrice, err := upbit.API.GetAverageBuyPrice(accounts, coin)
-					if err != nil {
-						bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-					}
-
-					p := price / avgBuyPrice
-
-					////// 매수 전략
-
-					// 1. 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
-					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
-
-					if math.IsInf(p, 0) {
-						bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
-					}
-
-					if avgBuyPrice*coinBalance+orderBuyingPrice <= limitOrderPrice {
-						if p-1 <= b.L {
-							accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "bid", r, volume, price)
-							continue
-						}
-					}
-
-					////// 매도 전략
-
-					// 전량 매도
-					// 더 높은 기대수익률을 바라보기 어려워짐. 하락 리스크에 조금 더 방어적이지만
-					// 너무 수비적이라 조금 더 공격적으로 해도 될 것 같음.
-
-					// 매도에는 하락장에 대한 전략이 없음. 오히려 하락하는 경우 추가 매수.
-
-					orderSellingPrice := coinBalance * price
-
-					if math.IsInf(p, 0) {
-						bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
-					}
-
-					// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-					if p-1 >= b.H && orderSellingPrice > upbit.MinimumOrderPrice {
-						accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "ask", r, coinBalance, price)
-						continue
-					}
-				} else {
-					////// 코인을 처음 살 떄의 매수 전략
-					var isBuyable bool
-
-					// 이 경우는 매도 가격을 기준으로 한다.
-					orders, err := upbit.API.GetOrderList("KRW-"+coin, "done")
-					if err != nil {
-						bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-					}
-
-					// 이 매도에는 시장가 매도가 제외된다. 즉, 웹에서 시장가에 매도한 것이 아니라
-					// 봇에서 지정가에 매도한 것만 처리된다.
-					askOrders := upbit.API.GetAskOrders(orders)
-
-					if len(askOrders) > 0 {
-						latestAskPrice, err := upbit.API.GetLatestAskPrice(orders)
-						if err != nil {
-							bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-						}
-
-						pp := price / latestAskPrice // 마지막 매도가 대비 변화율
-
-						if math.IsInf(pp, 0) {
-							bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
-						}
-
-						// 마지막으로 매도한 가격을 기준으로 매수
-						isBuyable = pp-1 <= b.F
-					}
-
-					daysCandles, err := upbit.API.GetCandlesDays("KRW-"+coin, "1")
-					if err != nil {
-						bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-					}
-
-					// 전날 또는 매도 이후 변동을 기준으로 매수
-					if (daysCandles[0]["change_rate"].(float64) <= b.F) || isBuyable {
-						accounts, balances, limitOrderPrice, orderBuyingPrice = order(coin, "bid", r, volume, price)
+				if avgBuyPrice*coinBalance+coin.Order <= coin.Limit {
+					if p-1 <= b.L {
+						b.Notify("bid", volume, price)
 						continue
 					}
 				}
-			}
 
-			time.Sleep(1 * time.Second)
+				////// 매도 전략
+
+				// 전량 매도
+				// 더 높은 기대수익률을 바라보기 어려워짐. 하락 리스크에 조금 더 방어적이지만
+				// 너무 수비적이라 조금 더 공격적으로 해도 될 것 같음.
+
+				// 매도에는 하락장에 대한 전략이 없음. 오히려 하락하는 경우 추가 매수.
+
+				orderSellingPrice := coinBalance * price
+
+				if math.IsInf(p, 0) {
+					bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+				}
+
+				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
+				if p-1 >= b.H && orderSellingPrice > upbit.MinimumOrderPrice {
+					b.Notify("ask", coinBalance, price)
+					continue
+				}
+			} else {
+				////// 코인을 처음 살 떄의 매수 전략
+
+				// 이 경우는 매도 가격을 기준으로 한다.
+				orders, err := upbit.API.GetOrderList("KRW-"+coin.Name, "done")
+				if err != nil {
+					bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+				}
+
+				// 이 매도에는 시장가 매도가 제외된다. 즉, 웹에서 시장가에 매도한 것이 아니라
+				// 봇에서 지정가에 매도한 것만 처리된다.
+				askOrders := upbit.API.GetAskOrders(orders)
+
+				if len(askOrders) > 0 {
+					latestAskPrice, err := upbit.API.GetLatestAskPrice(orders)
+					if err != nil {
+						bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+					}
+
+					pp := price / latestAskPrice // 마지막 매도가 대비 변화율
+
+					if math.IsInf(pp, 0) {
+						bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+					}
+
+					// 마지막으로 매도한 가격을 기준으로 매수
+					if pp-1 <= b.F {
+						b.Notify("bid", volume, price)
+						continue
+					}
+				}
+
+				daysCandles, err := upbit.API.GetCandlesDays("KRW-"+coin.Name, "1")
+				if err != nil {
+					bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
+				}
+
+				// 전날 또는 매도 이후 변동을 기준으로 매수
+				if daysCandles[0]["change_rate"].(float64) <= b.F {
+					b.Notify("bid", volume, price)
+					continue
+				}
+			}
 		}
-	} else {
-		bot.LogChan <- bot.Log{
-			Msg: fmt.Errorf("Not found coin '%s' in supported markets", coin), Level: logrus.FatalLevel,
-		}
+
+		time.Sleep(1 * time.Second)
 	}
 }

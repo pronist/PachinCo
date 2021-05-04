@@ -62,3 +62,110 @@
 {"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
 {"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
 {"level":"error","msg":"map[string]interface {}{\"error\":map[string]interface {}{\"message\":\"Jwt의 query를 검증하는데 실패하였습니다.\", \"name\":\"invalid_query_payload\"}}","time":"03 May 21 23:00 KST"}
+{"level":"warning","market":"KRW-ETC","msg":"ORDER","price":61100,"side":"ask","time":"04 May 21 01:48 KST","volume":0.104615}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:24 KST","volume":36.17191179159884}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:24 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:24 KST","volume":32.552911996000006}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:25 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:25 KST","volume":32.914992946000005}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:25 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:25 KST","volume":32.87876674194768}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:26 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:26 KST","volume":32.882391153250005}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:26 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":172,"side":"bid","time":"04 May 21 09:26 KST","volume":32.882028572046515}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":171,"side":"bid","time":"04 May 21 09:27 KST","volume":36.38193226640351}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:27 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":171,"side":"bid","time":"04 May 21 09:28 KST","volume":32.741919969807014}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:28 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":171,"side":"bid","time":"04 May 21 09:28 KST","volume":33.10610317040351}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:29 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":171,"side":"bid","time":"04 May 21 09:29 KST","volume":33.069666661257315}
+{"level":"warning","market":"KRW-BTT","msg":"ORDER","price":8.31,"side":"bid","time":"04 May 21 09:29 KST","volume":748.6845761919375}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:29 KST","timeout":30000000000}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":171,"side":"bid","time":"04 May 21 09:29 KST","volume":29.433148567865498}
+{"level":"warning","market":"KRW-MED","msg":"ORDER","price":170,"side":"bid","time":"04 May 21 09:30 KST","volume":32.93257858598823}
+{"coin":"BTT","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:30 KST","timeout":30000000000}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"coin":"MED","level":"warning","msg":"CANCEL","side":"bid","time":"04 May 21 09:30 KST","timeout":30000000000}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:30 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:31 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"04 May 21 09:32 KST"}
