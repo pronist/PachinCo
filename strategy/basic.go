@@ -17,13 +17,10 @@ type Basic struct {
 	H float64 // 판매 상승 기준
 }
 
-func (b *Basic) Attach(coin *bot.Coin) { b.coin = coin }
-func (b *Basic) Detach()               { b.coin = nil }
-func (b *Basic) Notify(side string, volume, price float64) {
-	b.coin.Update(side, volume, price)
-}
+func (b *Basic) Attach(coin *bot.Coin)                     { b.coin = coin }
+func (b *Basic) Detach()                                   { b.coin = nil }
+func (b *Basic) Notify(side string, volume, price float64) { b.coin.Update(side, volume, price) }
 
-//
 // 코인이 없을 때
 // * 실시간 가격이 전일 `종가`보다 n% 하락하면 매수
 // * 실시간 가격이 직전 `매도`보다 n% 하락하면 매수
@@ -39,12 +36,7 @@ func (b *Basic) Notify(side string, volume, price float64) {
 // * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
 func (b *Basic) Run(coin *bot.Coin) {
 	for {
-		ticker, err := upbit.API.GetTicker("KRW-" + coin.Name)
-		if err != nil {
-			bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-		}
-
-		price := ticker[0]["trade_price"].(float64)
+		price := (<-coin.Ticker)[0]["trade_price"].(float64)
 
 		balances, err := upbit.API.GetBalances(bot.Accounts)
 		if err != nil {

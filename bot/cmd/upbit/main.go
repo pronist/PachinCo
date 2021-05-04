@@ -11,5 +11,4 @@ func main() {
 	})
 
 	bot.Run()
-	bot.StartLogging()
 }
