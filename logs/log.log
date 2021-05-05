@@ -1,0 +1,144 @@
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:50 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:51 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:51 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:51 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:51 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:53 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:53 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:54 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:56 KST"}
+{"level":"fatal","msg":"invalid character '\\x00' after top-level value","time":"05 May 21 16:56 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character 'L' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character '0' after top-level value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character 'd' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character 'd' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character 'b' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character 'B' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character ':' looking for beginning of value","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:49 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 18:50 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:50 KST"}
+{"level":"error","msg":"invalid character 'c' looking for beginning of value","time":"05 May 21 18:50 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:50 KST"}
+{"level":"error","msg":"invalid character 'r' looking for beginning of value","time":"05 May 21 18:50 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character '.' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character 'a' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character '_' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character 'e' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character 'a' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"invalid character 'p' looking for beginning of value","time":"05 May 21 18:51 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"invalid character ':' after top-level value","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"invalid character 'g' looking for beginning of value","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"invalid character '0' after top-level value","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"invalid character ' ' after decimal point in numeric literal","time":"05 May 21 18:52 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 18:59 KST"}
+{"level":"error","msg":"invalid character '0' after top-level value","time":"05 May 21 18:59 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:02 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 19:02 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:04 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:06 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:07 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:09 KST"}
+{"level":"error","msg":"invalid character ':' looking for beginning of value","time":"05 May 21 19:09 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:09 KST"}
+{"level":"error","msg":"invalid character ',' after top-level value","time":"05 May 21 19:09 KST"}
+{"level":"error","msg":"unexpected end of JSON input","time":"05 May 21 19:10 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"level":"error","msg":"json: Unmarshal(non-pointer map[string]interface {})","time":"05 May 21 19:23 KST"}
+{"change-rate":0.101443299,"level":"warning","market":"KRW-NEO","msg":"APPEND","price":133550,"time":"05 May 21 20:28 KST"}
+{"change-rate":0.0862564692,"level":"warning","market":"KRW-QTUM","msg":"APPEND","price":18890,"time":"05 May 21 20:29 KST"}
+{"change-rate":0.06022187,"level":"warning","market":"KRW-XLM","msg":"APPEND","price":669,"time":"05 May 21 20:29 KST"}
+{"change-rate":0.0812371134,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"change-rate":0.0773638968,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1880,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1880,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1880,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131050,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1885,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131050,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1880,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1880,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131100,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{XRP 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014a80 0xc000014ae0}","price":1885,"time":"05 May 21 21:44 KST"}
+{"level":"error","msg":"\u0026{NEO 0.2 [0xc000188400] 11103.883580126 5551.941790063 0 0xc000014540 0xc0000145a0}","price":131050,"time":"05 May 21 21:44 KST"}
+{"change-rate":0.0787628866,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":130800,"time":"05 May 21 21:45 KST"}
+{"change-rate":0.0758762887,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":130450,"time":"05 May 21 21:47 KST"}
+{"change-rate":0.0742268041,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":130250,"time":"05 May 21 21:48 KST"}
+{"change-rate":0.0729896907,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":130100,"time":"05 May 21 21:49 KST"}
+{"change-rate":0.0859598854,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1895,"time":"05 May 21 21:49 KST"}
+{"change-rate":0.0713402062,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129900,"time":"05 May 21 21:50 KST"}
+{"change-rate":0.0771134021,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":130600,"time":"05 May 21 21:53 KST"}
+{"change-rate":0.0692783505,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129650,"time":"05 May 21 22:28 KST"}
+{"change-rate":0.0696907216,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129700,"time":"05 May 21 22:29 KST"}
+{"change-rate":0.0696907216,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129700,"time":"05 May 21 22:30 KST"}
+{"change-rate":0.0945558739,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1910,"time":"05 May 21 22:30 KST"}
+{"level":"fatal","msg":"gob: type not registered for interface: strategy.Basic","time":"05 May 21 22:36 KST"}
+{"level":"fatal","msg":"gob: type strategy.Strategy has no exported fields","time":"05 May 21 22:38 KST"}
+{"change-rate":0.0696907216,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129700,"time":"05 May 21 22:42 KST"}
+{"change-rate":0.1031518625,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1925,"time":"05 May 21 22:42 KST"}
+{"change-rate":0.0782058654,"level":"warning","market":"KRW-QTUM","msg":"START TRACKING...","price":18750,"time":"05 May 21 22:42 KST"}
+{"change-rate":0.1093502377,"level":"warning","market":"KRW-XLM","msg":"START TRACKING...","price":700,"time":"05 May 21 22:42 KST"}
+{"change-rate":0.0713402062,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":129900,"time":"05 May 21 22:45 KST"}
+{"change-rate":0.1031518625,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1925,"time":"05 May 21 22:45 KST"}
+{"change-rate":0.0773638968,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1880,"time":"05 May 21 23:19 KST"}
+{"change-rate":0.1030110935,"level":"warning","market":"KRW-XLM","msg":"START TRACKING...","price":696,"time":"05 May 21 23:20 KST"}
+{"change-rate":0.0738926311,"level":"warning","market":"KRW-REP","msg":"START TRACKING...","price":52610,"time":"05 May 21 23:20 KST"}
+{"change-rate":0.0503144654,"level":"warning","market":"KRW-ADA","msg":"START TRACKING...","price":1670,"time":"05 May 21 23:20 KST"}
+{"change-rate":0.1214017522,"level":"warning","market":"KRW-EOS","msg":"START TRACKING...","price":8960,"time":"05 May 21 23:20 KST"}
+{"change-rate":0.0773638968,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1880,"time":"05 May 21 23:22 KST"}
+{"change-rate":0.1014263074,"level":"warning","market":"KRW-XLM","msg":"START TRACKING...","price":695,"time":"05 May 21 23:22 KST"}
+{"change-rate":0.0830945559,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1890,"time":"05 May 21 23:36 KST"}
+{"change-rate":0.1061806656,"level":"warning","market":"KRW-XLM","msg":"START TRACKING...","price":698,"time":"05 May 21 23:36 KST"}
+{"change-rate":0.0316778644,"level":"warning","market":"KRW-BTC","msg":"START TRACKING...","price":68946000,"time":"06 May 21 00:00 KST"}
+{"change-rate":0.061443299,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":128700,"time":"06 May 21 00:00 KST"}
+{"change-rate":0.0802292264,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1885,"time":"06 May 21 00:00 KST"}

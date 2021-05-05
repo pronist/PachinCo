@@ -27,14 +27,8 @@ func (api *API) GetOrderList(market, state string) ([]map[string]interface{}, er
 	return client.TransformArrayMap(orders), nil
 }
 
-func (api *API) Order(market, side string, volume, price float64) (string, error) {
-	q := client.Query{
-		"market":   market,
-		"side":     side,
-		"volume":   fmt.Sprintf("%f", volume),
-		"price":    fmt.Sprintf("%f", price),
-		"ord_type": "limit",
-	}
+func (api *API) Order(market, side, volume, price, ordType string) (string, error) {
+	q := client.Query{"market": market, "side": side, "volume": volume, "price": price, "ord_type": ordType}
 	order, err := api.Client.CallWith("POST", "/orders", q)
 	if err != nil {
 		return "", err

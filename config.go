@@ -9,9 +9,10 @@ import (
 const ConfigFileName = "upbit.config.yml"
 
 var Config = struct {
-	Coins   map[string]float64 `required:"true"` // 트래킹할 코인 목록
-	R       float64            `required:"true"` // 비중
-	Timeout time.Duration      `required:"true"` // 주문이 대기 중인 경우 최대 대기시간
+	C       float64       `required:"true"` // 비중
+	R       float64       `required:"true"` // 주문 가격 비중
+	K       float64       `required:"true"` // 변동성 돌파 상수
+	Timeout time.Duration `required:"true"` // 주문 대기 중인 경우 최대 대기시간
 }{}
 
 func init() {

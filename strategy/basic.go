@@ -10,16 +10,10 @@ import (
 
 // 단순한 분할 매수 전략이다. 싸게사서 조금 더 고가에 파는 기본에 충실한 전략이다.
 type Basic struct {
-	coin *bot.Coin
-
 	F float64 // 코인을 처음 구매할 때 고려할 하락 기준
 	L float64 // 구입 하락 기준
 	H float64 // 판매 상승 기준
 }
-
-func (b *Basic) Attach(coin *bot.Coin)                     { b.coin = coin }
-func (b *Basic) Detach()                                   { b.coin = nil }
-func (b *Basic) Notify(side string, volume, price float64) { b.coin.Update(side, volume, price) }
 
 // 코인이 없을 때
 // * 실시간 가격이 전일 `종가`보다 n% 하락하면 매수
@@ -35,23 +29,37 @@ func (b *Basic) Notify(side string, volume, price float64) { b.coin.Update(side,
 // * 매도에 대해서는 손절매를 하지 않고 기다리기 때문에 봇이 활동적으로 움직이지 않는다.
 // * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
 func (b *Basic) Run(coin *bot.Coin) {
+	bot.LogChan <- bot.Log{
+		Msg: "BASIC",
+		Fields: logrus.Fields{
+			"coin": coin.Name,
+		},
+		Level: logrus.InfoLevel,
+	}
+
 	for {
 		price := (<-coin.Ticker)[0]["trade_price"].(float64)
 
-		balances, err := upbit.API.GetBalances(bot.Accounts)
+		bot.LogChan <- bot.Log{
+			Msg:    coin.Name,
+			Fields: logrus.Fields{"price": price},
+			Level:  logrus.InfoLevel,
+		}
+
+		balances, err := upbit.API.GetBalances(upbit.Accounts)
 		if err != nil {
 			bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
 		}
 
-		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.Order && coin.Order > upbit.MinimumOrderPrice {
-			volume := coin.Order / price
+		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
+			volume := coin.OnceOrderPrice / price
 
 			if math.IsInf(volume, 0) {
 				bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 			}
 
 			if coinBalance, ok := balances[coin.Name]; ok {
-				avgBuyPrice, err := upbit.API.GetAverageBuyPrice(bot.Accounts, coin.Name)
+				avgBuyPrice, err := upbit.API.GetAverageBuyPrice(upbit.Accounts, coin.Name)
 				if err != nil {
 					bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
 				}
@@ -67,9 +75,9 @@ func (b *Basic) Run(coin *bot.Coin) {
 					bot.LogChan <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 				}
 
-				if avgBuyPrice*coinBalance+coin.Order <= coin.Limit {
+				if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
 					if p-1 <= b.L {
-						b.Notify("bid", volume, price)
+						coin.Order("bid", volume, price)
 						continue
 					}
 				}
@@ -90,7 +98,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 
 				// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
 				if p-1 >= b.H && orderSellingPrice > upbit.MinimumOrderPrice {
-					b.Notify("ask", coinBalance, price)
+					coin.Order("ask", coinBalance, price)
 					continue
 				}
 			} else {
@@ -120,7 +128,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 
 					// 마지막으로 매도한 가격을 기준으로 매수
 					if pp-1 <= b.F {
-						b.Notify("bid", volume, price)
+						coin.Order("bid", volume, price)
 						continue
 					}
 				}
@@ -132,7 +140,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 
 				// 전날 또는 매도 이후 변동을 기준으로 매수
 				if daysCandles[0]["change_rate"].(float64) <= b.F {
-					b.Notify("bid", volume, price)
+					coin.Order("bid", volume, price)
 					continue
 				}
 			}

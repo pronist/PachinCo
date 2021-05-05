@@ -9,7 +9,7 @@ import (
 
 const LogFileName = "logs/log.log"
 
-var Logger *logrus.Logger
+var logger *logrus.Logger
 
 type Log struct {
 	Msg    interface{}
@@ -31,7 +31,7 @@ func init() {
 		logrus.Panic(err)
 	}
 
-	Logger = &logrus.Logger{
+	logger = &logrus.Logger{
 		Out: colorable.NewColorableStdout(),
 		Formatter: &logrus.TextFormatter{
 			ForceColors: true, FullTimestamp: true, TimestampFormat: time.RFC822,
