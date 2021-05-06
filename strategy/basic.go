@@ -35,7 +35,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
 
 		for bytes.Compare(bucket.Get([]byte(coin.Name)), []byte{bot.TRACKING}) == 0 {
-			price := (<-coin.Ticker)[0]["trade_price"].(float64)
+			price := (<-coin.Ticker)["trade_price"].(float64)
 
 			balances, err := upbit.API.GetBalances(upbit.Accounts)
 			if err != nil {

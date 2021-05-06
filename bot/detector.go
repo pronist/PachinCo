@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	url     = "wss://api.upbit.com/websocket"
-	version = "v1"
+	SockURL     = "wss://api.upbit.com/websocket"
+	SockVersion = "v1"
 )
 
 type Detector struct {
@@ -21,8 +21,7 @@ type Detector struct {
 }
 
 func NewDetector() *Detector {
-	// https://github.com/gorilla/websocket/blob/master/examples/echo/client.go
-	ws, _, err := websocket.DefaultDialer.Dial(url+"/"+version, nil)
+	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
 	if err != nil {
 		LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
 	}
@@ -32,15 +31,9 @@ func NewDetector() *Detector {
 
 // Search 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
 // Detector.predicate 조건에 부합하는 종목이 검색되면 Detector.D 채널로 해당 tick 을 내보낸다.
-func (d *Detector) Search(currency string, predicate func(market string, ticker map[string]interface{}) bool) {
-	LogChan <- upbit.Log{
-		Msg: "Start searching markets...",
-		Fields: logrus.Fields{
-			"Currency": currency,
-		},
-		Level: logrus.InfoLevel,
-	}
-	
+func (d *Detector) Run(currency string, predicate func(market string, ticker map[string]interface{}) bool) {
+	LogChan <- upbit.Log{Msg: "[DETECTING] START", Level: logrus.InfoLevel}
+
 	markets, err := upbit.API.GetMarkets()
 	if err != nil {
 		LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
@@ -66,27 +59,20 @@ func (d *Detector) Search(currency string, predicate func(market string, ticker 
 			LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
 		}
 
-		for _, market := range K.Value().([]string) {
+		K.ForEach(func(market string) {
 			var r map[string]interface{}
 
 			if err := d.ws.ReadJSON(&r); err != nil {
 				LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
 			}
 
-			//LogChan <- upbit.Log{
-			//	Msg: market,
-			//	Fields: logrus.Fields{
-			//		"change-rate": r["change_rate"].(float64),
-			//		"price": r["trade_price"].(float64),
-			//	},
-			//	Level: logrus.InfoLevel,
-			//}
-
 			if predicate(market, r) {
 				d.D <- r
 			}
 
 			time.Sleep(time.Millisecond * 100)
-		}
+		})
+		// 마켓마다 개별적으로 go 루틴을 만들어서 predicate 를 검증하고는 싶다만,
+		// 아쉽게도 predicate 에서 업비트 API 서버에 요청할 일이 있다면 횟수 제한(10)이 걸리므로 문제가 발생한다.
 	}
 }

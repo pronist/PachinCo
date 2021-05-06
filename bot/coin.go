@@ -9,17 +9,17 @@ import (
 // Coin 은 전략이 보내는 사인을 받아야하고, 받은 사인을 upbit.Bot 으로 보내야하므로
 // Publisher, Observer 두 개의 역할을 다 수행한다.
 type Coin struct {
-	Name           string                        // 코인의 이름
-	Rate           float64                       // 코인에 적용할 비중
-	OnceOrderPrice float64                       // 한 번 주문시 주문할 가격
-	Limit          float64                       // 코인에 할당된 최대 가격
-	Ticker         chan []map[string]interface{} // 틱
+	Name           string                      // 코인의 이름
+	Rate           float64                     // 코인에 적용할 비중
+	OnceOrderPrice float64                     // 한 번 주문시 주문할 가격
+	Limit          float64                     // 코인에 할당된 최대 가격
+	Ticker         chan map[string]interface{} // 틱
 	// 여러 전략이 주문하여 체결되었을 때 갱신경쟁을 피하기 위한 뮤텍스
 	mu sync.Mutex
 }
 
 func NewCoin(name string, rate float64) (*Coin, error) {
-	coin := Coin{Name: name, Rate: rate, Ticker: make(chan []map[string]interface{})}
+	coin := Coin{Name: name, Rate: rate, Ticker: make(chan map[string]interface{})}
 	if err := coin.Refresh(); err != nil {
 		upbit.Logger.Fatal(err)
 	}

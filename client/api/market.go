@@ -25,5 +25,5 @@ func (api *API) GetMarketConditionBy(candles []map[string]interface{}, price flo
 		totalClosePrice += candle["trade_price"].(float64)
 	}
 
-	return totalClosePrice / float64(len(candles)-1) < price
+	return totalClosePrice/float64(len(candles)-1) < price
 }

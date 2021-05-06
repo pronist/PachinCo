@@ -300,3 +300,384 @@
 {"coin":"POLY","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 15:05 KST"}
 {"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 15:06 KST"}
 {"coin":"ANKR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 15:06 KST"}
+{"level":"fatal","msg":"websocket: bad handshake","time":"06 May 21 20:07 KST"}
+{"level":"fatal","msg":"websocket: bad handshake","time":"06 May 21 20:07 KST"}
+{"level":"fatal","msg":"websocket: bad handshake","time":"06 May 21 20:07 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:42 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:42 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"BTG","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"ZIL","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"POLY","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"ZRX","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"IOST","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"IOTA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"ATOM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"KAVA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"CRO","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:43 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"WAVES","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"BTG","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"ZIL","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"POLY","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"ZRX","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"IOTA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"ATOM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"KAVA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"XTZ","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"coin":"CRO","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:47 KST"}
+{"level":"warning","msg":"[DETECTING] START","time":"06 May 21 20:47 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"BTG","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"ZIL","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"POLY","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"ZRX","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"IOTA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"ATOM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"KAVA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"CRO","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:55 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"BTG","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"ZIL","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"ZRX","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"IOTA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"ATOM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"KAVA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"CRO","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:56 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 20:56 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 20:56 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 20:56 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 20:56 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KAVA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"CRO","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KAVA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"CRO","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KAVA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"CRO","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 20:57 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"BTG","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"ZIL","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"POLY","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"ZRX","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"IOTA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"QKC","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"ATOM","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"KAVA","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"coin":"CRO","level":"warning","msg":"[STRATEGY] PREPARE PENETRATION","time":"06 May 21 20:59 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:00 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:00 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:00 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:00 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:03 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 21:03 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:05 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:06 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:15 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"ETC","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"SNT","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"STEEM","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"KMD","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"ADA","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"POWR","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"BTG","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"ZIL","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"POLY","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"ZRX","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:15 KST"}
+{"coin":"IOTA","level":"warning","msg":"1","time":"06 May 21 21:15 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:16 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"KAVA","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"CRO","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:16 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:17 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"ATOM","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"KAVA","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"CRO","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:17 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:17 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:18 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:18 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:18 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"IOTA","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"QKC","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:19 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:19 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:19 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:21 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:21 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:22 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:22 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"BTG","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"ZIL","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"POLY","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"coin":"ZRX","level":"warning","msg":"APPEND","time":"06 May 21 21:23 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:25 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:25 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:25 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:25 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:25 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:25 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:27 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:27 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:27 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:28 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:29 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:29 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:30 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"ADA","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"ADA","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"coin":"POWR","level":"warning","msg":"APPEND","time":"06 May 21 21:30 KST"}
+{"coin":"POWR","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:30 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:30 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:31 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:32 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:33 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:33 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:34 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:34 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:34 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:35 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:35 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:35 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:35 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:35 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:35 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:35 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:35 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:35 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:41 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:42 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:42 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:43 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:43 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:43 KST"}
+{"coin":"SNT","level":"warning","msg":"APPEND","time":"06 May 21 21:43 KST"}
+{"coin":"SNT","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:43 KST"}
+{"coin":"QTUM","level":"warning","msg":"APPEND","time":"06 May 21 21:43 KST"}
+{"coin":"QTUM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:43 KST"}
+{"coin":"STEEM","level":"warning","msg":"APPEND","time":"06 May 21 21:43 KST"}
+{"coin":"STEEM","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:43 KST"}
+{"coin":"KMD","level":"warning","msg":"APPEND","time":"06 May 21 21:43 KST"}
+{"coin":"KMD","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:43 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:45 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:50 KST"}
+{"coin":"ETC","level":"warning","msg":"APPEND","time":"06 May 21 21:50 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:50 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:52 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:52 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:53 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:53 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:54 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:54 KST"}
+{"level":"fatal","msg":"websocket: close 1006 (abnormal closure): unexpected EOF","time":"06 May 21 21:55 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:56 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:56 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:56 KST"}
+{"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:57 KST"}
+{"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:57 KST"}
