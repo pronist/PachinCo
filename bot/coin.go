@@ -19,7 +19,7 @@ type Coin struct {
 }
 
 func NewCoin(name string, rate float64) (*Coin, error) {
-	coin := Coin{Name: name, Rate: rate}
+	coin := Coin{Name: name, Rate: rate, Ticker: make(chan []map[string]interface{})}
 	if err := coin.Refresh(); err != nil {
 		logrus.Fatal(err)
 	}

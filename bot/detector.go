@@ -64,8 +64,20 @@ func (d *Detector) Search(currency string) {
 				LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
 			}
 
-			// 이 조건에 충독되면 알림을 보낸다.
+			f := logrus.Fields{
+				"change-rate": r["change_rate"].(float64),
+				"price": r["trade_price"].(float64),
+			}
+			LogChan <- Log{
+				Msg: market, Fields: f, Level: logrus.InfoLevel,
+			}
+
+			// 이 조건에 충족되면 알림을 보낸다.
 			if d.predicate(market, r["trade_price"].(float64)) {
+				LogChan <- Log{
+					Msg: market, Fields: f, Level: logrus.WarnLevel,
+				}
+
 				d.D <- r
 			}
 

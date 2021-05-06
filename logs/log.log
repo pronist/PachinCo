@@ -142,3 +142,33 @@
 {"change-rate":0.0316778644,"level":"warning","market":"KRW-BTC","msg":"START TRACKING...","price":68946000,"time":"06 May 21 00:00 KST"}
 {"change-rate":0.061443299,"level":"warning","market":"KRW-NEO","msg":"START TRACKING...","price":128700,"time":"06 May 21 00:00 KST"}
 {"change-rate":0.0802292264,"level":"warning","market":"KRW-XRP","msg":"START TRACKING...","price":1885,"time":"06 May 21 00:00 KST"}
+{"change-rate":0.0848214286,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":243,"time":"06 May 21 09:31 KST"}
+{"change-rate":0.0803571429,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":242,"time":"06 May 21 09:32 KST"}
+{"change-rate":0.0803571429,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":242,"time":"06 May 21 09:33 KST"}
+{"change-rate":0.0803571429,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":242,"time":"06 May 21 09:34 KST"}
+{"change-rate":0.0848214286,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":243,"time":"06 May 21 09:36 KST"}
+{"change-rate":0.0714285714,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":240,"time":"06 May 21 09:40 KST"}
+{"change-rate":0.0758928571,"level":"warning","market":"KRW-SNT","msg":"START TRACKING...","price":241,"time":"06 May 21 09:43 KST"}
+{"change-rate":0.0649350649,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2050,"time":"06 May 21 09:51 KST"}
+{"change-rate":0.0892857143,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":244,"time":"06 May 21 09:51 KST"}
+{"change-rate":0.0649350649,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2050,"time":"06 May 21 09:51 KST"}
+{"change-rate":0.0892857143,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":244,"time":"06 May 21 09:52 KST"}
+{"change-rate":0.0597402597,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2040,"time":"06 May 21 09:53 KST"}
+{"change-rate":0.0982142857,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":246,"time":"06 May 21 09:53 KST"}
+{"change-rate":0.1411512554,"level":"warning","market":"KRW-BTG","msg":"Find Conditioned Market","price":186350,"time":"06 May 21 09:53 KST"}
+{"change-rate":0.1160714286,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":250,"time":"06 May 21 09:53 KST"}
+{"change-rate":0.1423759951,"level":"warning","market":"KRW-BTG","msg":"Find Conditioned Market","price":186550,"time":"06 May 21 09:53 KST"}
+{"change-rate":0.0597402597,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2040,"time":"06 May 21 09:55 KST"}
+{"change-rate":0.1026785714,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":247,"time":"06 May 21 09:55 KST"}
+{"change-rate":0.0597402597,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2040,"time":"06 May 21 09:56 KST"}
+{"change-rate":0.0982142857,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":246,"time":"06 May 21 09:56 KST"}
+{"change-rate":0.0753246753,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2070,"time":"06 May 21 09:57 KST"}
+{"change-rate":0.1116071429,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":249,"time":"06 May 21 09:57 KST"}
+{"change-rate":0.0805194805,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2080,"time":"06 May 21 09:58 KST"}
+{"change-rate":0.1205357143,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":251,"time":"06 May 21 09:58 KST"}
+{"change-rate":0.0779220779,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2075,"time":"06 May 21 09:59 KST"}
+{"change-rate":0.1205357143,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":251,"time":"06 May 21 09:59 KST"}
+{"change-rate":0.0831168831,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2085,"time":"06 May 21 10:01 KST"}
+{"change-rate":0.1160714286,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":250,"time":"06 May 21 10:01 KST"}
+{"change-rate":0.0935064935,"level":"warning","market":"KRW-XRP","msg":"Find Conditioned Market","price":2105,"time":"06 May 21 10:05 KST"}
+{"change-rate":0.0982142857,"level":"warning","market":"KRW-SNT","msg":"Find Conditioned Market","price":246,"time":"06 May 21 10:05 KST"}
