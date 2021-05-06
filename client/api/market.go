@@ -14,3 +14,16 @@ func (api *API) GetMarkets() ([]map[string]interface{}, error) {
 
 	return client.TransformArrayMap(markets), nil
 }
+
+//
+
+func (api *API) GetMarketConditionBy(candles []map[string]interface{}, price float64) bool {
+	var totalClosePrice float64
+
+	// 지금은 제외
+	for _, candle := range candles[1:] {
+		totalClosePrice += candle["trade_price"].(float64)
+	}
+
+	return totalClosePrice / float64(len(candles)-1) < price
+}

@@ -24,7 +24,7 @@ func NewDetector() *Detector {
 	// https://github.com/gorilla/websocket/blob/master/examples/echo/client.go
 	ws, _, err := websocket.DefaultDialer.Dial(url+"/"+version, nil)
 	if err != nil {
-		LogChan <- Log{Msg: err, Level: logrus.FatalLevel}
+		LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
 	}
 
 	return &Detector{ws: ws, D: make(chan map[string]interface{})}
@@ -32,10 +32,18 @@ func NewDetector() *Detector {
 
 // Search 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
 // Detector.predicate 조건에 부합하는 종목이 검색되면 Detector.D 채널로 해당 tick 을 내보낸다.
-func (d *Detector) Search(currency string) {
+func (d *Detector) Search(currency string, predicate func(market string, ticker map[string]interface{}) bool) {
+	LogChan <- upbit.Log{
+		Msg: "Start searching markets...",
+		Fields: logrus.Fields{
+			"Currency": currency,
+		},
+		Level: logrus.InfoLevel,
+	}
+	
 	markets, err := upbit.API.GetMarkets()
 	if err != nil {
-		LogChan <- Log{Msg: err, Level: logrus.FatalLevel}
+		LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
 	}
 
 	K := funk.Chain(markets).
@@ -46,56 +54,39 @@ func (d *Detector) Search(currency string) {
 			return strings.HasPrefix(market, currency)
 		})
 
+	// https://docs.upbit.com/docs/upbit-quotation-websocket
+	data := []map[string]interface{}{
+		{"ticket": uuid.NewV4()}, // ticket
+		{"type": "ticker", "codes": K.Value().([]string), "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		// format
+	}
+
 	for {
-		// https://docs.upbit.com/docs/upbit-quotation-websocket
-		data := []map[string]interface{}{
-			{"ticket": uuid.NewV4()}, // ticket
-			{"type": "ticker", "codes": K.Value().([]string), "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
-			// format
-		}
 		if err := d.ws.WriteJSON(data); err != nil {
-			LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
+			LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
 		}
 
-		K.ForEach(func(market string) {
+		for _, market := range K.Value().([]string) {
 			var r map[string]interface{}
 
-			if err = d.ws.ReadJSON(&r); err != nil {
-				LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
+			if err := d.ws.ReadJSON(&r); err != nil {
+				LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
 			}
 
-			f := logrus.Fields{
-				"change-rate": r["change_rate"].(float64),
-				"price": r["trade_price"].(float64),
-			}
-			LogChan <- Log{
-				Msg: market, Fields: f, Level: logrus.InfoLevel,
-			}
+			//LogChan <- upbit.Log{
+			//	Msg: market,
+			//	Fields: logrus.Fields{
+			//		"change-rate": r["change_rate"].(float64),
+			//		"price": r["trade_price"].(float64),
+			//	},
+			//	Level: logrus.InfoLevel,
+			//}
 
-			// 이 조건에 충족되면 알림을 보낸다.
-			if d.predicate(market, r["trade_price"].(float64)) {
-				LogChan <- Log{
-					Msg: market, Fields: f, Level: logrus.WarnLevel,
-				}
-
+			if predicate(market, r) {
 				d.D <- r
 			}
 
-			time.Sleep(time.Second * 1)
-		})
+			time.Sleep(time.Millisecond * 100)
+		}
 	}
-}
-
-// 트래킹할 종목에 대한 조건이다.
-func (d *Detector) predicate(market string, price float64) bool {
-	// https://wikidocs.net/21888
-	dayCandles, err := upbit.API.GetCandlesDays(market, "2")
-	if err != nil {
-		LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
-	}
-
-	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
-	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
-
-	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
 }

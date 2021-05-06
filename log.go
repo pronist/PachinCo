@@ -1,4 +1,4 @@
-package bot
+package upbit
 
 import (
 	"github.com/mattn/go-colorable"
@@ -9,7 +9,7 @@ import (
 
 const LogFileName = "logs/log.log"
 
-var logger *logrus.Logger
+var Logger *logrus.Logger
 
 type Log struct {
 	Msg    interface{}
@@ -31,7 +31,7 @@ func init() {
 		logrus.Panic(err)
 	}
 
-	logger = &logrus.Logger{
+	Logger = &logrus.Logger{
 		Out: colorable.NewColorableStdout(),
 		Formatter: &logrus.TextFormatter{
 			ForceColors: true, FullTimestamp: true, TimestampFormat: time.RFC822,

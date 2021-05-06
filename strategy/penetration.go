@@ -1,98 +1,150 @@
 package strategy
 
+import (
+	"bytes"
+	"errors"
+	"github.com/boltdb/bolt"
+	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/bot"
+	"github.com/sirupsen/logrus"
+	"github.com/thoas/go-funk"
+	"math"
+	"strings"
+	"time"
+)
+
 // 변동성 돌파전략이다. 상승장에 구입한다.
 type Penetration struct {
 	H float64 // 판매 상승 기준
+	L float64 // 구입 하락 기준
 	K float64 // 돌파 상수
 }
 
-// 변동성 돌파 되었는지 검사
-//func (p *Penetration) Is(dayCandles []map[string]interface{}, price float64) bool {
-//	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
-//	return dayCandles[0]["opening_price"].(float64) + (R * p.K) < price
-//}
-//
-//func (p *Penetration) Run(coin *bot.Coin) {
-//	bot.LogChan <- bot.Log{
-//		Msg: "Start PENETRATION strategy ...",
-//		Fields: logrus.Fields{
-//			"coin": coin.Name,
-//		},
-//		Level: logrus.InfoLevel,
-//	}
-//
-//	err := bot.Db.View(func(tx *bolt.Tx) error {
-//		for {
-//			price := (<-coin.Ticker)[0]["trade_price"].(float64)
-//
-//			balances, err := upbit.API.GetBalances(bot.Accounts)
-//			if err != nil {
-//				return err
-//			}
-//
-//			if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.Order && coin.Order > upbit.MinimumOrderPrice {
-//				volume := coin.Order / price
-//
-//				if math.IsInf(volume, 0) {
-//					return errors.New("division by zero")
-//				}
-//
-//				dayCandles, err := upbit.API.GetCandlesDays("KRW-" + coin.Name, "2")
-//				if err != nil {
-//					return err
-//				}
-//
-//				if coinBalance, ok := balances[coin.Name]; p.Is(dayCandles, price) {
-//					if PenetrationCoins.Get([]byte("KRW-"+coin.Name)) != nil && ok {
-//						// 매도
-//						avgBuyPrice, err := upbit.API.GetAverageBuyPrice(bot.Accounts, coin.Name)
-//						if err != nil {
-//							bot.LogChan <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
-//						}
-//
-//						pp := price / avgBuyPrice
-//
-//						if math.IsInf(pp, 0) {
-//							return errors.New("division by zero")
-//						}
-//
-//						minutesCandles, err := upbit.API.GetCandlesMinutes("1", "KRW-" + coin.Name, "3")
-//						if err != nil {
-//							bot.Logger.Fatal(err)
-//						}
-//
-//						// 코인이 상승했지만 하락장 일떄
-//						if pp-1 >= p.H && !upbit.API.GetMarketConditionInMinutes(minutesCandles, price) {
-//							p.Notify("ask", coinBalance, price)
-//							continue
-//						}
-//						// 매도를 했지만 버킷에서 해당 종목을 제거하지 않는 이유는 판 종목을 다시 사는 것을 방지하기 위함
-//
-//					} else {
-//						// 이미 매수했거나, 초기화 과정에서 추가된 코인이 아닌 경우에만 매수한다.
-//						p.Notify("bid", volume, price)
-//
-//						bot.LogChan <- bot.Log{
-//							Msg: "PENETRATION",
-//							Fields: logrus.Fields{
-//								"coin": coin.Name, "price": price, "change-rate": dayCandles[0]["change_rate"].(float64),
-//							},
-//							Level: logrus.InfoLevel,
-//						}
-//						err := PenetrationCoins.Put([]byte("KRW-"+coin.Name), []byte(fmt.Sprintf("%f", upbit.Config.C)))
-//						if err != nil {
-//							return err
-//						}
-//
-//						continue
-//					}
-//				}
-//			}
-//
-//			time.Sleep(1 * time.Second)
-//		}
-//	})
-//	if err != nil {
-//		bot.LogChan <- bot.Log{Msg: err.Error(), Level: logrus.FatalLevel}
-//	}
-//}
+// 이미 돌파된 종목에 대해서는 처리하면 안 된다.
+func init() {
+	err := upbit.Db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
+
+		markets, err := upbit.API.GetMarkets()
+		if err != nil {
+			upbit.Logger.Fatal(err)
+		}
+
+		K := funk.Chain(markets).
+			Map(func(market map[string]interface{}) string {
+				return market["market"].(string)
+			}).
+			Filter(func(market string) bool {
+				return strings.HasPrefix(market, bot.Currency)
+			})
+
+		K.ForEach(func (market string) {
+			ticker, err := upbit.API.GetTicker(market)
+			if err != nil {
+				upbit.Logger.Fatal(err)
+			}
+
+			// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
+			if bot.Predicate(market, ticker[0]) && bytes.Compare(bucket.Get([]byte(market[4:])), []byte{bot.TRACKING}) != 0 {
+				upbit.Logger.WithFields(logrus.Fields{"coin": market[4:]}).Warn("[STRATEGY] PREPARE PENETRATION")
+
+				// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
+				if err := bucket.Put([]byte(market[4:]), []byte{bot.STOPPED}); err != nil {
+					upbit.Logger.Fatal(err)
+				}
+			}
+
+			time.Sleep(time.Second * 1)
+		})
+
+		return nil
+	})
+	if err != nil {
+		upbit.Logger.Panic(err)
+	}
+}
+
+func (p *Penetration) Run(coin *bot.Coin) {
+	err := upbit.Db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
+
+		bot.LogChan <- upbit.Log{
+			Msg: "[STRATEGY] PENETRATION",
+			Fields: logrus.Fields{
+				"coin": coin.Name,
+			},
+			Level: logrus.WarnLevel,
+		}
+
+		for bytes.Compare(bucket.Get([]byte(coin.Name)), []byte{bot.TRACKING}) == 0 {
+			ticker := (<-coin.Ticker)[0]
+
+			price := ticker["trade_price"].(float64)
+
+			balances, err := upbit.API.GetBalances(upbit.Accounts)
+			if err != nil {
+				return err
+			}
+
+			if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
+				volume := coin.OnceOrderPrice / price
+
+				if math.IsInf(volume, 0) {
+					return errors.New("division by zero")
+				}
+
+				// 과거 3분동안만
+				minutesCandles, err := upbit.API.GetCandlesMinutes("1", "KRW"+coin.Name, "4")
+				if err != nil {
+					return err
+				}
+
+				condition := upbit.API.GetMarketConditionBy(minutesCandles, price)
+
+				// 변동성 돌파는 전략의 기본 조건이다.
+				if bot.Predicate("KRW"+ coin.Name, ticker) {
+					if coinBalance, ok := balances[coin.Name]; ok {
+						// 이미 코인을 가지고 있는 경우
+
+						avgBuyPrice, err := upbit.API.GetAverageBuyPrice(upbit.Accounts, coin.Name)
+						if err != nil {
+							return err
+						}
+
+						pp := price / avgBuyPrice
+
+						// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우, 단기 시장이 하락장일 때 '매도'
+						if pp-1 >= p.H && !condition {
+							coin.Order("ask", coinBalance, price)
+
+							// 매도한 코인을 다시 추적하지 않도록 설정한다.
+							if err := bucket.Put([]byte(coin.Name), []byte{bot.STOPPED}); err != nil {
+								return err
+							}
+							continue
+						}
+
+						// 가격이 매수평균가 대비 `p.L` 보다 하락한 경우 추가 매수 요청
+						if pp-1 <= p.L {
+							coin.Order("bid", volume, price)
+							continue
+						}
+					} else {
+						// 단기 상승장 + 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
+						if condition {
+							coin.Order("bid", volume, price)
+							continue
+						}
+					}
+				}
+			}
+
+			time.Sleep(1 * time.Second)
+		}
+
+		return nil
+	})
+	if err != nil {
+		bot.LogChan <- upbit.Log{Msg: err.Error(), Level: logrus.FatalLevel}
+	}
+}
