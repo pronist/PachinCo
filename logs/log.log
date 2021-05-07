@@ -681,3 +681,154 @@
 {"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:56 KST"}
 {"Strategy":"Penetration","level":"warning","msg":"PREPARE","time":"06 May 21 21:57 KST"}
 {"coin":"ETC","level":"warning","msg":"[STRATEGY] PENETRATION","time":"06 May 21 21:57 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:50 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:50 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:50 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:50 KST"}
+{"coin":"VET","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:50 KST"}
+{"coin":"QTUM","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:50 KST"}
+{"coin":"LSK","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:50 KST"}
+{"coin":"POLY","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:50 KST"}
+{"coin":"BAT","level":"warning","msg":"Coin state change to `TRACKING`","time":"07 May 21 16:50 KST"}
+{"coin":"BAT","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:50 KST"}
+{"coin":"ELF","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:50 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"07 May 21 16:50 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"VET","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:55 KST"}
+{"coin":"QTUM","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:56 KST"}
+{"coin":"LSK","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:56 KST"}
+{"coin":"POLY","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:56 KST"}
+{"coin":"ELF","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:56 KST"}
+{"coin":"VET","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 16:56 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:57 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:57 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:57 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:57 KST"}
+{"coin":"VET","level":"warning","msg":"Coin state change to `STOPPED`","state":"AQ==","time":"07 May 21 16:57 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:59 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 16:59 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 17:00 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 17:00 KST"}
+{"coin":"VET","level":"warning","msg":"Coin state change to `STOPPED`","time":"07 May 21 17:00 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:05 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:05 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:05 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:05 KST"}
+{"coin":"VET","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:05 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"QTUM","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"LSK","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"coin":"POLY","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"POLY","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"coin":"ELF","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"ELF","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"coin":"VET","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"VET","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"coin":"QTUM","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"QTUM","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37050,"side":"bid","time":"07 May 21 17:05 KST","volume":0.14984998083840756}
+{"coin":"LSK","level":"warning","msg":"Coin state change to `TRACKING`","state":"AA==","time":"07 May 21 17:05 KST"}
+{"coin":"LSK","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"07 May 21 17:05 KST"}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:05 KST","volume":0.5610855775707932}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"07 May 21 17:05 KST"}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37050,"side":"bid","time":"07 May 21 17:05 KST","volume":0.14984998083840756}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:05 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37060,"side":"bid","time":"07 May 21 17:05 KST","volume":0.149809546412925}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9890,"side":"bid","time":"07 May 21 17:05 KST","volume":0.5613692406534884}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37050,"side":"bid","time":"07 May 21 17:06 KST","volume":0.14984998083840756}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9890,"side":"bid","time":"07 May 21 17:06 KST","volume":0.5613692406534884}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37070,"side":"bid","time":"07 May 21 17:06 KST","volume":0.14976913380261667}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9890,"side":"bid","time":"07 May 21 17:06 KST","volume":0.5613692406534884}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37080,"side":"bid","time":"07 May 21 17:06 KST","volume":0.1497287429898328}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9890,"side":"bid","time":"07 May 21 17:06 KST","volume":0.5613692406534884}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37080,"side":"bid","time":"07 May 21 17:06 KST","volume":0.1497287429898328}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9865,"side":"bid","time":"07 May 21 17:06 KST","volume":0.5627918692410542}
+{"coin":"QTUM","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:15 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:15 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:15 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:15 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:15 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"coin":"KAVA","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:15 KST"}
+{"level":"error","msg":"Not found `\"KAVA\"` in bucket","time":"07 May 21 17:15 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:16 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:16 KST"}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"07 May 21 17:16 KST"}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37090,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14968837395694257}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37130,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14952711527236734}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37120,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14956739736161098}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37060,"side":"bid","time":"07 May 21 17:16 KST","volume":0.149809546412925}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37120,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14956739736161098}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37090,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14968837395694257}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37130,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14952711527236734}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37090,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14968837395694257}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9895,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5610855775707932}
+{"level":"warning","market":"KRW-LSK","msg":"ORDER","price":9900,"side":"bid","time":"07 May 21 17:16 KST","volume":0.5608022010164646}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37110,"side":"bid","time":"07 May 21 17:16 KST","volume":0.14960770116041497}
+{"coin":"QTUM","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:21 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:21 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:21 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:21 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:21 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37260,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14900541572901232}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:22 KST"}
+{"coin":"LSK","level":"error","msg":"invalid character 'T' looking for beginning of value","role":"Strategy","strategy":"Penetration","time":"07 May 21 17:22 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","time":"07 May 21 17:22 KST"}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37260,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14900541572901232}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37290,"side":"bid","time":"07 May 21 17:22 KST","volume":0.1488855400928667}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37300,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14884562439847185}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37260,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14900541572901232}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37250,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14904541718289932}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37260,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14900541572901232}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37210,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14920563800223058}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37260,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14900541572901232}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37240,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14908544011984423}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37240,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14908544011984423}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37230,"side":"bid","time":"07 May 21 17:22 KST","volume":0.14912548455715818}
+{"coin":"QTUM","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"THETA","level":"warning","msg":"State change to `STOPPED`","time":"07 May 21 17:24 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"ICX","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"POLY","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"ELF","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"QTUM","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"coin":"LSK","level":"warning","msg":"State change to `TRACKING`","time":"07 May 21 17:25 KST"}
+{"level":"error","msg":"invalid character 'T' looking for beginning of value","role":"Detector","time":"07 May 21 17:25 KST"}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37110,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14960770116041497}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37110,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14960770116041497}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37120,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14956739736161098}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37150,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14944661615243607}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37170,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14936620366055958}
+{"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37220,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14916555051217087}

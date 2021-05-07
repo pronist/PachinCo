@@ -9,9 +9,7 @@ import (
 	"github.com/pronist/upbit/bot"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"github.com/thoas/go-funk"
 	"math"
-	"strings"
 	"time"
 )
 
@@ -24,41 +22,39 @@ type Penetration struct {
 
 // 이미 돌파된 종목에 대해서는 처리하면 안 된다.
 func init() {
-	upbit.Logger.WithFields(logrus.Fields{"Strategy": "Penetration"}).Warn("PREPARE")
-
-	markets, err := upbit.API.GetMarkets()
-	if err != nil {
-		upbit.Logger.Fatal(err)
+	bot.Logger <- bot.Log{
+		Msg: "Initialization strategy...",
+		Fields: logrus.Fields{
+			"Strategy": "Penetration",
+		},
+		Level: logrus.InfoLevel,
 	}
-
-	K := funk.Chain(markets).
-		Map(func(market map[string]interface{}) string {
-			return market["market"].(string)
-		}).
-		Filter(func(market string) bool {
-			return strings.HasPrefix(market, bot.Currency)
-		})
 
 	ws, _, err := websocket.DefaultDialer.Dial(bot.SockURL+"/"+bot.SockVersion, nil)
 	if err != nil {
-		upbit.Logger.Fatal(err)
+		panic(err)
+	}
+
+	markets, err := upbit.API.GetMarketNames(bot.TargetMarket)
+	if err != nil {
+		panic(err)
 	}
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": K.Value().([]string), "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": markets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
 	if err := ws.WriteJSON(data); err != nil {
-		upbit.Logger.Fatal(err)
+		panic(err)
 	}
 
-	K.ForEach(func(market string) {
+	for _, market := range markets {
 		var r map[string]interface{}
 
 		if err := ws.ReadJSON(&r); err != nil {
-			upbit.Logger.Fatal(err)
+			panic(err)
 		}
 
 		err = upbit.Db.Update(func(tx *bolt.Tx) error {
@@ -68,27 +64,47 @@ func init() {
 			if bot.Predicate(market, r) && bytes.Compare(bucket.Get([]byte(market[4:])), []byte{bot.TRACKING}) != 0 {
 			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
 				if err := bucket.Put([]byte(market[4:]), []byte{bot.STOPPED}); err != nil {
-					upbit.Logger.Fatal(err)
+					panic(err)
+				}
+
+				bot.Logger <- bot.Log{
+					Msg: "State change to `STOPPED`",
+					Fields: logrus.Fields{
+						"coin": market[4:],
+					},
+					Level: logrus.WarnLevel,
 				}
 			}
 
 			return nil
 		})
 		if err != nil {
-			upbit.Logger.Fatal(err)
+			panic(err)
 		}
 
 		time.Sleep(time.Millisecond * 100)
-	})
+	}
 }
 
 func (p *Penetration) Run(coin *bot.Coin) {
-	bot.LogChan <- upbit.Log{
-		Msg: "[STRATEGY] PENETRATION",
+	defer func(coin *bot.Coin) {
+		if err := recover(); err != nil {
+			bot.Logger <- bot.Log{
+				Msg: err,
+				Fields: logrus.Fields{
+					"role": "Strategy", "strategy": "Penetration", "coin": coin.Name,
+				},
+				Level: logrus.ErrorLevel,
+			}
+		}
+	}(coin)
+
+	bot.Logger <- bot.Log{
+		Msg: "Strategy started...",
 		Fields: logrus.Fields{
-			"coin": coin.Name,
+			"strategy": "Penetration", "coin": coin.Name,
 		},
-		Level: logrus.WarnLevel,
+		Level: logrus.InfoLevel,
 	}
 
 	var stat []byte
@@ -99,13 +115,13 @@ func (p *Penetration) Run(coin *bot.Coin) {
 
 		stat = bucket.Get([]byte(coin.Name))
 		if stat == nil {
-			return fmt.Errorf("Not found `%#v` in bucket", coin.Name)
+			return fmt.Errorf("Not found %#v in bucket", coin.Name)
 		}
 
 		return nil
 	})
 	if err != nil {
-		bot.LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+		panic(err)
 	}
 
 	for bytes.Equal(stat, []byte{bot.TRACKING}) {
@@ -115,20 +131,20 @@ func (p *Penetration) Run(coin *bot.Coin) {
 
 		balances, err := upbit.API.GetBalances(upbit.Accounts)
 		if err != nil {
-			bot.LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+			panic(err)
 		}
 
 		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
 			volume := coin.OnceOrderPrice / price
 
 			if math.IsInf(volume, 0) {
-				bot.LogChan <- upbit.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+				panic(err)
 			}
 
 			// 과거 3분동안만
-			minutesCandles, err := upbit.API.GetCandlesMinutes("1", "KRW-"+coin.Name, "4")
+			minutesCandles, err := upbit.API.GetCandlesMinutes("1", bot.TargetMarket+"-"+coin.Name, "4")
 			if err != nil {
-				bot.LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+				panic(err)
 			}
 
 			condition := upbit.API.GetMarketConditionBy(minutesCandles, price)
@@ -140,7 +156,7 @@ func (p *Penetration) Run(coin *bot.Coin) {
 
 					avgBuyPrice, err := upbit.API.GetAverageBuyPrice(upbit.Accounts, coin.Name)
 					if err != nil {
-						bot.LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+						panic(err)
 					}
 
 					pp := price / avgBuyPrice
@@ -160,7 +176,7 @@ func (p *Penetration) Run(coin *bot.Coin) {
 							return nil
 						})
 						if err != nil {
-							bot.LogChan <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+							panic(err)
 						}
 
 						continue

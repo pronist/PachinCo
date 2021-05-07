@@ -46,7 +46,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 				volume := coin.OnceOrderPrice / price
 
 				if math.IsInf(volume, 0) {
-					bot.LogChan <- upbit.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+					bot.Logger <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 				}
 
 				if coinBalance, ok := balances[coin.Name]; ok {
@@ -63,7 +63,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
 
 					if math.IsInf(p, 0) {
-						bot.LogChan <- upbit.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+						bot.Logger <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 					}
 
 					if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
@@ -84,7 +84,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 					orderSellingPrice := coinBalance * price
 
 					if math.IsInf(p, 0) {
-						bot.LogChan <- upbit.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+						bot.Logger <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 					}
 
 					// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
@@ -114,7 +114,7 @@ func (b *Basic) Run(coin *bot.Coin) {
 						pp := price / latestAskPrice // 마지막 매도가 대비 변화율
 
 						if math.IsInf(pp, 0) {
-							bot.LogChan <- upbit.Log{Msg: "division by zero", Level: logrus.FatalLevel}
+							bot.Logger <- bot.Log{Msg: "division by zero", Level: logrus.FatalLevel}
 						}
 
 						// 마지막으로 매도한 가격을 기준으로 매수
@@ -143,6 +143,6 @@ func (b *Basic) Run(coin *bot.Coin) {
 		return nil
 	})
 	if err != nil {
-		bot.LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
+		bot.Logger <- bot.Log{Msg: err, Level: logrus.ErrorLevel}
 	}
 }

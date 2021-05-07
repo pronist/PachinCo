@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"bytes"
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/websocket"
 	"github.com/pronist/upbit"
@@ -10,26 +9,32 @@ import (
 	"time"
 )
 
-const Currency = "KRW"
+const TargetMarket = "KRW"
 
+// 추적 상태를 나타내는 상수들
 const (
-	TRACKING = 0x01 // 코인을 트래킹하고 있다
-	STOPPED  = 0x02 // 모종의 이유로 인해 추적이 중단된 코인이다.
+	TRACKING = iota
+	STOPPED
 )
-
-var LogChan = make(chan upbit.Log) // 외부에서 사용하게 될 로그 채널이다.
 
 type Bot struct {
 	Strategies []Strategy
 }
 
 func (b *Bot) Run() {
-	detector := NewDetector()
-	go detector.Run(Currency, Predicate) // 종목 찾기 시작!
+	Logger <- Log{Msg: "Bot started...", Level: logrus.InfoLevel}
 
-	err := b.runAlreadyTrackingCoins()
+	detector, err := NewDetector()
 	if err != nil {
-		upbit.Logger.Fatal(err)
+		panic(err)
+	}
+
+	go detector.Run(TargetMarket, Predicate) // 종목 찾기 시작!
+
+	// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
+	err = b.RunStrategyForCoinsInHands()
+	if err != nil {
+		panic(err)
 	}
 
 	for {
@@ -37,79 +42,83 @@ func (b *Bot) Run() {
 		case ticker := <-detector.D:
 			market := ticker["code"].(string)
 
-			coin, err := NewCoin(market[4:], upbit.Config.C)
-			if err != nil {
-				upbit.Logger.Fatal(err)
+			if err := b.Go(market[4:]); err != nil {
+				panic(err)
+			}
+		}
+	}
+}
+
+func (b *Bot) RunStrategyForCoinsInHands() error {
+	Logger <- Log{Msg: "Run strategy for coins in hands...", Level: logrus.InfoLevel}
+
+	balances, err := upbit.API.GetBalances(upbit.Accounts)
+	if err != nil {
+		return err
+	}
+	delete(balances, "KRW")
+
+	for coin := range balances {
+		if err := b.Go(coin); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (b *Bot) Go(coinName string) error {
+	coin, err := NewCoin(coinName, upbit.Config.C)
+	if err != nil {
+		return err
+	}
+
+	err = upbit.Db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
+
+		// 이미 코인이 담겨져 있다면 추적상태로 바꾸지 않는다.
+		if bucket.Get([]byte(coin.Name)) == nil {
+			// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
+			if err := bucket.Put([]byte(coin.Name), []byte{TRACKING}); err != nil {
+				return err
 			}
 
-			err = upbit.Db.Update(func(tx *bolt.Tx) error {
-				bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
-
-				// 이미 코인이 담겨져 있다면 추적상태로 바꾸지 않는다.
-				if bucket.Get([]byte(coin.Name)) == nil {
-					// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-					if err := bucket.Put([]byte(coin.Name), []byte{TRACKING}); err != nil {
-						return err
-					}
-				}
-
-				return nil
-			})
-			if err != nil {
-				upbit.Logger.Fatal(err)
+			Logger <- Log{
+				Msg: "State change to `TRACKING`",
+				Fields: logrus.Fields{
+					"coin": coin.Name,
+				},
+				Level: logrus.WarnLevel,
 			}
 
-			go b.tick(coin)
+			go b.Tick(coin)
 
 			for _, strategy := range b.Strategies {
 				go strategy.Run(coin)
 			}
-		case log := <-LogChan:
-			upbit.Logger.WithFields(log.Fields).Log(log.Level, log.Msg)
 		}
-	}
-}
 
-// 데이터베이스에 이미 트래킹 중인 코인이 있다면 전략을 시작하자.
-func (b *Bot) runAlreadyTrackingCoins() error {
-	err := upbit.Db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
-
-		err := bucket.ForEach(func(k, v []byte) error {
-			if bytes.Equal(v, []byte{TRACKING}) {
-				coin, err := NewCoin(Currency+"-"+string(k), upbit.Config.C)
-				if err != nil {
-					return err
-				}
-
-				go b.tick(coin)
-
-				for _, strategy := range b.Strategies {
-					go strategy.Run(coin)
-				}
-			}
-			return nil
-		})
-		if err != nil {
-			return err
-		}
 		return nil
 	})
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
 
-func (b *Bot) tick(coin *Coin) {
+func (b *Bot) Tick(coin *Coin) {
+	defer func() {
+		if err := recover(); err != nil {
+			Logger <- Log{Msg: err, Fields: logrus.Fields{"role": "Tick", "coin": coin.Name}, Level: logrus.ErrorLevel}
+		}
+	}()
+
 	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
 	if err != nil {
-		upbit.Logger.Fatal(err)
+		panic(err)
 	}
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": []string{Currency + "-" + coin.Name}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": []string{TargetMarket+"-"+coin.Name}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
@@ -117,11 +126,11 @@ func (b *Bot) tick(coin *Coin) {
 		var r map[string]interface{}
 
 		if err := ws.WriteJSON(data); err != nil {
-			upbit.Logger.Fatal(err)
+			panic(err)
 		}
 
 		if err := ws.ReadJSON(&r); err != nil {
-			upbit.Logger.Fatal(err)
+			panic(err)
 		}
 
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
@@ -141,7 +150,7 @@ func Predicate(market string, r map[string]interface{}) bool {
 	// https://wikidocs.net/21888
 	dayCandles, err := upbit.API.GetCandlesDays(market, "2")
 	if err != nil {
-		LogChan <- upbit.Log{Msg: err, Level: logrus.ErrorLevel}
+		panic(err)
 	}
 
 	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
