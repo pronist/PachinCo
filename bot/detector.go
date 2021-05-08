@@ -4,6 +4,7 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/websocket"
 	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/log"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"time"
@@ -33,12 +34,12 @@ func NewDetector() (*Detector, error) {
 func (d *Detector) Run(currency string, predicate func(market string, ticker map[string]interface{}) bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			Logger <- Log{Msg: err, Fields: logrus.Fields{"role": "Detector"}, Level: logrus.ErrorLevel}
+			log.Logger <- log.Log{Msg: err, Fields: logrus.Fields{"role": "Detector"}, Level: logrus.ErrorLevel}
 		}
 	}()
-
-	Logger <- Log{Msg: "Detecting started...", Level: logrus.InfoLevel}
-
+	//
+	log.Logger <- log.Log{Msg: "Detector started...", Level: logrus.InfoLevel}
+	//
 	markets, err := upbit.API.GetMarketNames(currency)
 	if err != nil {
 		panic(err)
@@ -52,7 +53,7 @@ func (d *Detector) Run(currency string, predicate func(market string, ticker map
 	}
 
 	err = upbit.Db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
+		bkt := tx.Bucket([]byte(upbit.CoinsBucketName))
 
 		for {
 			if err := d.ws.WriteJSON(data); err != nil {
@@ -67,7 +68,7 @@ func (d *Detector) Run(currency string, predicate func(market string, ticker map
 				}
 
 				// 발견되었더라도 데이터베이스에 포함되어 있다면 검색에서 제외한다.
-				if predicate(market, r) && bucket.Get([]byte(market[4:])) == nil {
+				if predicate(market, r) && bkt.Get([]byte(market[4:])) == nil {
 					d.D <- r
 				}
 

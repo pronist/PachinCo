@@ -4,6 +4,7 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/websocket"
 	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/log"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"time"
@@ -17,30 +18,65 @@ const (
 	STOPPED
 )
 
+// 트래킹할 종목에 대한 조건이다.
+func Predicate(market string, r map[string]interface{}) bool {
+	price := r["trade_price"].(float64)
+
+	// https://wikidocs.net/21888
+	dayCandles, err := upbit.API.GetCandlesDays(market, "2")
+	if err != nil {
+		panic(err)
+	}
+
+	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
+	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
+
+	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
+}
+
 type Bot struct {
 	Strategies []Strategy
 }
 
 func (b *Bot) Run() {
-	Logger <- Log{Msg: "Bot started...", Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.InfoLevel}
 
+	// 전략의 사전 준비를 해야한다.
+	for _, strategy := range b.Strategies {
+		strategy.Prepare()
+	}
+
+	///// 디텍터
 	detector, err := NewDetector()
 	if err != nil {
 		panic(err)
 	}
 
 	go detector.Run(TargetMarket, Predicate) // 종목 찾기 시작!
+	/////
 
-	// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
+	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
 	err = b.RunStrategyForCoinsInHands()
 	if err != nil {
 		panic(err)
 	}
+	/////
 
 	for {
 		select {
-		case ticker := <-detector.D:
-			market := ticker["code"].(string)
+		// 디텍팅되어 가져온 코인에 대해서 전략 시작 ...
+		case tick := <-detector.D:
+			market := tick["code"].(string)
+
+			log.Logger <- log.Log{
+				Msg: "Detected",
+				Fields: logrus.Fields{
+					"coin":        market[4:],
+					"change-rate": tick["change_rate"].(float64),
+					"price":       tick["trade_price"].(float64),
+				},
+				Level: logrus.InfoLevel,
+			}
 
 			if err := b.Go(market[4:]); err != nil {
 				panic(err)
@@ -50,8 +86,6 @@ func (b *Bot) Run() {
 }
 
 func (b *Bot) RunStrategyForCoinsInHands() error {
-	Logger <- Log{Msg: "Run strategy for coins in hands...", Level: logrus.InfoLevel}
-
 	balances, err := upbit.API.GetBalances(upbit.Accounts)
 	if err != nil {
 		return err
@@ -63,6 +97,8 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 			return err
 		}
 	}
+
+	log.Logger <- log.Log{Msg: "Run strategy for coins in hands.", Level: logrus.InfoLevel}
 
 	return nil
 }
@@ -83,8 +119,8 @@ func (b *Bot) Go(coinName string) error {
 				return err
 			}
 
-			Logger <- Log{
-				Msg: "State change to `TRACKING`",
+			log.Logger <- log.Log{
+				Msg: "Tracking starts with",
 				Fields: logrus.Fields{
 					"coin": coin.Name,
 				},
@@ -107,7 +143,7 @@ func (b *Bot) Go(coinName string) error {
 func (b *Bot) Tick(coin *Coin) {
 	defer func() {
 		if err := recover(); err != nil {
-			Logger <- Log{Msg: err, Fields: logrus.Fields{"role": "Tick", "coin": coin.Name}, Level: logrus.ErrorLevel}
+			log.Logger <- log.Log{Msg: err, Fields: logrus.Fields{"role": "Tick", "coin": coin.Name}, Level: logrus.ErrorLevel}
 		}
 	}()
 
@@ -118,7 +154,7 @@ func (b *Bot) Tick(coin *Coin) {
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": []string{TargetMarket+"-"+coin.Name}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": []string{TargetMarket + "-" + coin.Name}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
@@ -136,25 +172,9 @@ func (b *Bot) Tick(coin *Coin) {
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
 		// 전략은 반드시 시작할 때 틱을 소비해야 한다.
 		for range b.Strategies {
-			coin.Ticker <- r
+			coin.T <- r
 		}
 
 		time.Sleep(time.Second * 1)
 	}
-}
-
-// 트래킹할 종목에 대한 조건이다.
-func Predicate(market string, r map[string]interface{}) bool {
-	price := r["trade_price"].(float64)
-
-	// https://wikidocs.net/21888
-	dayCandles, err := upbit.API.GetCandlesDays(market, "2")
-	if err != nil {
-		panic(err)
-	}
-
-	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
-	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
-
-	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
 }

@@ -6,12 +6,11 @@ import (
 	"net/http"
 )
 
-const (
-	accessKey = "UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4"
-	secretKey = "2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn"
-)
+var API *api.API
 
-var API = &api.API{
-	Client:          &client.Client{AccessKey: accessKey, SecretKey: secretKey},
-	QuotationClient: &client.QuotationClient{Client: &http.Client{}},
+func init() {
+	API = &api.API{
+		Client:          &client.Client{AccessKey: Config.Keypair.AccessKey, SecretKey: Config.Keypair.SecretKey},
+		QuotationClient: &client.QuotationClient{Client: &http.Client{}},
+	}
 }

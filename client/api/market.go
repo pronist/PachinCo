@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/pronist/upbit/client"
-	"github.com/thoas/go-funk"
 	"strings"
 )
 
@@ -18,20 +17,23 @@ func (api *API) GetMarkets() ([]map[string]interface{}, error) {
 }
 
 func (api *API) GetMarketNames(currency string) ([]string, error) {
+	var r []string
+
 	markets, err := api.GetMarkets()
 	if err != nil {
 		return nil, err
 	}
 
-	return funk.Chain(markets).
-		Map(func(market map[string]interface{}) string {
-			return market["market"].(string)
-		}).
-		Filter(func(market string) bool {
-			return strings.HasPrefix(market, currency)
-		}).
-		Value().([]string), nil
+	for _, market := range markets {
+		code := market["market"].(string)
+		if strings.HasPrefix(code, currency) {
+			r = append(r, code)
+		}
+	}
+
+	return r, nil
 }
+
 //
 
 func (api *API) GetMarketConditionBy(candles []map[string]interface{}, price float64) bool {

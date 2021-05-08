@@ -2,6 +2,7 @@ package upbit
 
 import (
 	"github.com/boltdb/bolt"
+	"github.com/pronist/upbit/log"
 	"github.com/sirupsen/logrus"
 )
 
@@ -20,7 +21,7 @@ func init() {
 			var err error
 
 			// 초기화를 위해 이미 버킷이 존재할 경우 버킷을 날린다.
-			if b := tx.Bucket([]byte(CoinsBucketName)); b != nil {
+			if bkt := tx.Bucket([]byte(CoinsBucketName)); bkt != nil {
 				if err := tx.DeleteBucket([]byte(CoinsBucketName)); err != nil {
 					return err
 				}
@@ -36,7 +37,16 @@ func init() {
 			return nil
 		})
 		if err != nil {
-			logrus.Fatal(err)
+			log.Logger <- log.Log{Msg: err, Level: logrus.PanicLevel}
 		}
+		//
+		log.Logger <- log.Log{
+			Msg: "Opened Database.",
+			Fields: logrus.Fields{
+				"name": DbName,
+			},
+			Level: logrus.InfoLevel,
+		}
+		//
 	}
 }

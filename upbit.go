@@ -1,6 +1,9 @@
 package upbit
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/pronist/upbit/log"
+	"github.com/sirupsen/logrus"
+)
 
 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
 const MinimumOrderPrice = 5000
@@ -15,6 +18,9 @@ func init() {
 	// 상태 동기화를 할 때는 보통 주문 직후다.
 	Accounts, err = API.NewAccounts()
 	if err != nil {
-		logrus.Fatal(err)
+		log.Logger <- log.Log{Msg: err, Level: logrus.PanicLevel}
 	}
+	//
+	log.Logger <- log.Log{Msg: "Brought about Accounts From Upbit.", Level: logrus.InfoLevel}
+	//
 }

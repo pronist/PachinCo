@@ -832,3 +832,20 @@
 {"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37150,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14944661615243607}
 {"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37170,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14936620366055958}
 {"level":"warning","market":"KRW-QTUM","msg":"ORDER","price":37220,"side":"bid","time":"07 May 21 17:26 KST","volume":0.14916555051217087}
+{"coin":"STEEM","level":"warning","msg":"State change to `STOPPED`","time":"08 May 21 11:55 KST"}
+{"coin":"SBD","level":"warning","msg":"State change to `STOPPED`","time":"08 May 21 11:55 KST"}
+{"coin":"DAWN","level":"warning","msg":"State change to `STOPPED`","time":"08 May 21 11:55 KST"}
+{"coin":"STEEM","level":"warning","msg":"STOPPED","time":"08 May 21 12:06 KST"}
+{"coin":"SBD","level":"warning","msg":"STOPPED","time":"08 May 21 12:06 KST"}
+{"coin":"STEEM","level":"warning","msg":"Stopped","time":"08 May 21 12:20 KST"}
+{"coin":"SBD","level":"warning","msg":"Stopped","time":"08 May 21 12:20 KST"}
+{"coin":"STEEM","level":"warning","msg":"Stopped","time":"08 May 21 12:27 KST"}
+{"coin":"SBD","level":"warning","msg":"Stopped","time":"08 May 21 12:27 KST"}
+{"coin":"STEEM","level":"warning","msg":"Stopped","time":"08 May 21 12:28 KST"}
+{"coin":"SBD","level":"warning","msg":"Stopped","time":"08 May 21 12:28 KST"}
+{"coin":"STEEM","level":"warning","msg":"Stopped","time":"08 May 21 12:34 KST"}
+{"coin":"SBD","level":"warning","msg":"Stopped","time":"08 May 21 12:34 KST"}
+{"coin":"DAWN","level":"warning","msg":"Tracking","time":"08 May 21 12:36 KST"}
+{"change-rate":0.16,"coin":"STEEM","level":"warning","msg":"Stopped","price":1595,"time":"08 May 21 12:43 KST"}
+{"change-rate":0.0949602122,"coin":"SBD","level":"warning","msg":"Stopped","price":10320,"time":"08 May 21 12:43 KST"}
+{"coin":"DAWN","level":"warning","msg":"Tracking","time":"08 May 21 12:44 KST"}

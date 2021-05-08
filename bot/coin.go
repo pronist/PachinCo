@@ -2,6 +2,7 @@ package bot
 
 import (
 	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/log"
 	"github.com/sirupsen/logrus"
 	"sync"
 )
@@ -13,13 +14,13 @@ type Coin struct {
 	Rate           float64                     // 코인에 적용할 비중
 	OnceOrderPrice float64                     // 한 번 주문시 주문할 가격
 	Limit          float64                     // 코인에 할당된 최대 가격
-	Ticker         chan map[string]interface{} // 틱
+	T              chan map[string]interface{} // 틱
 	// 여러 전략이 주문하여 체결되었을 때 갱신경쟁을 피하기 위한 뮤텍스
 	mu sync.Mutex
 }
 
 func NewCoin(name string, rate float64) (*Coin, error) {
-	coin := Coin{Name: name, Rate: rate, Ticker: make(chan map[string]interface{})}
+	coin := Coin{Name: name, Rate: rate, T: make(chan map[string]interface{})}
 	if err := coin.Refresh(); err != nil {
 		panic(err)
 	}
@@ -30,7 +31,7 @@ func NewCoin(name string, rate float64) (*Coin, error) {
 // order 메서드는 주문을 하되 Config.Timeout 만큼이 지나가면 주문을 자동으로 취소한다.
 // 매수/매도에 둘다 사용한다.
 func (c *Coin) Order(side string, volume, price float64) {
-	Logger <- Log{
+	log.Logger <- log.Log{
 		Msg: "ORDER",
 		Fields: logrus.Fields{
 			"side": side, "market": "KRW-" + c.Name, "volume": volume, "price": price,

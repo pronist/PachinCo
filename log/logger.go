@@ -1,4 +1,4 @@
-package bot
+package log
 
 import (
 	"github.com/mattn/go-colorable"
@@ -6,12 +6,6 @@ import (
 	"github.com/snowzach/rotatefilehook"
 	"time"
 )
-
-type Log struct {
-	Msg    interface{}
-	Fields logrus.Fields
-	Level  logrus.Level
-}
 
 var Logger = make(chan Log) // 외부에서 사용하게 될 로그 채널이다.
 
@@ -43,7 +37,7 @@ func init() {
 		}
 
 		for {
-			select{
+			select {
 			// 지속적으로 로그를 받아온다. 이 시점에서 가장 깔끔한 로그 처리방법인 듯보인다.
 			case log := <-Logger:
 				logger.WithFields(log.Fields).Log(log.Level, log.Msg)
