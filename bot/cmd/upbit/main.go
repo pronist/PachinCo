@@ -16,8 +16,7 @@ func main() {
 	}()
 
 	b := &bot.Bot{[]bot.Strategy{
-		//&strategy.Basic{F: -0.03, L: -0.03, H: 0.03},
-		&strategy.Penetration{K: upbit.Config.K, H: 0.05, L: -0.05},
+		&strategy.Penetration{K: upbit.Config.K, H: 0.03, L: -0.05},
 	}}
 
 	b.Run()

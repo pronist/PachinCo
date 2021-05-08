@@ -8,6 +8,11 @@ import (
 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
 const MinimumOrderPrice = 5000
 
+const (
+	B = "bid" // 매수
+	S = "ask" // 매도
+)
+
 // 계정은 글로벌하게 사용되며 갱신시에는 메모리 동기화를 해야한다.
 var Accounts []map[string]interface{}
 

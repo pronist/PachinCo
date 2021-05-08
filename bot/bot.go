@@ -1,22 +1,18 @@
 package bot
 
 import (
-	"github.com/boltdb/bolt"
 	"github.com/gorilla/websocket"
 	"github.com/pronist/upbit"
 	"github.com/pronist/upbit/log"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
+	"sync"
 	"time"
 )
 
-const TargetMarket = "KRW"
+const TargetMarket = "KRW" // 원화 마켓을 추적한다.
 
-// 추적 상태를 나타내는 상수들
-const (
-	TRACKING = iota
-	STOPPED
-)
+var Mu sync.Mutex // 글로벌 상태를 동기화하기 위해 사용될 것이다.
 
 // 트래킹할 종목에 대한 조건이다.
 func Predicate(market string, r map[string]interface{}) bool {
@@ -46,6 +42,13 @@ func (b *Bot) Run() {
 		strategy.Prepare()
 	}
 
+	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
+	err := b.RunStrategyForCoinsInHands()
+	if err != nil {
+		panic(err)
+	}
+	/////
+
 	///// 디텍터
 	detector, err := NewDetector()
 	if err != nil {
@@ -53,13 +56,6 @@ func (b *Bot) Run() {
 	}
 
 	go detector.Run(TargetMarket, Predicate) // 종목 찾기 시작!
-	/////
-
-	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
-	err = b.RunStrategyForCoinsInHands()
-	if err != nil {
-		panic(err)
-	}
 	/////
 
 	for {
@@ -71,14 +67,14 @@ func (b *Bot) Run() {
 			log.Logger <- log.Log{
 				Msg: "Detected",
 				Fields: logrus.Fields{
-					"coin":        market[4:],
-					"change-rate": tick["change_rate"].(float64),
+					"market":      market,
+					"change-rate": tick["signed_change_rate"].(float64),
 					"price":       tick["trade_price"].(float64),
 				},
 				Level: logrus.InfoLevel,
 			}
 
-			if err := b.Go(market[4:]); err != nil {
+			if err := b.Go(market); err != nil {
 				panic(err)
 			}
 		}
@@ -98,46 +94,44 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 		}
 	}
 
+	// 테스트
+	for coin, balance := range balances {
+		upbit.T_Accounts[coin] = balance
+	}
+	//
+
 	log.Logger <- log.Log{Msg: "Run strategy for coins in hands.", Level: logrus.InfoLevel}
 
 	return nil
 }
 
-func (b *Bot) Go(coinName string) error {
-	coin, err := NewCoin(coinName, upbit.Config.C)
+func (b *Bot) Go(market string) error {
+	coin, err := NewCoin(market[4:], upbit.Config.C)
 	if err != nil {
 		return err
 	}
 
-	err = upbit.Db.Update(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(upbit.CoinsBucketName))
+	// 이미 코인이 담겨져 있다면 추적상태로 바꾸지 않는다.
+	if _, ok := upbit.MarketTrackingStates[market]; !ok {
+		// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
+		upbit.MarketTrackingStates[market] = upbit.TRACKING
 
-		// 이미 코인이 담겨져 있다면 추적상태로 바꾸지 않는다.
-		if bucket.Get([]byte(coin.Name)) == nil {
-			// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-			if err := bucket.Put([]byte(coin.Name), []byte{TRACKING}); err != nil {
-				return err
-			}
-
-			log.Logger <- log.Log{
-				Msg: "Tracking starts with",
-				Fields: logrus.Fields{
-					"coin": coin.Name,
-				},
-				Level: logrus.WarnLevel,
-			}
-
-			go b.Tick(coin)
-
-			for _, strategy := range b.Strategies {
-				go strategy.Run(coin)
-			}
+		log.Logger <- log.Log{
+			Msg: "Tracking starts with",
+			Fields: logrus.Fields{
+				"market": market,
+			},
+			Level: logrus.WarnLevel,
 		}
 
-		return nil
-	})
+		go b.Tick(coin)
 
-	return err
+		for _, strategy := range b.Strategies {
+			go strategy.Run(coin)
+		}
+	}
+
+	return nil
 }
 
 func (b *Bot) Tick(coin *Coin) {
@@ -152,13 +146,15 @@ func (b *Bot) Tick(coin *Coin) {
 		panic(err)
 	}
 
+	m := TargetMarket + "-" + coin.Name
+
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": []string{TargetMarket + "-" + coin.Name}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": []string{m}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
-	for {
+	for upbit.MarketTrackingStates[m] == upbit.TRACKING {
 		var r map[string]interface{}
 
 		if err := ws.WriteJSON(data); err != nil {
@@ -167,6 +163,15 @@ func (b *Bot) Tick(coin *Coin) {
 
 		if err := ws.ReadJSON(&r); err != nil {
 			panic(err)
+		}
+
+		log.Logger <- log.Log{
+			Msg: coin.Name,
+			Fields: logrus.Fields{
+				"change-rate": r["signed_change_rate"].(float64),
+				"price":       r["trade_price"].(float64),
+			},
+			Level: logrus.InfoLevel,
 		}
 
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.

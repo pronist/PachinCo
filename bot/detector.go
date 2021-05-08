@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"github.com/boltdb/bolt"
 	"github.com/gorilla/websocket"
 	"github.com/pronist/upbit"
 	"github.com/pronist/upbit/log"
@@ -52,33 +51,26 @@ func (d *Detector) Run(currency string, predicate func(market string, ticker map
 		// format
 	}
 
-	err = upbit.Db.View(func(tx *bolt.Tx) error {
-		bkt := tx.Bucket([]byte(upbit.CoinsBucketName))
+	for {
+		if err := d.ws.WriteJSON(data); err != nil {
+			panic(err)
+		}
 
-		for {
-			if err := d.ws.WriteJSON(data); err != nil {
+		for _, market := range markets {
+			var r map[string]interface{}
+
+			if err := d.ws.ReadJSON(&r); err != nil {
 				panic(err)
 			}
 
-			for _, market := range markets {
-				var r map[string]interface{}
-
-				if err := d.ws.ReadJSON(&r); err != nil {
-					panic(err)
-				}
-
-				// 발견되었더라도 데이터베이스에 포함되어 있다면 검색에서 제외한다.
-				if predicate(market, r) && bkt.Get([]byte(market[4:])) == nil {
-					d.D <- r
-				}
-
-				time.Sleep(time.Millisecond * 100)
+			// 발견되었더라도 데이터베이스에 포함되어 있다면 검색에서 제외한다.
+			if _, ok := upbit.MarketTrackingStates[market]; !ok && predicate(market, r) {
+				d.D <- r
 			}
-			// 마켓마다 개별적으로 고루틴을 만들어서 predicate 를 검증하고는 싶다만,
-			// 아쉽게도 predicate 에서 업비트 API 서버에 요청할 일이 있다면 횟수 제한(10)이 걸리므로 문제가 발생한다.
+
+			time.Sleep(time.Millisecond * 300)
 		}
-
-		return nil
-	})
-
+		// 마켓마다 개별적으로 고루틴을 만들어서 predicate 를 검증하고는 싶다만,
+		// 아쉽게도 predicate 에서 업비트 API 서버에 요청할 일이 있다면 횟수 제한(10)이 걸리므로 문제가 발생한다.
+	}
 }

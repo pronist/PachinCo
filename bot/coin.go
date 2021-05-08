@@ -30,14 +30,28 @@ func NewCoin(name string, rate float64) (*Coin, error) {
 
 // order 메서드는 주문을 하되 Config.Timeout 만큼이 지나가면 주문을 자동으로 취소한다.
 // 매수/매도에 둘다 사용한다.
-func (c *Coin) Order(side string, volume, price float64) {
+func (c *Coin) Order(side string, volume, price float64) bool {
+	// 테스트
 	log.Logger <- log.Log{
 		Msg: "ORDER",
 		Fields: logrus.Fields{
-			"side": side, "market": "KRW-" + c.Name, "volume": volume, "price": price,
+			"side": side, "market": TargetMarket + "-" + c.Name, "volume": volume, "price": price,
 		},
 		Level: logrus.WarnLevel,
 	}
+
+	switch side {
+	case upbit.B:
+		upbit.T_Accounts[c.Name] += volume
+	case upbit.S:
+		upbit.T_Accounts[c.Name] -= volume
+	}
+
+	upbit.T_Orders[c.Name] = upbit.T_Order{side, volume, price}
+
+	return true
+	//
+
 	//
 	//done := make(chan int)
 	//
@@ -86,14 +100,16 @@ func (c *Coin) Order(side string, volume, price float64) {
 func (c *Coin) Refresh() error {
 	var err error
 
-	c.mu.Lock() // 계정 정보를 변경할 떄는 갱신 경쟁을 해서는 안된다.
-	defer c.mu.Unlock()
-
+	Mu.Lock()
 	// 주문이 체결 된 이후 자금 추적을 위해 변경된 정보를 다시 얻어야 한다.
 	upbit.Accounts, err = upbit.API.NewAccounts()
 	if err != nil {
 		return err
 	}
+	Mu.Unlock()
+
+	c.mu.Lock() // 계정 정보를 변경할 떄는 갱신 경쟁을 해서는 안된다.
+	defer c.mu.Unlock()
 
 	balances, err := upbit.API.GetBalances(upbit.Accounts)
 	if err != nil {
@@ -101,7 +117,7 @@ func (c *Coin) Refresh() error {
 	}
 
 	// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
-	totalBalance, err := upbit.API.GetTotalBalance(upbit.Accounts, balances) // 초기 자금
+	totalBalance, err := upbit.API.GetTotalBalance(upbit.Accounts, balances) // 총 매수 자금
 	if err != nil {
 		return err
 	}
