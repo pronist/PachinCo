@@ -29,7 +29,7 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (
 	done := make(chan int)
 	var timeout bool
 
-	c := upbit.Market+"-"+coin.Name
+	c := upbit.Market + "-" + coin.Name
 
 	uuid, err := upbit.API.Order(c, side, fmt.Sprintf("%f", volume), fmt.Sprintf("%f", price), "limit")
 	if err != nil {

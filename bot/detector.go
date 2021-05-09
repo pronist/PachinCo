@@ -64,7 +64,7 @@ func (d *Detector) Run(currency string, predicate func(market string, ticker map
 			}
 
 			// 발견되었더라도 데이터베이스에 포함되어 있다면 검색에서 제외한다.
-			if _, ok := upbit.MarketTrackingStates[market]; !ok && predicate(market, r) {
+			if _, ok := MarketTrackingStates[market]; !ok && predicate(market, r) {
 				d.D <- r
 			}
 

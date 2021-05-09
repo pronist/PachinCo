@@ -51,9 +51,9 @@ func (p *Penetration) Prepare(accounts bot.Accounts) {
 		}
 
 		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
-		if _, ok := upbit.MarketTrackingStates[market]; !ok && bot.Predicate(market, r) {
+		if _, ok := bot.MarketTrackingStates[market]; !ok && bot.Predicate(market, r) {
 			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
-			upbit.MarketTrackingStates[market] = upbit.STOPPED
+			bot.MarketTrackingStates[market] = bot.STOPPED
 
 			//
 			log.Logger <- log.Log{
@@ -96,9 +96,9 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin) {
 		Level: logrus.WarnLevel,
 	}
 	//
-	stat, ok := upbit.MarketTrackingStates[upbit.Market+"-"+coin.Name]
+	stat, ok := bot.MarketTrackingStates[upbit.Market+"-"+coin.Name]
 
-	for ok && stat == upbit.TRACKING {
+	for ok && stat == bot.TRACKING {
 		ticker := <-coin.T
 
 		price := ticker["trade_price"].(float64)
@@ -151,7 +151,7 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin) {
 					if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
 						if ok, err := accounts.Order(coin, upbit.S, coinBalance, price); ok && err == nil {
 							// 매도 이후에는 추적 상태를 멈춘다.
-							upbit.MarketTrackingStates[c] = upbit.STOPPED
+							bot.MarketTrackingStates[c] = bot.STOPPED
 						}
 						continue
 					}

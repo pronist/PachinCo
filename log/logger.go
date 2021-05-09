@@ -12,7 +12,7 @@ var Logger = make(chan Log) // 외부에서 사용하게 될 로그 채널이다
 func init() {
 	go func() {
 		rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
-			Filename:   "logs/log.log",
+			Filename:   "log.log",
 			MaxSize:    10, // megabytes
 			MaxBackups: 3,
 			MaxAge:     28, //days

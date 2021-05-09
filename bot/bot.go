@@ -26,10 +26,8 @@ func Predicate(market string, r map[string]interface{}) bool {
 }
 
 type Bot struct {
-	// 투자에 사용할 계정, 예를 들어 모의투자의 경우 실제 계좌를 사용하지 않도록 해야한다.
-	Accounts Accounts
-	// 봇이 실행할 전략, 여러개를 사용할 수도 있다.
-	Strategies []Strategy
+	Accounts   Accounts   // 투자에 사용할 계정
+	Strategies []Strategy // 봇이 실행할 전략, 여러개를 사용할 수도 있다.
 }
 
 func (b *Bot) Run() {
@@ -104,9 +102,9 @@ func (b *Bot) Go(market string) error {
 	}
 
 	// 이미 코인이 담겨져 있다면 추적상태로 바꾸지 않는다.
-	if _, ok := upbit.MarketTrackingStates[market]; !ok {
+	if _, ok := MarketTrackingStates[market]; !ok {
 		// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-		upbit.MarketTrackingStates[market] = upbit.TRACKING
+		MarketTrackingStates[market] = TRACKING
 
 		log.Logger <- log.Log{
 			Msg: "Tracking starts with",
@@ -146,7 +144,7 @@ func (b *Bot) Tick(coin *Coin) {
 		// format
 	}
 
-	for upbit.MarketTrackingStates[m] == upbit.TRACKING {
+	for MarketTrackingStates[m] == TRACKING {
 		var r map[string]interface{}
 
 		if err := ws.WriteJSON(data); err != nil {
