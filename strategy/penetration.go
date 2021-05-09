@@ -19,16 +19,16 @@ type Penetration struct {
 }
 
 // 이미 돌파된 종목에 대해서는 처리하면 안 된다.
-func (p *Penetration) Prepare() {
+func (p *Penetration) Prepare(accounts bot.Accounts) {
 	//
-	log.Logger <- log.Log{Msg: "Preparing...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Prepare strategy...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.InfoLevel}
 	//
 	ws, _, err := websocket.DefaultDialer.Dial(bot.SockURL+"/"+bot.SockVersion, nil)
 	if err != nil {
 		panic(err)
 	}
 
-	markets, err := upbit.API.GetMarketNames(bot.TargetMarket)
+	markets, err := upbit.API.GetMarketNames(upbit.Market)
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +72,7 @@ func (p *Penetration) Prepare() {
 	}
 }
 
-func (p *Penetration) Run(coin *bot.Coin) {
+func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin) {
 	defer func(coin *bot.Coin) {
 		if err := recover(); err != nil {
 			//
@@ -96,15 +96,17 @@ func (p *Penetration) Run(coin *bot.Coin) {
 		Level: logrus.WarnLevel,
 	}
 	//
-	stat, ok := upbit.MarketTrackingStates[bot.TargetMarket+"-"+coin.Name]
+	stat, ok := upbit.MarketTrackingStates[upbit.Market+"-"+coin.Name]
 
 	for ok && stat == upbit.TRACKING {
 		ticker := <-coin.T
 
-		m := ticker["code"].(string)
 		price := ticker["trade_price"].(float64)
+		c := ticker["code"].(string)
 
-		balances, err := upbit.API.GetBalances(upbit.Accounts)
+		acc := accounts.Accounts()
+
+		balances, err := upbit.API.GetBalances(acc)
 		if err != nil {
 			panic(err)
 		}
@@ -117,61 +119,50 @@ func (p *Penetration) Run(coin *bot.Coin) {
 			}
 
 			// 변동성 돌파는 전략의 기본 조건이다.
-			if bot.Predicate(m, ticker) {
-				//if coinBalance, ok := balances[coin.Name]; ok {
-				// 테스트
-				if coinBalance, ok := upbit.T_Accounts[coin.Name]; ok {
+			if bot.Predicate(c, ticker) {
+				if coinBalance, ok := balances[coin.Name]; ok {
 					// 이미 코인을 가지고 있는 경우
 
-					//avgBuyPrice, err := upbit.API.GetAverageBuyPrice(upbit.Accounts, coin.Name)
-					//if err != nil {
-					//	panic(err)
-					//}
-
-					// 테스트
-					var avgBuyPrice float64
-					var count float64
-
-					for c, order := range upbit.T_Orders {
-						if order.Side == upbit.B && c == coin.Name {
-							count += order.Volume
-							avgBuyPrice += order.Price * order.Volume
-						}
+					avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
+					if err != nil {
+						panic(err)
 					}
-					avgBuyPrice /= count
-					//
 
 					pp := price / avgBuyPrice
 
-					// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우, 단기 시장이 하락장일 때 '매도'
-					if pp-1 >= p.H {
-						if ok := coin.Order(upbit.S, coinBalance, price); ok {
+					////// 매수 전략
+
+					// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
+					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
+
+					if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
+						if pp-1 <= p.L {
+							accounts.Order(coin, upbit.B, volume, price)
+							continue
+						}
+					}
+
+					////// 매도 전략
+
+					// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
+
+					orderSellingPrice := coinBalance * price
+
+					if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
+						if ok, err := accounts.Order(coin, upbit.S, coinBalance, price); ok && err == nil {
 							// 매도 이후에는 추적 상태를 멈춘다.
-							upbit.MarketTrackingStates[m] = upbit.STOPPED
+							upbit.MarketTrackingStates[c] = upbit.STOPPED
 						}
 						continue
 					}
-					// 가격이 매수평균가 대비 `p.L` 보다 하락한 경우 추가 '매수' 요청
-					if pp-1 <= p.L {
-						coin.Order(upbit.B, volume, price)
-						continue
-					}
 				} else {
-					// 단기 상승장 + 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
-					coin.Order(upbit.B, volume, price)
+					// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
+					accounts.Order(coin, upbit.B, volume, price)
 					continue
 				}
 			}
 		}
 
 		time.Sleep(time.Second * 1)
-	}
-
-	log.Logger <- log.Log{
-		Msg: "Strategy closed.",
-		Fields: logrus.Fields{
-			"strategy": "Penetration", "coin": coin.Name,
-		},
-		Level: logrus.WarnLevel,
 	}
 }

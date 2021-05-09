@@ -6,13 +6,8 @@ import (
 	"github.com/pronist/upbit/log"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"sync"
 	"time"
 )
-
-const TargetMarket = "KRW" // 원화 마켓을 추적한다.
-
-var Mu sync.Mutex // 글로벌 상태를 동기화하기 위해 사용될 것이다.
 
 // 트래킹할 종목에 대한 조건이다.
 func Predicate(market string, r map[string]interface{}) bool {
@@ -31,6 +26,9 @@ func Predicate(market string, r map[string]interface{}) bool {
 }
 
 type Bot struct {
+	// 투자에 사용할 계정, 예를 들어 모의투자의 경우 실제 계좌를 사용하지 않도록 해야한다.
+	Accounts Accounts
+	// 봇이 실행할 전략, 여러개를 사용할 수도 있다.
 	Strategies []Strategy
 }
 
@@ -39,7 +37,7 @@ func (b *Bot) Run() {
 
 	// 전략의 사전 준비를 해야한다.
 	for _, strategy := range b.Strategies {
-		strategy.Prepare()
+		strategy.Prepare(b.Accounts)
 	}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
@@ -55,7 +53,7 @@ func (b *Bot) Run() {
 		panic(err)
 	}
 
-	go detector.Run(TargetMarket, Predicate) // 종목 찾기 시작!
+	go detector.Run(upbit.Market, Predicate) // 종목 찾기 시작!
 	/////
 
 	for {
@@ -82,7 +80,7 @@ func (b *Bot) Run() {
 }
 
 func (b *Bot) RunStrategyForCoinsInHands() error {
-	balances, err := upbit.API.GetBalances(upbit.Accounts)
+	balances, err := upbit.API.GetBalances(b.Accounts.Accounts())
 	if err != nil {
 		return err
 	}
@@ -93,20 +91,14 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 			return err
 		}
 	}
-
-	// 테스트
-	for coin, balance := range balances {
-		upbit.T_Accounts[coin] = balance
-	}
 	//
-
 	log.Logger <- log.Log{Msg: "Run strategy for coins in hands.", Level: logrus.InfoLevel}
-
+	//
 	return nil
 }
 
 func (b *Bot) Go(market string) error {
-	coin, err := NewCoin(market[4:], upbit.Config.C)
+	coin, err := NewCoin(b.Accounts, market[4:], upbit.Config.C)
 	if err != nil {
 		return err
 	}
@@ -127,7 +119,7 @@ func (b *Bot) Go(market string) error {
 		go b.Tick(coin)
 
 		for _, strategy := range b.Strategies {
-			go strategy.Run(coin)
+			go strategy.Run(b.Accounts, coin)
 		}
 	}
 
@@ -146,7 +138,7 @@ func (b *Bot) Tick(coin *Coin) {
 		panic(err)
 	}
 
-	m := TargetMarket + "-" + coin.Name
+	m := upbit.Market + "-" + coin.Name
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket

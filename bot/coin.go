@@ -2,8 +2,6 @@ package bot
 
 import (
 	"github.com/pronist/upbit"
-	"github.com/pronist/upbit/log"
-	"github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -19,105 +17,31 @@ type Coin struct {
 	mu sync.Mutex
 }
 
-func NewCoin(name string, rate float64) (*Coin, error) {
+func NewCoin(accounts Accounts, name string, rate float64) (*Coin, error) {
 	coin := Coin{Name: name, Rate: rate, T: make(chan map[string]interface{})}
-	if err := coin.Refresh(); err != nil {
+	if err := coin.Refresh(accounts); err != nil {
 		panic(err)
 	}
 
 	return &coin, nil
 }
 
-// order 메서드는 주문을 하되 Config.Timeout 만큼이 지나가면 주문을 자동으로 취소한다.
-// 매수/매도에 둘다 사용한다.
-func (c *Coin) Order(side string, volume, price float64) bool {
-	// 테스트
-	log.Logger <- log.Log{
-		Msg: "ORDER",
-		Fields: logrus.Fields{
-			"side": side, "market": TargetMarket + "-" + c.Name, "volume": volume, "price": price,
-		},
-		Level: logrus.WarnLevel,
-	}
-
-	switch side {
-	case upbit.B:
-		upbit.T_Accounts[c.Name] += volume
-	case upbit.S:
-		upbit.T_Accounts[c.Name] -= volume
-	}
-
-	upbit.T_Orders[c.Name] = upbit.T_Order{side, volume, price}
-
-	return true
-	//
-
-	//
-	//done := make(chan int)
-	//
-	//uuid, err := upbit.API.Order("KRW-"+c.Name, side, fmt.Sprintf("%f", volume), fmt.Sprintf("%f", price), "limit")
-	//if err != nil {
-	//	LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
-	//}
-	//LogChan <- Log{
-	//	Msg: "ORDER",
-	//	Fields: logrus.Fields{
-	//		"side": side, "market": "KRW-" + c.Name, "volume": volume, "price": price,
-	//	},
-	//	Level: logrus.WarnLevel,
-	//}
-	//
-	//timer := time.NewTimer(time.Second * upbit.Config.Timeout)
-	//
-	//go upbit.API.Wait(done, uuid)
-	//
-	//select {
-	//// 주문이 체결되지 않고 무기한 기다리는 것을 방지하기 위해 타임아웃을 지정한다.
-	//case <-timer.C:
-	//	err := upbit.API.CancelOrder(uuid)
-	//	if err != nil {
-	//		LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
-	//	}
-	//	LogChan <- Log{
-	//		Msg: "CANCEL",
-	//		Fields: logrus.Fields{
-	//			"coin": c.Name, "side": side, "timeout": time.Second * upbit.Config.Timeout,
-	//		},
-	//		Level: logrus.WarnLevel,
-	//	}
-	//case <-done:
-	//}
-	//
-	//time.Sleep(time.Second * 3) // 주문 바로 갱신하지 않고 잠시동안 기다립니다.
-	//
-	//if err := c.Refresh(); err != nil {
-	//	LogChan <- Log{Msg: err, Level: logrus.ErrorLevel}
-	//}
-}
-
 // Refresh 메서드는 봇과 업비트와의 계좌 동기화를 위해 정보를 갱신해야 한다.
 // 주로 매수/매도를 할 때 정보의 변동이 발생하므로 주문 이후 즉시 처리한다.
-func (c *Coin) Refresh() error {
+func (c *Coin) Refresh(accounts Accounts) error {
 	var err error
-
-	Mu.Lock()
-	// 주문이 체결 된 이후 자금 추적을 위해 변경된 정보를 다시 얻어야 한다.
-	upbit.Accounts, err = upbit.API.NewAccounts()
-	if err != nil {
-		return err
-	}
-	Mu.Unlock()
+	acc := accounts.Accounts()
 
 	c.mu.Lock() // 계정 정보를 변경할 떄는 갱신 경쟁을 해서는 안된다.
 	defer c.mu.Unlock()
 
-	balances, err := upbit.API.GetBalances(upbit.Accounts)
+	balances, err := upbit.API.GetBalances(acc)
 	if err != nil {
 		return err
 	}
 
 	// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
-	totalBalance, err := upbit.API.GetTotalBalance(upbit.Accounts, balances) // 총 매수 자금
+	totalBalance, err := upbit.API.GetTotalBalance(acc, balances) // 총 매수 자금
 	if err != nil {
 		return err
 	}
