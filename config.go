@@ -21,7 +21,7 @@ func init() {
 	err := configor.New(&configor.Config{Silent: true}).Load(&Config, ConfigFileName)
 
 	if err != nil {
-		log.Logger <- log.Log{Msg: err, Level: logrus.PanicLevel}
+		log.Logger <- log.Log{Msg: err, Level: logrus.FatalLevel}
 	}
 	//
 	log.Logger <- log.Log{
@@ -29,7 +29,7 @@ func init() {
 		Fields: logrus.Fields{
 			"name": ConfigFileName,
 		},
-		Level: logrus.InfoLevel,
+		Level: logrus.DebugLevel,
 	}
 	//
 }

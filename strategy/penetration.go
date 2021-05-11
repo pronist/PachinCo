@@ -21,7 +21,7 @@ type Penetration struct {
 // 이미 돌파된 종목에 대해서는 처리하면 안 된다.
 func (p *Penetration) Prepare(accounts bot.Accounts) {
 	//
-	log.Logger <- log.Log{Msg: "Prepare strategy...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Prepare strategy...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.DebugLevel}
 	//
 	ws, _, err := websocket.DefaultDialer.Dial(bot.SockURL+"/"+bot.SockVersion, nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func (p *Penetration) Prepare(accounts bot.Accounts) {
 					"change-rate": r["signed_change_rate"].(float64),
 					"price":       r["trade_price"].(float64),
 				},
-				Level: logrus.WarnLevel,
+				Level: logrus.InfoLevel,
 			}
 			//
 		}
@@ -120,11 +120,18 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]in
 
 			if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
 				ok, err := accounts.Order(coin, upbit.S, coinBalance, price, t)
+
 				if ok && err == nil {
 					// 매도 이후에는 추적 상태를 멈춘다.
 					bot.MarketTrackingStates[c] = bot.STOPPED
+					//
+					log.Logger <- log.Log{
+						Msg: "Stopped",
+						Fields: logrus.Fields{"market": c},
+						Level: logrus.InfoLevel,
+					}
+					//
 				}
-
 				return ok, err
 			}
 		} else {

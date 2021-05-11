@@ -19,7 +19,7 @@ func New() (*Accounts, error) {
 		return nil, err
 	}
 	//
-	log.Logger <- log.Log{Msg: "Brought about Accounts From Upbit.", Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Brought about Accounts From Upbit.", Level: logrus.DebugLevel}
 	//
 
 	return &Accounts{accounts}, nil

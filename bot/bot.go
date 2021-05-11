@@ -36,7 +36,7 @@ type Bot struct {
 }
 
 func (b *Bot) Run() {
-	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.DebugLevel}
 
 	// 전략의 사전 준비를 해야한다.
 	for _, strategy := range b.Strategies {
@@ -74,7 +74,7 @@ func (b *Bot) Run() {
 						"change-rate": tick["signed_change_rate"].(float64),
 						"price":       tick["trade_price"].(float64),
 					},
-					Level: logrus.InfoLevel,
+					Level: logrus.DebugLevel,
 				}
 				//
 				if err := b.Go(market); err != nil {
@@ -100,7 +100,7 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 		}
 	}
 	//
-	log.Logger <- log.Log{Msg: "Run strategy for coins in hands.", Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Run strategy for coins in hands.", Level: logrus.DebugLevel}
 	//
 	return nil
 }
@@ -140,9 +140,9 @@ func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
 	}(coin)
 	//
 	log.Logger <- log.Log{
-		Msg:    strategy.Name(),
-		Fields: logrus.Fields{"coin": coin.Name, "state": "started"},
-		Level:  logrus.WarnLevel,
+		Msg:    "STARTED",
+		Fields: logrus.Fields{"strategy": strategy.Name(), "coin": coin.Name},
+		Level:  logrus.DebugLevel,
 	}
 	//
 	stat, ok := MarketTrackingStates[upbit.Market+"-"+coin.Name]
@@ -168,9 +168,9 @@ func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
 
 	//
 	log.Logger <- log.Log{
-		Msg:    strategy.Name(),
-		Fields: logrus.Fields{"coin": coin.Name, "state": "closed"},
-		Level:  logrus.WarnLevel,
+		Msg:    "CLOSED",
+		Fields: logrus.Fields{"strategy": strategy.Name(), "coin": coin.Name},
+		Level:  logrus.DebugLevel,
 	}
 	//
 }
@@ -212,7 +212,7 @@ func (b *Bot) Tick(coin *Coin) {
 				"change-rate": r["signed_change_rate"].(float64),
 				"price":       r["trade_price"].(float64),
 			},
-			Level: logrus.InfoLevel,
+			Level: logrus.TraceLevel,
 		}
 
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
@@ -228,7 +228,7 @@ func (b *Bot) Tick(coin *Coin) {
 	log.Logger <- log.Log{
 		Msg:    "CLOSED",
 		Fields: logrus.Fields{"role": "Tick", "coin": coin.Name},
-		Level:  logrus.WarnLevel,
+		Level:  logrus.DebugLevel,
 	}
 	//
 }

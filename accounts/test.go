@@ -32,7 +32,7 @@ func NewTestAccounts(krw float64) *TestAccounts {
 		Fields: logrus.Fields{
 			"KRW": krw,
 		},
-		Level: logrus.InfoLevel,
+		Level: logrus.DebugLevel,
 	}
 	//
 
@@ -77,6 +77,7 @@ func (acc *TestAccounts) Order(coin *bot.Coin, side string, volume, price float6
 
 func (acc *TestAccounts) Accounts() []map[string]interface{} {
 	r := make([]map[string]interface{}, 0)
+
 	for _, account := range acc.accounts {
 		m := structs.Map(account)
 

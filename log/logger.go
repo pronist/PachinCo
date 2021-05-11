@@ -4,20 +4,21 @@ import (
 	"github.com/mattn/go-colorable"
 	"github.com/sirupsen/logrus"
 	"github.com/snowzach/rotatefilehook"
-	"time"
 )
 
 var Logger = make(chan Log) // 외부에서 사용하게 될 로그 채널이다.
 
 func init() {
 	go func() {
+		timestampFormat := "2006-01-02 15:04:05"
+
 		rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
 			Filename:   "log.log",
 			MaxSize:    10, // megabytes
 			MaxBackups: 3,
 			MaxAge:     28, //days
 			Formatter: &logrus.JSONFormatter{
-				TimestampFormat: time.RFC822,
+				TimestampFormat: timestampFormat,
 			},
 		})
 		if err != nil {
@@ -27,13 +28,12 @@ func init() {
 		logger := &logrus.Logger{
 			Out: colorable.NewColorableStdout(),
 			Formatter: &logrus.TextFormatter{
-				ForceColors: true, FullTimestamp: true, TimestampFormat: time.RFC822,
+				ForceColors: true, FullTimestamp: true, TimestampFormat: timestampFormat,
 			},
 			Hooks: map[logrus.Level][]logrus.Hook{
-				// 로그 레벨이 Warn, Error, Fatal 인 경우 파일에 기록한다.
-				logrus.WarnLevel: {rotateFileHook}, logrus.ErrorLevel: {rotateFileHook}, logrus.FatalLevel: {rotateFileHook},
+				logrus.InfoLevel: {rotateFileHook}, logrus.WarnLevel: {rotateFileHook}, logrus.ErrorLevel: {rotateFileHook}, logrus.FatalLevel: {rotateFileHook},
 			},
-			Level: logrus.InfoLevel,
+			Level: logrus.TraceLevel,
 		}
 
 		for {

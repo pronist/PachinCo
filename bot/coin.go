@@ -63,7 +63,7 @@ func (c *Coin) Refresh(accounts Accounts) error {
 		Fields: logrus.Fields{
 			"total": totalBalance, "limit": c.Limit, "order": c.OnceOrderPrice,
 		},
-		Level: logrus.WarnLevel,
+		Level: logrus.InfoLevel,
 	}
 	//
 	return nil

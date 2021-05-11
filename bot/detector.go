@@ -37,7 +37,7 @@ func (d *Detector) Run(currency string, predicate func(t map[string]interface{})
 		}
 	}()
 	//
-	log.Logger <- log.Log{Msg: "Detector started...", Level: logrus.InfoLevel}
+	log.Logger <- log.Log{Msg: "Detector started...", Level: logrus.DebugLevel}
 	//
 	markets, err := upbit.API.GetMarketNames(currency)
 	if err != nil {
