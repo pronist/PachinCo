@@ -2,6 +2,8 @@ package bot
 
 import (
 	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/log"
+	"github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -55,5 +57,14 @@ func (c *Coin) Refresh(accounts Accounts) error {
 	// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
 	c.OnceOrderPrice = c.Limit * upbit.Config.R
 
+	//
+	log.Logger <- log.Log{
+		Msg: c.Name,
+		Fields: logrus.Fields{
+			"total": totalBalance, "limit": c.Limit, "order": c.OnceOrderPrice,
+		},
+		Level: logrus.WarnLevel,
+	}
+	//
 	return nil
 }

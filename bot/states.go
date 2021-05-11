@@ -7,3 +7,4 @@ const (
 )
 
 var MarketTrackingStates = make(map[string]int)
+var Tracking int

@@ -36,17 +36,19 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (
 		log.Logger <- log.Log{Msg: err, Level: logrus.ErrorLevel}
 	}
 
-	log.Logger <- log.Log{
-		Msg: "ORDER",
-		Fields: logrus.Fields{
-			"side": side, "market": c, "volume": volume, "price": price,
-		},
-		Level: logrus.WarnLevel,
-	}
-
 	timer := time.NewTimer(time.Second * upbit.Config.Timeout)
 
 	go upbit.API.Wait(done, uuid)
+
+	//
+	log.Logger <- log.Log{
+		Msg: "ORDER",
+		Fields: logrus.Fields{
+			"coin": coin.Name, "side": side, "volume": volume, "price": price,
+		},
+		Level: logrus.WarnLevel,
+	}
+	//
 
 	select {
 	// 주문이 체결되지 않고 무기한 기다리는 것을 방지하기 위해 타임아웃을 지정한다.
