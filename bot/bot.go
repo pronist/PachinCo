@@ -157,8 +157,7 @@ func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
 		}
 
 		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
-			_, err := strategy.Run(b.Accounts, coin, t)
-			if err != nil {
+			if _, err := strategy.Run(b.Accounts, coin, t); err != nil {
 				panic(err)
 			}
 		}

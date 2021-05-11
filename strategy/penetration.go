@@ -18,7 +18,10 @@ type Penetration struct {
 	K float64 // 돌파 상수
 }
 
-// 이미 돌파된 종목에 대해서는 처리하면 안 된다.
+func (p *Penetration) Name() string {
+	return "Penetration"
+}
+
 func (p *Penetration) Prepare(accounts bot.Accounts) {
 	//
 	log.Logger <- log.Log{Msg: "Prepare strategy...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.DebugLevel}
@@ -86,7 +89,7 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]in
 
 	balances, err := upbit.API.GetBalances(acc)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 
 	// 변동성 돌파는 전략의 기본 조건이다.
@@ -96,7 +99,7 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]in
 
 			avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
 			if err != nil {
-				panic(err)
+				return false, err
 			}
 
 			pp := price / avgBuyPrice
@@ -126,9 +129,9 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]in
 					bot.MarketTrackingStates[c] = bot.STOPPED
 					//
 					log.Logger <- log.Log{
-						Msg: "Stopped",
+						Msg:    "Stopped",
 						Fields: logrus.Fields{"market": c},
-						Level: logrus.InfoLevel,
+						Level:  logrus.InfoLevel,
 					}
 					//
 				}
@@ -141,8 +144,4 @@ func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]in
 	}
 
 	return false, nil
-}
-
-func (p *Penetration) Name() string {
-	return "Penetration"
 }
