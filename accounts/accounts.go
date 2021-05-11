@@ -25,9 +25,9 @@ func New() (*Accounts, error) {
 	return &Accounts{accounts}, nil
 }
 
-func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (bool, error) {
+func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64, t map[string]interface{}) (bool, error) {
 	done := make(chan int)
-	var timeout bool
+	var ok bool
 
 	c := upbit.Market + "-" + coin.Name
 
@@ -44,7 +44,7 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (
 	log.Logger <- log.Log{
 		Msg: "ORDER",
 		Fields: logrus.Fields{
-			"coin": coin.Name, "side": side, "volume": volume, "price": price,
+			"coin": coin.Name, "side": side, "volume": volume, "price": price, "change-rate": t["change_rate"].(float64),
 		},
 		Level: logrus.WarnLevel,
 	}
@@ -66,7 +66,7 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (
 			Level: logrus.WarnLevel,
 		}
 	case <-done:
-		timeout = true
+		ok = true
 	}
 
 	time.Sleep(time.Second * 3) // 주문 바로 갱신하지 않고 잠시동안 기다립니다.
@@ -76,13 +76,14 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64) (
 	if err != nil {
 		return false, err
 	}
+
 	acc.accounts = accounts
 
 	if err := coin.Refresh(acc); err != nil {
 		return false, err
 	}
 
-	return timeout, nil
+	return ok, nil
 }
 
 func (acc *Accounts) Accounts() []map[string]interface{} {

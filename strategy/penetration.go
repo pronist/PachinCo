@@ -51,7 +51,7 @@ func (p *Penetration) Prepare(accounts bot.Accounts) {
 		}
 
 		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
-		if _, ok := bot.MarketTrackingStates[market]; !ok && bot.Predicate(market, r) {
+		if _, ok := bot.MarketTrackingStates[market]; !ok && bot.Predicate(r) {
 			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
 			bot.MarketTrackingStates[market] = bot.STOPPED
 
@@ -72,97 +72,70 @@ func (p *Penetration) Prepare(accounts bot.Accounts) {
 	}
 }
 
-func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin) {
-	defer func(coin *bot.Coin) {
-		if err := recover(); err != nil {
-			//
-			log.Logger <- log.Log{
-				Msg: err,
-				Fields: logrus.Fields{
-					"role": "Strategy", "strategy": "Penetration", "coin": coin.Name,
-				},
-				Level: logrus.ErrorLevel,
-			}
-			//
-		}
-	}(coin)
+func (p *Penetration) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]interface{}) (bool, error) {
+	price := t["trade_price"].(float64)
+	c := t["code"].(string)
 
-	//
-	log.Logger <- log.Log{
-		Msg: "Strategy started...",
-		Fields: logrus.Fields{
-			"strategy": "Penetration", "coin": coin.Name,
-		},
-		Level: logrus.WarnLevel,
+	volume := coin.OnceOrderPrice / price
+
+	if math.IsInf(volume, 0) {
+		panic("division by zero")
 	}
-	//
-	stat, ok := bot.MarketTrackingStates[upbit.Market+"-"+coin.Name]
 
-	for ok && stat == bot.TRACKING {
-		ticker := <-coin.T
+	acc := accounts.Accounts()
 
-		price := ticker["trade_price"].(float64)
-		c := ticker["code"].(string)
+	balances, err := upbit.API.GetBalances(acc)
+	if err != nil {
+		panic(err)
+	}
 
-		acc := accounts.Accounts()
+	// 변동성 돌파는 전략의 기본 조건이다.
+	if bot.Predicate(t) {
+		if coinBalance, ok := balances[coin.Name]; ok {
+			// 이미 코인을 가지고 있는 경우
 
-		balances, err := upbit.API.GetBalances(acc)
-		if err != nil {
-			panic(err)
-		}
-
-		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
-			volume := coin.OnceOrderPrice / price
-
-			if math.IsInf(volume, 0) {
+			avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
+			if err != nil {
 				panic(err)
 			}
 
-			// 변동성 돌파는 전략의 기본 조건이다.
-			if bot.Predicate(c, ticker) {
-				if coinBalance, ok := balances[coin.Name]; ok {
-					// 이미 코인을 가지고 있는 경우
+			pp := price / avgBuyPrice
 
-					avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
-					if err != nil {
-						panic(err)
-					}
+			////// 매수 전략
 
-					pp := price / avgBuyPrice
+			// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
+			// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
 
-					////// 매수 전략
-
-					// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
-					// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
-
-					if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
-						if pp-1 <= p.L {
-							accounts.Order(coin, upbit.B, volume, price)
-							continue
-						}
-					}
-
-					////// 매도 전략
-
-					// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
-
-					orderSellingPrice := coinBalance * price
-
-					if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
-						if ok, err := accounts.Order(coin, upbit.S, coinBalance, price); ok && err == nil {
-							// 매도 이후에는 추적 상태를 멈춘다.
-							bot.MarketTrackingStates[c] = bot.STOPPED
-						}
-						continue
-					}
-				} else {
-					// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
-					accounts.Order(coin, upbit.B, volume, price)
-					continue
+			if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
+				if pp-1 <= p.L {
+					return accounts.Order(coin, upbit.B, volume, price, t)
 				}
 			}
-		}
 
-		time.Sleep(time.Second * 1)
+			////// 매도 전략
+
+			// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
+
+			orderSellingPrice := coinBalance * price
+
+			if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
+				ok, err := accounts.Order(coin, upbit.S, coinBalance, price, t)
+				if ok && err == nil {
+					// 매도 이후에는 추적 상태를 멈춘다.
+					bot.MarketTrackingStates[c] = bot.STOPPED
+				}
+
+				return ok, err
+			}
+		} else {
+			// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
+			return accounts.Order(coin, upbit.B, volume, price, t)
+		}
 	}
+
+	return false, nil
+}
+
+func (p *Penetration) Name() string {
+	return "Penetration"
 }

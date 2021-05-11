@@ -10,24 +10,25 @@ import (
 )
 
 // 트래킹할 종목에 대한 조건이다.
-//func Predicate(market string, r map[string]interface{}) bool {
-//	price := r["trade_price"].(float64)
-//
-//	// https://wikidocs.net/21888
-//	dayCandles, err := upbit.API.GetCandlesDays(market, "2")
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
-//	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
-//
-//	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
-//}
+func Predicate(t map[string]interface{}) bool {
+	price := t["trade_price"].(float64)
+	c := t["code"].(string)
 
-func Predicate(market string, r map[string]interface{}) bool {
-	return true
+	// https://wikidocs.net/21888
+	dayCandles, err := upbit.API.GetCandlesDays(c, "2")
+	if err != nil {
+		panic(err)
+	}
+
+	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
+	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
+
+	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
 }
+
+//func Predicate(t map[string]interface{}) bool {
+//	return true
+//}
 
 type Bot struct {
 	Accounts   Accounts   // 투자에 사용할 계정
@@ -38,9 +39,9 @@ func (b *Bot) Run() {
 	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.InfoLevel}
 
 	// 전략의 사전 준비를 해야한다.
-	//for _, strategy := range b.Strategies {
-	//	strategy.Prepare(b.Accounts)
-	//}
+	for _, strategy := range b.Strategies {
+		strategy.Prepare(b.Accounts)
+	}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
 	err := b.RunStrategyForCoinsInHands()
@@ -117,10 +118,61 @@ func (b *Bot) Go(market string) error {
 	go b.Tick(coin)
 
 	for _, strategy := range b.Strategies {
-		go strategy.Run(b.Accounts, coin)
+		go b.Strategy(coin, strategy)
 	}
 
 	return nil
+}
+
+func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
+	defer func(coin *Coin) {
+		if err := recover(); err != nil {
+			//
+			log.Logger <- log.Log{
+				Msg: err,
+				Fields: logrus.Fields{
+					"role": "Strategy", "strategy": strategy.Name(), "coin": coin.Name,
+				},
+				Level: logrus.ErrorLevel,
+			}
+			//
+		}
+	}(coin)
+	//
+	log.Logger <- log.Log{
+		Msg:    strategy.Name(),
+		Fields: logrus.Fields{"coin": coin.Name, "state": "started"},
+		Level:  logrus.WarnLevel,
+	}
+	//
+	stat, ok := MarketTrackingStates[upbit.Market+"-"+coin.Name]
+
+	for ok && stat == TRACKING {
+		t := <-coin.T
+		acc := b.Accounts.Accounts()
+
+		balances, err := upbit.API.GetBalances(acc)
+		if err != nil {
+			panic(err)
+		}
+
+		if balances["KRW"] >= upbit.MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > upbit.MinimumOrderPrice {
+			_, err := strategy.Run(b.Accounts, coin, t)
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		time.Sleep(time.Second * 1)
+	}
+
+	//
+	log.Logger <- log.Log{
+		Msg:    strategy.Name(),
+		Fields: logrus.Fields{"coin": coin.Name, "state": "closed"},
+		Level:  logrus.WarnLevel,
+	}
+	//
 }
 
 func (b *Bot) Tick(coin *Coin) {
@@ -174,9 +226,9 @@ func (b *Bot) Tick(coin *Coin) {
 
 	//
 	log.Logger <- log.Log{
-		Msg: "CLOSED",
+		Msg:    "CLOSED",
 		Fields: logrus.Fields{"role": "Tick", "coin": coin.Name},
-		Level: logrus.WarnLevel,
+		Level:  logrus.WarnLevel,
 	}
 	//
 }

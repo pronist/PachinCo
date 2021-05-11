@@ -10,7 +10,7 @@ import (
 func main() {
 	acc := accounts.NewTestAccounts(55000.0) // 테스트용 계정
 
-	b := &bot.Bot{acc, []bot.Strategy{
+	b := &bot.Bot{Accounts: acc, Strategies: []bot.Strategy{
 		&strategy.Penetration{K: upbit.Config.K, H: 0.03, L: -0.05},
 	}}
 

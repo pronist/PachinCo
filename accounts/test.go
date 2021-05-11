@@ -39,7 +39,7 @@ func NewTestAccounts(krw float64) *TestAccounts {
 	return &TestAccounts{accounts, make(map[string]float64)}
 }
 
-func (acc *TestAccounts) Order(coin *bot.Coin, side string, volume, price float64) (bool, error) {
+func (acc *TestAccounts) Order(coin *bot.Coin, side string, volume, price float64, t map[string]interface{}) (bool, error) {
 	if _, ok := acc.accounts[coin.Name]; !ok {
 		acc.accounts[coin.Name] = &Account{Currency: coin.Name, Balance: 0, AvgBuyPrice: 0}
 	}
@@ -61,7 +61,7 @@ func (acc *TestAccounts) Order(coin *bot.Coin, side string, volume, price float6
 	log.Logger <- log.Log{
 		Msg: "ORDER",
 		Fields: logrus.Fields{
-			"coin": coin.Name, "side": side, "volume": volume, "price": price,
+			"coin": coin.Name, "side": side, "volume": volume, "price": price, "change-rate": t["change_rate"].(float64),
 		},
 		Level: logrus.WarnLevel,
 	}

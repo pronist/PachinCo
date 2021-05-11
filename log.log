@@ -1182,3 +1182,85 @@
 {"coin":"LTC","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 13:41 KST"}
 {"coin":"LTC","level":"warning","msg":"ORDER","price":449800,"side":"bid","time":"11 May 21 13:41 KST","volume":0.012231709967541131}
 {"level":"warning","limit":11003.6723782,"msg":"LTC","order":5501.8361891,"time":"11 May 21 13:41 KST","total":55018.361891}
+{"level":"warning","limit":11000,"msg":"BTC","order":5500,"time":"11 May 21 14:26 KST","total":55000}
+{"coin":"BTC","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:26 KST"}
+{"coin":"BTC","level":"warning","msg":"ORDER","price":69507000,"side":"bid","time":"11 May 21 14:26 KST","volume":0.00007912872084825989}
+{"level":"warning","limit":10998.2106,"msg":"BTC","order":5499.1053,"time":"11 May 21 14:26 KST","total":54991.053}
+{"level":"warning","limit":10998.2106,"msg":"ETH","order":5499.1053,"time":"11 May 21 14:26 KST","total":54991.053}
+{"coin":"ETH","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:26 KST"}
+{"coin":"ETH","level":"warning","msg":"ORDER","price":4920000,"side":"bid","time":"11 May 21 14:26 KST","volume":0.0011177043292682927}
+{"level":"warning","limit":10998.50154,"msg":"ETH","order":5499.25077,"time":"11 May 21 14:26 KST","total":54992.507699999995}
+{"level":"warning","limit":10998.50154,"msg":"NEO","order":5499.25077,"time":"11 May 21 14:26 KST","total":54992.507699999995}
+{"coin":"NEO","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:26 KST"}
+{"coin":"NEO","level":"warning","msg":"ORDER","price":130700,"side":"bid","time":"11 May 21 14:26 KST","volume":0.04207536931905126}
+{"level":"warning","limit":10998.491886,"msg":"NEO","order":5499.245943,"time":"11 May 21 14:26 KST","total":54992.459429999995}
+{"level":"warning","limit":10998.491886,"msg":"MTL","order":5499.245943,"time":"11 May 21 14:26 KST","total":54992.459429999995}
+{"coin":"MTL","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:26 KST"}
+{"coin":"MTL","level":"warning","msg":"ORDER","price":4730,"side":"bid","time":"11 May 21 14:26 KST","volume":1.162631277589852}
+{"level":"warning","limit":10998.4916234,"msg":"MTL","order":5499.2458117,"time":"11 May 21 14:26 KST","total":54992.458116999995}
+{"level":"warning","limit":10998.4916234,"msg":"LTC","order":5499.2458117,"time":"11 May 21 14:26 KST","total":54992.458116999995}
+{"coin":"LTC","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:26 KST"}
+{"coin":"LTC","level":"warning","msg":"ORDER","price":444000,"side":"bid","time":"11 May 21 14:26 KST","volume":0.012385688765090089}
+{"level":"warning","limit":10998.519261,"msg":"LTC","order":5499.2596305,"time":"11 May 21 14:26 KST","total":54992.59630499999}
+{"level":"warning","limit":11000,"msg":"BTC","order":5500,"time":"11 May 21 14:44 KST","total":55000}
+{"coin":"BTC","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:44 KST"}
+{"change-rate":0.0268257595,"coin":"BTC","level":"warning","msg":"ORDER","price":69000000,"side":"bid","time":"11 May 21 14:44 KST","volume":0.00007971014492753623}
+{"level":"warning","limit":11004,"msg":"BTC","order":5502,"time":"11 May 21 14:44 KST","total":55020}
+{"level":"warning","limit":11004,"msg":"ETH","order":5502,"time":"11 May 21 14:44 KST","total":55020}
+{"coin":"ETH","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:44 KST"}
+{"change-rate":0.0295468157,"coin":"ETH","level":"warning","msg":"ORDER","price":4861000,"side":"bid","time":"11 May 21 14:44 KST","volume":0.0011318658712199136}
+{"level":"warning","limit":11004.130400000002,"msg":"ETH","order":5502.065200000001,"time":"11 May 21 14:44 KST","total":55020.652}
+{"level":"warning","limit":11004.130400000002,"msg":"NEO","order":5502.065200000001,"time":"11 May 21 14:44 KST","total":55020.652}
+{"coin":"NEO","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:44 KST"}
+{"change-rate":0.0345475028,"coin":"NEO","level":"warning","msg":"ORDER","price":128550,"side":"bid","time":"11 May 21 14:44 KST","volume":0.042800973940101135}
+{"level":"warning","limit":11004.131070000001,"msg":"NEO","order":5502.065535000001,"time":"11 May 21 14:44 KST","total":55020.65535}
+{"level":"warning","limit":11004.131070000001,"msg":"MTL","order":5502.065535000001,"time":"11 May 21 14:44 KST","total":55020.65535}
+{"coin":"MTL","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:44 KST"}
+{"change-rate":0.0119435396,"coin":"MTL","level":"warning","msg":"ORDER","price":4660,"side":"bid","time":"11 May 21 14:44 KST","volume":1.180700758583691}
+{"level":"warning","limit":11004.131295,"msg":"MTL","order":5502.0656475,"time":"11 May 21 14:44 KST","total":55020.656474999996}
+{"level":"warning","limit":11004.131295,"msg":"LTC","order":5502.0656475,"time":"11 May 21 14:44 KST","total":55020.656474999996}
+{"coin":"LTC","level":"warning","msg":"Strategy started...","strategy":"Penetration","time":"11 May 21 14:44 KST"}
+{"change-rate":0.0339912281,"coin":"LTC","level":"warning","msg":"ORDER","price":440500,"side":"bid","time":"11 May 21 14:44 KST","volume":0.012490500902383654}
+{"level":"warning","limit":11004.1752656,"msg":"LTC","order":5502.0876328,"time":"11 May 21 14:44 KST","total":55020.876328}
+{"level":"warning","limit":11000,"msg":"BTC","order":5500,"time":"11 May 21 17:20 KST","total":55000}
+{"coin":"BTC","level":"warning","msg":"Penetration","time":"11 May 21 17:20 KST"}
+{"level":"warning","limit":11000,"msg":"ETH","order":5500,"time":"11 May 21 17:20 KST","total":55000}
+{"coin":"ETH","level":"warning","msg":"Penetration","time":"11 May 21 17:20 KST"}
+{"level":"warning","limit":11000,"msg":"NEO","order":5500,"time":"11 May 21 17:20 KST","total":55000}
+{"coin":"NEO","level":"warning","msg":"Penetration","time":"11 May 21 17:20 KST"}
+{"level":"warning","limit":11000,"msg":"MTL","order":5500,"time":"11 May 21 17:20 KST","total":55000}
+{"coin":"MTL","level":"warning","msg":"Penetration","time":"11 May 21 17:20 KST"}
+{"level":"warning","limit":11000,"msg":"LTC","order":5500,"time":"11 May 21 17:20 KST","total":55000}
+{"coin":"LTC","level":"warning","msg":"Penetration","time":"11 May 21 17:20 KST"}
+{"level":"warning","limit":11000,"msg":"BTC","order":5500,"time":"11 May 21 17:59 KST","total":55000}
+{"coin":"BTC","level":"warning","msg":"Penetration","time":"11 May 21 17:59 KST"}
+{"change-rate":0.0213252094,"coin":"BTC","level":"warning","msg":"ORDER","price":69390000,"side":"bid","time":"11 May 21 17:59 KST","volume":0.00007926214151895086}
+{"level":"warning","limit":10996.362000000001,"msg":"BTC","order":5498.1810000000005,"time":"11 May 21 17:59 KST","total":54981.81}
+{"level":"warning","limit":10996.362000000001,"msg":"ETH","order":5498.1810000000005,"time":"11 May 21 17:59 KST","total":54981.81}
+{"coin":"ETH","level":"warning","msg":"Penetration","time":"11 May 21 17:59 KST"}
+{"change-rate":0.019764424,"coin":"ETH","level":"warning","msg":"ORDER","price":4910000,"side":"bid","time":"11 May 21 17:59 KST","volume":0.0011197924643584522}
+{"level":"warning","limit":10996.5658,"msg":"ETH","order":5498.2829,"time":"11 May 21 17:59 KST","total":54982.829}
+{"level":"warning","limit":10996.5658,"msg":"NEO","order":5498.2829,"time":"11 May 21 17:59 KST","total":54982.829}
+{"coin":"NEO","level":"warning","msg":"Penetration","time":"11 May 21 17:59 KST"}
+{"change-rate":0.0127675554,"coin":"NEO","level":"warning","msg":"ORDER","price":131450,"side":"bid","time":"11 May 21 17:59 KST","volume":0.04182794142259414}
+{"level":"warning","limit":10996.56734,"msg":"NEO","order":5498.28367,"time":"11 May 21 17:59 KST","total":54982.83669999999}
+{"level":"warning","limit":11000,"msg":"BTC","order":5500,"time":"11 May 21 18:55 KST","total":55000}
+{"coin":"BTC","level":"warning","msg":"Penetration","state":"started","time":"11 May 21 18:55 KST"}
+{"change-rate":0.0220163042,"coin":"BTC","level":"warning","msg":"ORDER","price":69341000,"side":"bid","time":"11 May 21 18:55 KST","volume":0.00007931815231969542}
+{"level":"warning","limit":10995.587800000001,"msg":"BTC","order":5497.793900000001,"time":"11 May 21 18:55 KST","total":54977.939}
+{"level":"warning","limit":10995.587800000001,"msg":"ETH","order":5497.793900000001,"time":"11 May 21 18:55 KST","total":54977.939}
+{"coin":"ETH","level":"warning","msg":"Penetration","state":"started","time":"11 May 21 18:55 KST"}
+{"change-rate":0.0075863446,"coin":"ETH","level":"warning","msg":"ORDER","price":4971000,"side":"bid","time":"11 May 21 18:55 KST","volume":0.0011059734258700464}
+{"level":"warning","limit":10995.614220000001,"msg":"ETH","order":5497.807110000001,"time":"11 May 21 18:55 KST","total":54978.0711}
+{"level":"warning","limit":10995.614220000001,"msg":"NEO","order":5497.807110000001,"time":"11 May 21 18:55 KST","total":54978.0711}
+{"coin":"NEO","level":"warning","msg":"Penetration","state":"started","time":"11 May 21 18:55 KST"}
+{"level":"warning","limit":10995.614220000001,"msg":"MTL","order":5497.807110000001,"time":"11 May 21 18:55 KST","total":54978.0711}
+{"coin":"MTL","level":"warning","msg":"Penetration","state":"started","time":"11 May 21 18:55 KST"}
+{"change-rate":0.0401737242,"coin":"MTL","level":"warning","msg":"ORDER","price":4790,"side":"bid","time":"11 May 21 18:55 KST","volume":1.1477676638830898}
+{"level":"warning","limit":10995.614542000001,"msg":"MTL","order":5497.807271000001,"time":"11 May 21 18:55 KST","total":54978.07271}
+{"level":"warning","limit":10995.614542000001,"msg":"LTC","order":5497.807271000001,"time":"11 May 21 18:55 KST","total":54978.07271}
+{"coin":"LTC","level":"warning","msg":"Penetration","state":"started","time":"11 May 21 18:55 KST"}
+{"change-rate":0.0185307018,"coin":"LTC","level":"warning","msg":"ORDER","price":447550,"side":"bid","time":"11 May 21 18:55 KST","volume":0.012284230300525082}
+{"level":"warning","limit":10995.5939278,"msg":"LTC","order":5497.7969639,"time":"11 May 21 18:55 KST","total":54977.969638999995}
+{"change-rate":0.0007510327,"coin":"NEO","level":"warning","msg":"ORDER","price":133250,"side":"bid","time":"11 May 21 18:55 KST","volume":0.04125934041275798}
+{"level":"warning","limit":10995.5848558,"msg":"NEO","order":5497.7924279,"time":"11 May 21 18:55 KST","total":54977.924279}
