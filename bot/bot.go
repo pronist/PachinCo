@@ -26,13 +26,9 @@ func Predicate(t map[string]interface{}) bool {
 	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
 }
 
-//func Predicate(t map[string]interface{}) bool {
-//	return true
-//}
-
 type Bot struct {
 	Accounts   Accounts   // 투자에 사용할 계정
-	Strategies []Strategy // 봇이 실행할 전략, 여러개를 사용할 수도 있다.
+	Strategies []Strategy // 봇이 실행할 전략, 여러 개를 사용할 수도 있다.
 }
 
 func (b *Bot) Run() {
@@ -95,7 +91,7 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 	delete(balances, "KRW")
 
 	for coin := range balances {
-		if err := b.Go(coin); err != nil {
+		if err := b.Go(upbit.Market+"-"+coin); err != nil {
 			return err
 		}
 	}
@@ -106,6 +102,7 @@ func (b *Bot) RunStrategyForCoinsInHands() error {
 }
 
 func (b *Bot) Go(market string) error {
+	// 코인 생성
 	coin, err := NewCoin(b.Accounts, market[4:], upbit.Config.C)
 	if err != nil {
 		return err
@@ -115,6 +112,7 @@ func (b *Bot) Go(market string) error {
 	MarketTrackingStates[market] = TRACKING
 	Tracking++
 
+	// 전략에 주기적으로 가격 정보를 보낸다.
 	go b.Tick(coin)
 
 	for _, strategy := range b.Strategies {

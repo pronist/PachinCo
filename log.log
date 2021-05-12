@@ -48,3 +48,20 @@
 {"change-rate":0.1169590643,"coin":"MBL","level":"warning","msg":"ORDER","price":19.1,"side":"ask","time":"2021-05-11 21:29:30","volume":298.201547}
 {"level":"info","limit":11106.916630800002,"msg":"MBL","order":5553.458315400001,"time":"2021-05-11 21:29:30","total":55534.58315400001}
 {"level":"info","market":"KRW-MBL","msg":"Stopped","time":"2021-05-11 21:29:30"}
+{"level":"info","msg":"Opened Configuration.","name":"upbit.config.yml","time":"12 May 21 21:55 KST"}
+{"change-rate":0.0363196126,"level":"info","market":"KRW-MLK","msg":"Stopped","price":2140,"time":"12 May 21 21:55 KST"}
+{"change-rate":0.321888412,"level":"info","market":"KRW-MARO","msg":"Stopped","price":616,"time":"12 May 21 21:55 KST"}
+{"change-rate":0.1467680608,"level":"info","market":"KRW-STRK","msg":"Stopped","price":75400,"time":"12 May 21 21:55 KST"}
+{"change-rate":0.3004291845,"level":"info","market":"KRW-MARO","msg":"Stopped","price":606,"time":"2021-05-12 22:14:14"}
+{"change-rate":0.1323193916,"level":"info","market":"KRW-STRK","msg":"Stopped","price":74450,"time":"2021-05-12 22:14:17"}
+{"level":"info","limit":11000,"msg":"WAXP","order":5500,"time":"2021-05-12 22:29:04","total":55000}
+{"change-rate":0.0781893004,"coin":"WAXP","level":"warning","msg":"ORDER","price":262,"side":"bid","time":"2021-05-12 22:29:04","volume":20.99236641221374}
+{"level":"info","limit":10999.999978400001,"msg":"WAXP","order":5499.9999892000005,"time":"2021-05-12 22:29:04","total":54999.999892}
+{"coin":"WAXP","level":"error","msg":"websocket: close 1006 (abnormal closure): unexpected EOF","role":"Tick","time":"2021-05-12 22:32:03"}
+{"level":"info","limit":10999.999978400001,"msg":"DOT","order":5499.9999892000005,"time":"2021-05-12 22:45:24","total":54999.999892}
+{"change-rate":0.0313948588,"coin":"DOT","level":"warning","msg":"ORDER","price":48950,"side":"bid","time":"2021-05-12 22:45:24","volume":0.11235955034116446}
+{"level":"info","limit":11000.0043806,"msg":"DOT","order":5500.0021903,"time":"2021-05-12 22:45:24","total":55000.02190299999}
+{"change-rate":0.0946502058,"level":"info","market":"KRW-WAXP","msg":"Stopped","price":266,"time":"2021-05-12 22:55:44"}
+{"change-rate":0.2639484979,"level":"info","market":"KRW-MARO","msg":"Stopped","price":589,"time":"2021-05-12 22:55:47"}
+{"change-rate":0.0351875263,"level":"info","market":"KRW-DOT","msg":"Stopped","price":49130,"time":"2021-05-12 22:55:47"}
+{"change-rate":0.1344486692,"level":"info","market":"KRW-STRK","msg":"Stopped","price":74590,"time":"2021-05-12 22:55:50"}

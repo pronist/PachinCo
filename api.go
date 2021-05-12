@@ -12,6 +12,6 @@ const (
 )
 
 var API = &api.API{
-	Client:          &client.Client{AccessKey: accessKey, SecretKey: secretKey},
+	Client:          &client.Client{Client: &http.Client{}, AccessKey: accessKey, SecretKey: secretKey},
 	QuotationClient: &client.QuotationClient{Client: &http.Client{}},
 }

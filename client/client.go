@@ -16,6 +16,7 @@ const (
 )
 
 type Client struct {
+	*http.Client
 	AccessKey string
 	SecretKey string
 }
@@ -30,8 +31,6 @@ type Claims struct {
 
 func (c *Client) Do(request *request) (interface{}, error) {
 	var err error
-
-	client := &http.Client{}
 
 	var req *http.Request
 	var body []byte
@@ -48,7 +47,7 @@ func (c *Client) Do(request *request) (interface{}, error) {
 	}
 	req.Header.Add("Authorization", "Bearer "+request.Jwt)
 
-	resp, err := NewResponse(client, req)
+	resp, err := NewResponse(c.Client, req)
 	if err != nil {
 		return nil, err
 	}
