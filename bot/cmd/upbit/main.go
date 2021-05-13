@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	acc := accounts.NewTestAccounts(55000.0) // 테스트용 계정
+	acc, err := accounts.NewTestAccounts(55000.0) // 테스트용 계정
+	if err != nil {
+		panic(err)
+	}
 
 	b := &bot.Bot{Accounts: acc, Strategies: []bot.Strategy{
 		&strategy.Penetration{K: upbit.Config.K, H: 0.03, L: -0.05},

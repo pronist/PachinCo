@@ -5,5 +5,5 @@ type Accounts interface {
 	// 매수/매도에 둘다 사용한다.
 	Order(coin *Coin, side string, volume, price float64, t map[string]interface{}) (bool, error)
 	// 내부에 있는 upbit.API 에서의 접근을 위해 accounts 를 반환해야 한다.
-	Accounts() []map[string]interface{}
+	Accounts() ([]map[string]interface{}, error)
 }

@@ -42,7 +42,10 @@ func (b *Basic) Run(accounts bot.Accounts, coin *bot.Coin, t map[string]interfac
 		panic("division by zero")
 	}
 
-	acc := accounts.Accounts()
+	acc, err := accounts.Accounts()
+	if err != nil {
+		return false, err
+	}
 
 	balances, err := upbit.API.GetBalances(acc)
 	if err != nil {

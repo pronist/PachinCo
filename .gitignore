@@ -1,1 +1,3 @@
 *.exe
+test_*.db
+test_*.db.lock

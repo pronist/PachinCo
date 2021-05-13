@@ -3,6 +3,7 @@ module github.com/pronist/upbit
 go 1.13
 
 require (
+	github.com/boltdb/bolt v1.3.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/structs v1.1.0
 	github.com/gorilla/websocket v1.4.2

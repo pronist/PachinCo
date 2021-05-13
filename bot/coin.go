@@ -31,8 +31,10 @@ func NewCoin(accounts Accounts, name string, rate float64) (*Coin, error) {
 // Refresh 메서드는 봇과 업비트와의 계좌 동기화를 위해 정보를 갱신해야 한다.
 // 주로 매수/매도를 할 때 정보의 변동이 발생하므로 주문 이후 즉시 처리한다.
 func (c *Coin) Refresh(accounts Accounts) error {
-	var err error
-	acc := accounts.Accounts()
+	acc, err := accounts.Accounts()
+	if err != nil {
+		return err
+	}
 
 	c.mu.Lock() // 계정 정보를 변경할 떄는 갱신 경쟁을 해서는 안된다.
 	defer c.mu.Unlock()

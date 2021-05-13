@@ -86,6 +86,6 @@ func (acc *Accounts) Order(coin *bot.Coin, side string, volume, price float64, t
 	return ok, nil
 }
 
-func (acc *Accounts) Accounts() []map[string]interface{} {
-	return acc.accounts
+func (acc *Accounts) Accounts() ([]map[string]interface{}, error) {
+	return acc.accounts, nil
 }

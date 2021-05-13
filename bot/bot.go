@@ -26,8 +26,12 @@ func Predicate(t map[string]interface{}) bool {
 	return dayCandles[0]["opening_price"].(float64)+(R*upbit.Config.K) < price
 }
 
+//func Predicate(t map[string]interface{}) bool {
+//	return true
+//}
+
 type Bot struct {
-	Accounts   Accounts   // 투자에 사용할 계정
+	Accounts Accounts // 투자에 사용할 계정
 	Strategies []Strategy // 봇이 실행할 전략, 여러 개를 사용할 수도 있다.
 }
 
@@ -35,9 +39,9 @@ func (b *Bot) Run() {
 	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.DebugLevel}
 
 	// 전략의 사전 준비를 해야한다.
-	for _, strategy := range b.Strategies {
-		strategy.Prepare(b.Accounts)
-	}
+	//for _, strategy := range b.Strategies {
+	//	strategy.Prepare(b.Accounts)
+	//}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
 	err := b.RunStrategyForCoinsInHands()
@@ -82,7 +86,10 @@ func (b *Bot) Run() {
 }
 
 func (b *Bot) RunStrategyForCoinsInHands() error {
-	acc := b.Accounts.Accounts()
+	acc, err := b.Accounts.Accounts()
+	if err != nil {
+		return err
+	}
 
 	balances, err := upbit.API.GetBalances(acc)
 	if err != nil {
@@ -147,7 +154,11 @@ func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
 
 	for ok && stat == TRACKING {
 		t := <-coin.T
-		acc := b.Accounts.Accounts()
+
+		acc, err := b.Accounts.Accounts()
+		if err != nil {
+			panic(err)
+		}
 
 		balances, err := upbit.API.GetBalances(acc)
 		if err != nil {
