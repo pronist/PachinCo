@@ -1,8 +1,6 @@
-package bot
+package upbit
 
 import (
-	"github.com/pronist/upbit"
-	"github.com/pronist/upbit/log"
 	"github.com/sirupsen/logrus"
 	"sync"
 )
@@ -39,16 +37,8 @@ func (c *Coin) Refresh(accounts Accounts) error {
 	c.mu.Lock() // 계정 정보를 변경할 떄는 갱신 경쟁을 해서는 안된다.
 	defer c.mu.Unlock()
 
-	balances, err := upbit.API.GetBalances(acc)
-	if err != nil {
-		return err
-	}
-
 	// 계좌가 가지고 있는 총 자산을 구한다. 분할 매수전략을 위해서는 약간의 계산이 필요하다.
-	totalBalance, err := upbit.API.GetTotalBalance(acc, balances) // 총 매수 자금
-	if err != nil {
-		return err
-	}
+	totalBalance := GetTotalBalance(acc, GetBalances(acc)) // 총 매수 자금
 
 	// `limitOrderPrice` 는 분배된 비율에 따라 초기자금 대비 최대로 구입 가능한 비율이다.
 	// 예를 들어 'KRW-BTT' 의 비중이 .1 이라면,
@@ -57,10 +47,10 @@ func (c *Coin) Refresh(accounts Accounts) error {
 
 	// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
 	// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
-	c.OnceOrderPrice = c.Limit * upbit.Config.R
+	c.OnceOrderPrice = c.Limit * Config.R
 
 	//
-	log.Logger <- log.Log{
+	Logger <- Log{
 		Msg: c.Name,
 		Fields: logrus.Fields{
 			"total": totalBalance, "limit": c.Limit, "order": c.OnceOrderPrice,

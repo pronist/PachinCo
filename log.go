@@ -1,4 +1,4 @@
-package log
+package upbit
 
 import (
 	"github.com/sirupsen/logrus"

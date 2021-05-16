@@ -1,10 +1,11 @@
-package utils
+package upbit
 
 import (
 	"bytes"
 	"encoding/gob"
 )
 
+// 데이터를 직렬화한다.
 func Serialize(data interface{}) ([]byte, error) {
 	buf := new(bytes.Buffer)
 
@@ -17,6 +18,7 @@ func Serialize(data interface{}) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// 데이터를 역직렬화한다. received 는 반드시 포인터로 넘겨져야 한다.
 func Deserialize(encodedData []byte, received interface{}) error {
 	buf := new(bytes.Buffer)
 
