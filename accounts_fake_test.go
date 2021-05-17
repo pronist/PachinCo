@@ -35,7 +35,7 @@ func TestNewFakeAccounts(t *testing.T) {
 		encodedKrwAccount := bkt.Get([]byte("KRW"))
 		assert.NotNil(t, encodedKrwAccount)
 
-		err := Deserialize(encodedKrwAccount, &krwAccount)
+		err := deserialize(encodedKrwAccount, &krwAccount)
 		if err != nil {
 			return err
 		}
@@ -60,7 +60,7 @@ func TestFakeAccounts_Order(t *testing.T) {
 	coin, err := newCoin(facc, "BTC", 0.1)
 	assert.NoError(t, err)
 
-	ok, err := facc.order(&Bot{}, coin, B, 2.0, coin.onceOrderPrice)
+	ok, err := facc.order(&Bot{}, coin, b, 2.0, coin.onceOrderPrice)
 	assert.NoError(t, err)
 	assert.True(t, ok)
 

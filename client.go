@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	Url     = "https://api.upbit.com"
-	Version = "v1"
+	apiUrl     = "https://api.upbit.com"
+	apiVersion = "v1"
 )
 
 type Client struct {
@@ -64,7 +64,7 @@ func (c *Client) call(method, url string, v interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest(method, Url+"/"+Version+url, bytes.NewReader(body))
+	req, err := http.NewRequest(method, apiUrl+"/"+apiVersion+url, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}

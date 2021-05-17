@@ -78,7 +78,7 @@ func (b *Basic) run(acc Accounts, c *coin, t map[string]interface{}) (bool, erro
 	//	}
 	//
 	//	// 현재 코인의 가격이 '상승률' 만큼보다 더 올라간 경우
-	//	if p-1 >= b.H && orderSellingPrice > upbit.MinimumOrderPrice {
+	//	if p-1 >= b.H && orderSellingPrice > upbit.minimumOrderPrice {
 	//		return accounts.Order(coin, upbit.S, coinBalance, price, t)
 	//	}
 	//} else {

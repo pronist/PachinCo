@@ -8,10 +8,7 @@ import (
 	"strconv"
 )
 
-const (
-	FaccDbName             = "accounts.db"
-	faccAccountsBucketName = "accounts"
-)
+const faccAccountsBucketName = "accounts"
 
 // 하나의 계정을 나타낸다.
 // upbit.Accounts 에 대해서는 별도로 변환하지 않기 때문에 테스트용도로만 쓴다.
@@ -48,7 +45,7 @@ func NewFakeAccounts(dbname string, krw float64) (*FakeAccounts, error) {
 			// 초기 자금을 할당한다.
 			account := &Account{Currency: "KRW", Balance: krw, AvgBuyPrice: 0}
 
-			encodedAccount, err := Serialize(account)
+			encodedAccount, err := serialize(account)
 			if err != nil {
 				return err
 			}
@@ -86,7 +83,7 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 
 	balances := getBalances(a)
 
-	if getAverageBuyPrice(a, coin.name)*balances[coin.name]+coin.onceOrderPrice <= coin.limit && volume*price > MinimumOrderPrice {
+	if getAverageBuyPrice(a, coin.name)*balances[coin.name]+coin.onceOrderPrice <= coin.limit && volume*price > minimumOrderPrice {
 		err := acc.db.Update(func(tx *bolt.Tx) error {
 			var krwAccount, account Account
 
@@ -100,20 +97,20 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 			var sign float64
 
 			sign = 1
-			if side == S {
+			if side == s {
 				sign = -sign
 			}
 
 			// KRW 계정에서 잔고를 매수/매도에 따라 증가/감소 시킨다.
 			encodedKrwAccount := bkt.Get([]byte("KRW"))
 
-			err := Deserialize(encodedKrwAccount, &krwAccount)
+			err := deserialize(encodedKrwAccount, &krwAccount)
 			if err != nil {
 				return err
 			}
 			krwAccount.Balance += -sign * volume * price
 
-			encodedKrwAccount, err = Serialize(krwAccount)
+			encodedKrwAccount, err = serialize(krwAccount)
 			if err != nil {
 				return err
 			}
@@ -128,7 +125,7 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 			if encodedAccount == nil {
 				newAccount := &Account{Currency: coin.name, Balance: 0, AvgBuyPrice: 0}
 
-				encodedNewAccount, err := Serialize(newAccount)
+				encodedNewAccount, err := serialize(newAccount)
 				if err != nil {
 					return err
 				}
@@ -138,7 +135,7 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 
 				encodedAccount = encodedNewAccount
 			}
-			err = Deserialize(encodedAccount, &account)
+			err = deserialize(encodedAccount, &account)
 			if err != nil {
 				return err
 			}
@@ -150,7 +147,7 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 			account.AvgBuyPrice = p / b
 			account.Balance += sign * volume
 
-			encodedAccount, err = Serialize(account)
+			encodedAccount, err = serialize(account)
 			if err != nil {
 				return err
 			}
@@ -195,7 +192,7 @@ func (acc *FakeAccounts) accounts() ([]map[string]interface{}, error) {
 		return bkt.ForEach(func(coin, encodedAccount []byte) error {
 			var account Account
 
-			err := Deserialize(encodedAccount, &account)
+			err := deserialize(encodedAccount, &account)
 			if err != nil {
 				return err
 			}

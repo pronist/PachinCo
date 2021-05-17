@@ -8,45 +8,21 @@ import (
 	"time"
 )
 
-const MinimumOrderPrice = 5000 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
-const Market = "KRW"           // 원화 마켓을 추적한다.
+const minimumOrderPrice = 5000 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
+const market = "KRW"           // 원화 마켓을 추적한다.
 
 const (
-	B = "bid" // 매수
-	S = "ask" // 매도
+	b = "bid" // 매수
+	s = "ask" // 매도
 )
 
 // 추적 상태를 나타내는 상수들
 const (
-	TRACKING = iota
-	STOPPED
+	tracking = iota
+	stopped
 )
 
-var MarketTrackingStates = make(map[string]int)
-var Tracking int
-
-// 트래킹할 종목에 대한 조건이다.
-func predicate(b *Bot, t map[string]interface{}) bool {
-	price := t["trade_price"].(float64)
-	c := t["code"].(string)
-
-	// https://wikidocs.net/21888
-	candles, err := b.QuotationClient.call(
-		"/candles/days",
-		struct {
-			Market string `url:"market"`
-			Count  int    `url:"count"`
-		}{c, 2})
-	if err != nil {
-		panic(err)
-	}
-	dayCandles := candles.([]map[string]interface{})
-
-	// "변동성 돌파" 한 종목을 트래킹할 조건으로 설정.
-	R := dayCandles[1]["high_price"].(float64) - dayCandles[1]["low_price"].(float64)
-
-	return dayCandles[0]["opening_price"].(float64)+(R*Config.K) < price
-}
+var marketTrackingStates = make(map[string]int)
 
 //func Predicate(t map[string]interface{}) bool {
 //	return true
@@ -63,9 +39,9 @@ func (b *Bot) Run() {
 	logger <- log{msg: "Bot started...", level: logrus.DebugLevel}
 
 	// 전략의 사전 준비를 해야한다.
-	//for _, strategy := range b.Strategies {
-	//	strategy.Prepare(b.Accounts)
-	//}
+	for _, strategy := range b.Strategies {
+		strategy.prepare(b, b.Accounts)
+	}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
 	err := b.runStrategyForCoinsInHands()
@@ -80,7 +56,7 @@ func (b *Bot) Run() {
 		panic(err)
 	}
 
-	go detector.run(b, Market, predicate) // 종목 찾기 시작!
+	go detector.run(b, market, predicate) // 종목 찾기 시작!
 	/////
 
 	for {
@@ -89,7 +65,7 @@ func (b *Bot) Run() {
 		case tick := <-detector.d:
 			market := tick["code"].(string)
 
-			if _, ok := MarketTrackingStates[market]; !ok && Tracking < Config.Max {
+			if _, ok := marketTrackingStates[market]; !ok {
 				//
 				logger <- log{
 					msg: "Detected",
@@ -119,7 +95,7 @@ func (b *Bot) runStrategyForCoinsInHands() error {
 	delete(balances, "KRW")
 
 	for coin := range balances {
-		if err := b.launch(Market + "-" + coin); err != nil {
+		if err := b.launch(market + "-" + coin); err != nil {
 			return err
 		}
 	}
@@ -137,8 +113,7 @@ func (b *Bot) launch(market string) error {
 	}
 
 	// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-	MarketTrackingStates[market] = TRACKING
-	Tracking++
+	marketTrackingStates[market] = tracking
 
 	// 전략에 주기적으로 가격 정보를 보낸다.
 	go b.tick(coin)
@@ -171,9 +146,9 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 		level:  logrus.DebugLevel,
 	}
 	//
-	stat, ok := MarketTrackingStates[Market+"-"+c.name]
+	stat, ok := marketTrackingStates[market+"-"+c.name]
 
-	for ok && stat == TRACKING {
+	for ok && stat == tracking {
 		t := <-c.t
 
 		acc, err := b.Accounts.accounts()
@@ -182,8 +157,8 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 		}
 
 		balances := getBalances(acc)
-		if balances["KRW"] >= MinimumOrderPrice && balances["KRW"] > c.onceOrderPrice && c.onceOrderPrice > MinimumOrderPrice {
-			if _, err := strategy.run(b.Accounts, c, t); err != nil {
+		if balances["KRW"] >= minimumOrderPrice && balances["KRW"] > c.onceOrderPrice && c.onceOrderPrice > minimumOrderPrice {
+			if _, err := strategy.run(b, b.Accounts, c, t); err != nil {
 				panic(err)
 			}
 		}
@@ -207,12 +182,12 @@ func (b *Bot) tick(c *coin) {
 		}
 	}()
 
-	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
+	ws, _, err := websocket.DefaultDialer.Dial(sockURL+"/"+sockVersion, nil)
 	if err != nil {
 		panic(err)
 	}
 
-	m := Market + "-" + c.name
+	m := market + "-" + c.name
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
@@ -220,7 +195,7 @@ func (b *Bot) tick(c *coin) {
 		// format
 	}
 
-	for MarketTrackingStates[m] == TRACKING {
+	for marketTrackingStates[m] == tracking {
 		var r map[string]interface{}
 
 		if err := ws.WriteJSON(data); err != nil {

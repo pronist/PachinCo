@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	SockURL     = "wss://api.upbit.com/websocket"
-	SockVersion = "v1"
+	sockURL     = "wss://api.upbit.com/websocket"
+	sockVersion = "v1"
 )
 
 type detector struct {
@@ -21,7 +21,7 @@ type detector struct {
 
 // newDetector 는 새로운 detector 를 만들고 detector.ws 에 웹소켓을 설정한다.
 func newDetector() (*detector, error) {
-	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
+	ws, _, err := websocket.DefaultDialer.Dial(sockURL+"/"+sockVersion, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 	}
 
 	// 현재 타겟으로 하고 있는 마켓에 대해서만 디텍팅 해야 한다.
-	targetMarkets := funk.Chain(markets.([]map[string]interface{})).
+	targetmarkets := funk.Chain(markets.([]map[string]interface{})).
 		Map(func(market map[string]interface{}) string { return market["market"].(string) }).
 		Filter(func(market string) bool { return strings.HasPrefix(market, currency) }).
 		Value().([]string)
@@ -55,7 +55,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 	// https://docs.upbit.com/docs/upbit-quotation-websocket
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": targetMarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": targetmarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
@@ -64,7 +64,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 			panic(err)
 		}
 
-		for range targetMarkets {
+		for range targetmarkets {
 			var r map[string]interface{}
 
 			if err := d.ws.ReadJSON(&r); err != nil {

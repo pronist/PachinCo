@@ -6,7 +6,7 @@ import (
 )
 
 // 데이터를 직렬화한다.
-func Serialize(data interface{}) ([]byte, error) {
+func serialize(data interface{}) ([]byte, error) {
 	buf := new(bytes.Buffer)
 
 	enc := gob.NewEncoder(buf)
@@ -19,7 +19,7 @@ func Serialize(data interface{}) ([]byte, error) {
 }
 
 // 데이터를 역직렬화한다. received 는 반드시 포인터로 넘겨져야 한다.
-func Deserialize(encodedData []byte, received interface{}) error {
+func deserialize(encodedData []byte, received interface{}) error {
 	buf := new(bytes.Buffer)
 
 	buf.Write(encodedData)

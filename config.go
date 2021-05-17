@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-const UpbitConfigYml = "upbit.config.yml"
+const upbitConfigYml = "upbit.config.yml"
 
 var Config = struct {
 	AccessKey string        `required:"true"` // 엑세스 키
@@ -19,7 +19,7 @@ var Config = struct {
 }{}
 
 func init() {
-	err := configor.New(&configor.Config{Silent: true}).Load(&Config, UpbitConfigYml)
+	err := configor.New(&configor.Config{Silent: true}).Load(&Config, upbitConfigYml)
 	if err != nil {
 		logrus.Fatal(err)
 	}

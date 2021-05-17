@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	acc, err := upbit.NewFakeAccounts(upbit.FaccDbName, 55000.0) // 테스트용 계정
+	acc, err := upbit.NewFakeAccounts("accounts.db", 55000.0) // 테스트용 계정
 	if err != nil {
 		logrus.Fatal(err)
 	}

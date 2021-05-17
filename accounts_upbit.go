@@ -35,13 +35,13 @@ func (acc *UpbitAccounts) order(b *Bot, coin *coin, side string, volume, price f
 	balances := getBalances(a)
 	var ok bool
 
-	if getAverageBuyPrice(a, coin.name)*balances[coin.name]+coin.onceOrderPrice <= coin.limit && volume*price > MinimumOrderPrice {
+	if getAverageBuyPrice(a, coin.name)*balances[coin.name]+coin.onceOrderPrice <= coin.limit && volume*price > minimumOrderPrice {
 		done := make(chan int)
 
-		c := Market + "-" + coin.name
+		c := market + "-" + coin.name
 
 		order, err := b.Client.call("POST", "/orders", struct {
-			Market  string  `url:"market"`
+			market  string  `url:"market"`
 			Side    string  `url:"side"`
 			Volume  float64 `url:"volume"`
 			Price   float64 `url:"price"`
