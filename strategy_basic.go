@@ -7,7 +7,7 @@ type Basic struct {
 	H float64 // 판매 상승 기준
 }
 
-func (b *Basic) Prepare(accounts Accounts) {}
+func (b *Basic) prepare(_ Accounts) {}
 
 // 코인이 없을 때
 // * 실시간 가격이 전일 `종가`보다 n% 하락하면 매수
@@ -22,7 +22,7 @@ func (b *Basic) Prepare(accounts Accounts) {}
 // *** 단점
 // * 매도에 대해서는 손절매를 하지 않고 기다리기 때문에 봇이 활동적으로 움직이지 않는다.
 // * 매수에 상승을 포함한 급등주를 따라가지 않으므로 수익성은 낮다.
-func (b *Basic) Run(accounts Accounts, coin *Coin, t map[string]interface{}) (bool, error) {
+func (b *Basic) run(acc Accounts, c *coin, t map[string]interface{}) (bool, error) {
 	//price := t["trade_price"].(float64)
 	//c := t["code"].(string)
 	//
@@ -42,8 +42,8 @@ func (b *Basic) Run(accounts Accounts, coin *Coin, t map[string]interface{}) (bo
 	//	return false, err
 	//}
 	//
-	//if coinBalance, ok := balances[coin.Name]; ok {
-	//	avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
+	//if coinBalance, ok := balances[coin.name]; ok {
+	//	avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.name)
 	//	if err != nil {
 	//		panic(err)
 	//	}

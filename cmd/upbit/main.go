@@ -9,7 +9,7 @@ import (
 func main() {
 	acc, err := upbit.NewFakeAccounts(upbit.FaccDbName, 55000.0) // 테스트용 계정
 	if err != nil {
-		upbit.Logger <- upbit.Log{Msg: err, Level: logrus.FatalLevel}
+		logrus.Fatal(err)
 	}
 
 	b := &upbit.Bot{

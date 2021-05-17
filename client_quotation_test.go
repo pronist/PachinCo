@@ -9,7 +9,7 @@ import (
 var qc = &QuotationClient{http.DefaultClient}
 
 func TestQuotationClient_Call(t *testing.T) {
-	markets, err := qc.Call(
+	markets, err := qc.call(
 		"/market/all",
 		struct {
 			IsDetails bool `url:"isDetails"`

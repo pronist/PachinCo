@@ -30,7 +30,7 @@ type Client struct {
 //
 // 배열을 전달할 때는 주의해야 한다.
 // 구조체를 정의할때 필드에 대해 `url:,numbered" 옵션을 주어야 한다.
-func (c *Client) Call(method, url string, v interface{}) (interface{}, error) {
+func (c *Client) call(method, url string, v interface{}) (interface{}, error) {
 	var body []byte
 
 	claims := claims{

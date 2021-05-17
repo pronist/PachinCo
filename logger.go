@@ -6,7 +6,7 @@ import (
 	"github.com/snowzach/rotatefilehook"
 )
 
-var Logger = make(chan Log) // 외부에서 사용하게 될 로그 채널이다.
+var logger = make(chan log) // 외부에서 사용하게 될 로그 채널이다.
 
 func init() {
 	go func() {
@@ -25,7 +25,7 @@ func init() {
 			logrus.Fatal(err)
 		}
 
-		logger := &logrus.Logger{
+		logruslogger := &logrus.Logger{
 			Out: colorable.NewColorableStdout(),
 			Formatter: &logrus.TextFormatter{
 				ForceColors: true, FullTimestamp: true, TimestampFormat: timestampFormat,
@@ -39,8 +39,8 @@ func init() {
 		for {
 			select {
 			// 지속적으로 로그를 받아온다. 이 시점에서 가장 깔끔한 로그 처리방법인 듯보인다.
-			case log := <-Logger:
-				logger.WithFields(log.Fields).Log(log.Level, log.Msg)
+			case log := <-logger:
+				logruslogger.WithFields(log.fields).Log(log.level, log.msg)
 			}
 		}
 	}()

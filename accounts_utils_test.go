@@ -25,21 +25,21 @@ var acc = []map[string]interface{}{
 }
 
 func TestGetBalances(t *testing.T) {
-	balances := GetBalances(acc)
+	balances := getBalances(acc)
 
 	assert.Equal(t, 55000.0, balances["KRW"])
 	assert.Equal(t, 2.0, balances["BTC"])
 }
 
 func TestGetAverageBuyPrice(t *testing.T) {
-	avgBuyPrice := GetAverageBuyPrice(acc, "BTC")
+	avgBuyPrice := getAverageBuyPrice(acc, "BTC")
 	assert.Equal(t, 101000.0, avgBuyPrice)
 }
 
 func TestGetTotalBalance(t *testing.T) {
-	avgBuyPrice := GetAverageBuyPrice(acc, "BTC")
-	balances := GetBalances(acc)
-	totalBalance := GetTotalBalance(acc, balances)
+	avgBuyPrice := getAverageBuyPrice(acc, "BTC")
+	balances := getBalances(acc)
+	totalBalance := getTotalBalance(acc, balances)
 
 	assert.Equal(t, balances["KRW"]+balances["BTC"]*avgBuyPrice, totalBalance)
 }

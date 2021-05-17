@@ -10,7 +10,7 @@ type QuotationClient struct {
 }
 
 // Call 은 업비트 API 서버로 요청을 보내되, Quotation API 에 한하여 보내도록 한다.
-func (qc *QuotationClient) Call(url string, v interface{}) (interface{}, error) {
+func (qc *QuotationClient) call(url string, v interface{}) (interface{}, error) {
 	values, err := query.Values(v)
 	if err != nil {
 		panic(err)

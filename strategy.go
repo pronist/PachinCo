@@ -1,6 +1,6 @@
 package upbit
 
 type Strategy interface {
-	Prepare(accounts Accounts)
-	Run(accounts Accounts, coin *Coin, t map[string]interface{}) (bool, error)
+	prepare(bot *Bot, accounts Accounts)
+	run(bot *Bot, accounts Accounts, c *coin, t map[string]interface{}) (bool, error)
 }

@@ -14,34 +14,34 @@ const (
 	SockVersion = "v1"
 )
 
-type Detector struct {
+type detector struct {
 	ws *websocket.Conn
-	D  chan map[string]interface{}
+	d  chan map[string]interface{}
 }
 
-// NewDector 는 새로운 Detector 를 만들고 Detector.ws 에 웹소켓을 설정한다.
-func NewDetector() (*Detector, error) {
+// newDetector 는 새로운 detector 를 만들고 detector.ws 에 웹소켓을 설정한다.
+func newDetector() (*detector, error) {
 	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Detector{ws: ws, D: make(chan map[string]interface{})}, nil
+	return &detector{ws: ws, d: make(chan map[string]interface{})}, nil
 }
 
 // Search 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
 // Detector.predicate 조건에 부합하는 종목이 검색되면 Detector.D 채널로 해당 tick 을 내보낸다.
-func (d *Detector) Run(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
+func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			Logger <- Log{Msg: err, Fields: logrus.Fields{"role": "Detector"}, Level: logrus.ErrorLevel}
+			logger <- log{msg: err, fields: logrus.Fields{"role": "Detector"}, level: logrus.ErrorLevel}
 		}
 	}()
 	//
-	Logger <- Log{Msg: "Detector started...", Level: logrus.DebugLevel}
+	logger <- log{msg: "Detector started...", level: logrus.DebugLevel}
 	//
 
-	markets, err := bot.QuotationClient.Call("/market/all", struct{ isDetail bool }{false})
+	markets, err := bot.QuotationClient.call("/market/all", struct{ isDetail bool }{false})
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +72,7 @@ func (d *Detector) Run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 			}
 
 			if predicate(bot, r) {
-				d.D <- r
+				d.d <- r
 			}
 
 			time.Sleep(time.Millisecond * 300)

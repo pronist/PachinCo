@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-var c *Client
+var client *Client
 
 func init() {
-	c = &Client{http.DefaultClient, Config.AccessKey, Config.SecretKey}
+	client = &Client{http.DefaultClient, Config.AccessKey, Config.SecretKey}
 }
 
 func TestClient_Call(t *testing.T) {
-	chance, err := c.Call("GET", "/orders/chance", struct {
+	chance, err := client.call("GET", "/orders/chance", struct {
 		Market string `url:"market"`
 	}{"KRW-BTC"})
 	assert.NoError(t, err)

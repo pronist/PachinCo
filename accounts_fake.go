@@ -64,29 +64,29 @@ func NewFakeAccounts(dbname string, krw float64) (*FakeAccounts, error) {
 	}
 
 	//
-	Logger <- Log{
-		Msg: "Creating new accounts for Testing.",
-		Fields: logrus.Fields{
+	logger <- log{
+		msg: "Creating new accounts for Testing.",
+		fields: logrus.Fields{
 			"KRW": krw,
 		},
-		Level: logrus.DebugLevel,
+		level: logrus.DebugLevel,
 	}
 	//
 
 	return &FakeAccounts{db}, nil
 }
 
-// Order 는 주문을 처리한다. 실제 업비트 서버에 보내는 것이 아니므로 이를 모조한다.
+// order 는 주문을 처리한다. 실제 업비트 서버에 보내는 것이 아니므로 이를 모조한다.
 // 주문을 보낸 뒤에는 faccAccountsBucketName 의 내용이 변경되며
-func (acc *FakeAccounts) Order(_ *Bot, coin *Coin, side string, volume, price float64) (bool, error) {
-	a, err := acc.Accounts()
+func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price float64) (bool, error) {
+	a, err := acc.accounts()
 	if err != nil {
 		return false, err
 	}
 
-	balances := GetBalances(a)
+	balances := getBalances(a)
 
-	if GetAverageBuyPrice(a, coin.Name)*balances[coin.Name]+coin.OnceOrderPrice <= coin.Limit {
+	if getAverageBuyPrice(a, coin.name)*balances[coin.name]+coin.onceOrderPrice <= coin.limit && volume*price > MinimumOrderPrice {
 		err := acc.db.Update(func(tx *bolt.Tx) error {
 			var krwAccount, account Account
 
@@ -122,17 +122,17 @@ func (acc *FakeAccounts) Order(_ *Bot, coin *Coin, side string, volume, price fl
 			}
 
 			// 코인에 대한 계정을 얻는다.
-			encodedAccount := bkt.Get([]byte(coin.Name))
+			encodedAccount := bkt.Get([]byte(coin.name))
 
 			// 만약 계정이 아직 없다면 새로 만든다.
 			if encodedAccount == nil {
-				newAccount := &Account{Currency: coin.Name, Balance: 0, AvgBuyPrice: 0}
+				newAccount := &Account{Currency: coin.name, Balance: 0, AvgBuyPrice: 0}
 
 				encodedNewAccount, err := Serialize(newAccount)
 				if err != nil {
 					return err
 				}
-				if err := bkt.Put([]byte(coin.Name), encodedNewAccount); err != nil {
+				if err := bkt.Put([]byte(coin.name), encodedNewAccount); err != nil {
 					return err
 				}
 
@@ -154,7 +154,7 @@ func (acc *FakeAccounts) Order(_ *Bot, coin *Coin, side string, volume, price fl
 			if err != nil {
 				return err
 			}
-			if err := bkt.Put([]byte(coin.Name), encodedAccount); err != nil {
+			if err := bkt.Put([]byte(coin.name), encodedAccount); err != nil {
 				return err
 			}
 
@@ -164,17 +164,17 @@ func (acc *FakeAccounts) Order(_ *Bot, coin *Coin, side string, volume, price fl
 			return false, err
 		}
 
-		err = coin.Refresh(acc)
+		err = coin.refresh(acc)
 		if err != nil {
 			return false, err
 		}
 		//
-		Logger <- Log{
-			Msg: "ORDER",
-			Fields: logrus.Fields{
-				"coin": coin.Name, "side": side, "volume": volume, "price": price,
+		logger <- log{
+			msg: "ORDER",
+			fields: logrus.Fields{
+				"coin": coin.name, "side": side, "volume": volume, "price": price,
 			},
-			Level: logrus.WarnLevel,
+			level: logrus.WarnLevel,
 		}
 		//
 	}
@@ -184,7 +184,7 @@ func (acc *FakeAccounts) Order(_ *Bot, coin *Coin, side string, volume, price fl
 
 // Accounts 는 accounts_utils 에 정의된 함수들과 호환,
 // UpbitAccounts 가 가지고 있는 구조와 동일하게 하기 위해 구조를 맞춘다.
-func (acc *FakeAccounts) Accounts() ([]map[string]interface{}, error) {
+func (acc *FakeAccounts) accounts() ([]map[string]interface{}, error) {
 	r := make([]map[string]interface{}, 0)
 
 	err := acc.db.View(func(tx *bolt.Tx) error {

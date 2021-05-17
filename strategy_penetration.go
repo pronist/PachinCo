@@ -1,5 +1,15 @@
 package upbit
 
+import (
+	"github.com/gorilla/websocket"
+	uuid "github.com/satori/go.uuid"
+	"github.com/sirupsen/logrus"
+	"github.com/thoas/go-funk"
+	"math"
+	"strings"
+	"time"
+)
+
 // 변동성 돌파전략이다. 상승장에 구입한다.
 type Penetration struct {
 	H float64 // 판매 상승 기준
@@ -7,129 +17,123 @@ type Penetration struct {
 	K float64 // 돌파 상수
 }
 
-func (p *Penetration) Prepare(accounts Accounts) {
-	////
-	//log.Logger <- log.Log{Msg: "Prepare strategy...", Fields: logrus.Fields{"strategy": "Penetration"}, Level: logrus.DebugLevel}
-	////
-	//ws, _, err := websocket.DefaultDialer.Dial(upbit.SockURL+"/"+upbit.SockVersion, nil)
-	//if err != nil {
-	//	panic(err)
-	//}
+func (p *Penetration) prepare(bot *Bot, _ Accounts) {
 	//
-	//markets, err := upbit.API.GetMarketNames(upbit.Market)
-	//if err != nil {
-	//	panic(err)
-	//}
+	logger <- log{msg: "Prepare strategy...", fields: logrus.Fields{"strategy": "Penetration"}, level: logrus.DebugLevel}
 	//
-	//data := []map[string]interface{}{
-	//	{"ticket": uuid.NewV4()}, // ticket
-	//	{"type": "ticker", "codes": markets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
-	//	// format
-	//}
-	//
-	//if err := ws.WriteJSON(data); err != nil {
-	//	panic(err)
-	//}
-	//
-	//for _, market := range markets {
-	//	var r map[string]interface{}
-	//
-	//	if err := ws.ReadJSON(&r); err != nil {
-	//		panic(err)
-	//	}
-	//
-	//	// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
-	//	if _, ok := upbit.MarketTrackingStates[market]; !ok && upbit.Predicate(r) {
-	//		// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
-	//		upbit.MarketTrackingStates[market] = upbit.STOPPED
-	//
-	//		//
-	//		log.Logger <- log.Log{
-	//			Msg: "Stopped",
-	//			Fields: logrus.Fields{
-	//				"market":      market,
-	//				"change-rate": r["signed_change_rate"].(float64),
-	//				"price":       r["trade_price"].(float64),
-	//			},
-	//			Level: logrus.InfoLevel,
-	//		}
-	//		//
-	//	}
-	//
-	//	time.Sleep(time.Millisecond * 100)
-	//}
+	ws, _, err := websocket.DefaultDialer.Dial(SockURL+"/"+SockVersion, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	markets, err := bot.QuotationClient.call("/market/all", struct{ isDetail bool }{false})
+	if err != nil {
+		panic(err)
+	}
+
+	targetMarkets := funk.Chain(markets.([]map[string]interface{})).
+		Map(func(market map[string]interface{}) string { return market["market"].(string) }).
+		Filter(func(market string) bool { return strings.HasPrefix(market, Market) }).
+		Value().([]string)
+
+	data := []map[string]interface{}{
+		{"ticket": uuid.NewV4()}, // ticket
+		{"type": "ticker", "codes": targetMarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		// format
+	}
+
+	if err := ws.WriteJSON(data); err != nil {
+		panic(err)
+	}
+
+	for _, market := range targetMarkets {
+		var r map[string]interface{}
+
+		if err := ws.ReadJSON(&r); err != nil {
+			panic(err)
+		}
+
+		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
+		if _, ok := MarketTrackingStates[market]; !ok && predicate(bot, r) {
+			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
+			MarketTrackingStates[market] = STOPPED
+
+			//
+			logger <- log{
+				msg: "Stopped",
+				fields: logrus.Fields{
+					"market":      market,
+					"change-rate": r["signed_change_rate"].(float64),
+					"price":       r["trade_price"].(float64),
+				},
+				level: logrus.InfoLevel,
+			}
+			//
+		}
+
+		time.Sleep(time.Millisecond * 100)
+	}
 }
 
-func (p *Penetration) Run(accounts Accounts, coin *Coin, t map[string]interface{}) (bool, error) {
-	//price := t["trade_price"].(float64)
-	//c := t["code"].(string)
-	//
-	//volume := coin.OnceOrderPrice / price
-	//
-	//if math.IsInf(volume, 0) {
-	//	panic("division by zero")
-	//}
-	//
-	//acc, err := accounts.Accounts()
-	//if err != nil {
-	//	return false, err
-	//}
-	//
-	//balances, err := upbit.API.GetBalances(acc)
-	//if err != nil {
-	//	return false, err
-	//}
-	//
-	//// 변동성 돌파는 전략의 기본 조건이다.
-	//if upbit.Predicate(t) {
-	//	if coinBalance, ok := balances[coin.Name]; ok {
-	//		// 이미 코인을 가지고 있는 경우
-	//
-	//		avgBuyPrice, err := upbit.API.GetAverageBuyPrice(acc, coin.Name)
-	//		if err != nil {
-	//			return false, err
-	//		}
-	//
-	//		pp := price / avgBuyPrice
-	//
-	//		////// 매수 전략
-	//
-	//		// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
-	//		// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
-	//
-	//		if avgBuyPrice*coinBalance+coin.OnceOrderPrice <= coin.Limit {
-	//			if pp-1 <= p.L {
-	//				return accounts.Order(coin, upbit.B, volume, price, t)
-	//			}
-	//		}
-	//
-	//		////// 매도 전략
-	//
-	//		// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
-	//
-	//		orderSellingPrice := coinBalance * price
-	//
-	//		if pp-1 >= p.H && orderSellingPrice > upbit.MinimumOrderPrice {
-	//			ok, err := accounts.Order(coin, upbit.S, coinBalance, price, t)
-	//
-	//			if ok && err == nil {
-	//				// 매도 이후에는 추적 상태를 멈춘다.
-	//				upbit.MarketTrackingStates[c] = upbit.STOPPED
-	//				//
-	//				log.Logger <- log.Log{
-	//					Msg:    "Stopped",
-	//					Fields: logrus.Fields{"market": c},
-	//					Level:  logrus.InfoLevel,
-	//				}
-	//				//
-	//			}
-	//			return ok, err
-	//		}
-	//	} else {
-	//		// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
-	//		return accounts.Order(coin, upbit.B, volume, price, t)
-	//	}
-	//}
+func (p *Penetration) run(bot *Bot, accounts Accounts, c *coin, t map[string]interface{}) (bool, error) {
+	price := t["trade_price"].(float64)
+	m := t["code"].(string)
+
+	volume := c.onceOrderPrice / price
+
+	if math.IsInf(volume, 0) {
+		panic("division by zero")
+	}
+
+	acc, err := accounts.accounts()
+	if err != nil {
+		return false, err
+	}
+
+	balances := getBalances(acc)
+
+	// 변동성 돌파는 전략의 기본 조건이다.
+	if predicate(bot, t) {
+		if coinBalance, ok := balances[c.name]; ok {
+			// 이미 코인을 가지고 있는 경우
+
+			avgBuyPrice := getAverageBuyPrice(acc, c.name)
+
+			pp := price / avgBuyPrice
+
+			////// 매수 전략
+
+			// 분할 매수 전략 (하락시 평균단가를 낮추는 전략)
+			// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
+
+			if pp-1 <= p.L {
+				return accounts.order(bot, c, B, volume, price)
+			}
+
+			////// 매도 전략
+
+			// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
+			if pp-1 >= p.H {
+				ok, err := accounts.order(bot, c, S, coinBalance, price)
+
+				if ok && err == nil {
+					// 매도 이후에는 추적 상태를 멈춘다.
+					MarketTrackingStates[m] = STOPPED
+					//
+					logger <- log{
+						msg:    "Stopped",
+						fields: logrus.Fields{"market": c},
+						level:  logrus.InfoLevel,
+					}
+					//
+				}
+				return ok, err
+			}
+		} else {
+			// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
+			return accounts.order(bot, c, B, volume, price)
+		}
+	}
 
 	return false, nil
 }

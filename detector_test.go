@@ -8,20 +8,20 @@ import (
 	"time"
 )
 
-var detector *Detector
+var d *detector
 
 func TestNewDetector(t *testing.T) {
 	var err error
 
-	detector, err = NewDetector()
+	d, err = newDetector()
 	assert.NoError(t, err)
 
-	assert.NotNil(t, detector.ws)
-	assert.IsType(t, &websocket.Conn{}, detector.ws)
+	assert.NotNil(t, d.ws)
+	assert.IsType(t, &websocket.Conn{}, d.ws)
 }
 
 func TestDetector_Run(t *testing.T) {
-	go detector.Run(
+	go d.run(
 		&Bot{QuotationClient: &QuotationClient{Client: http.DefaultClient}},
 		Market,
 		func(b *Bot, t map[string]interface{}) bool {
@@ -32,8 +32,10 @@ func TestDetector_Run(t *testing.T) {
 
 	select {
 	case <-timer.C:
-		assert.Fail(t, "Cannot receive tick from Detector.")
-	case tick := <-detector.D:
+	case tick := <-d.d:
 		assert.Equal(t, "ticker", tick["type"].(string))
+		return
 	}
+
+	assert.Fail(t, "Cannot receive tick from Detector.")
 }

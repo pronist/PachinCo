@@ -4,8 +4,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type Log struct {
-	Msg    interface{}
-	Fields logrus.Fields
-	Level  logrus.Level
+type log struct {
+	msg    interface{}
+	fields logrus.Fields
+	level  logrus.Level
 }

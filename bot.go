@@ -26,12 +26,12 @@ var MarketTrackingStates = make(map[string]int)
 var Tracking int
 
 // 트래킹할 종목에 대한 조건이다.
-func Predicate(b *Bot, t map[string]interface{}) bool {
+func predicate(b *Bot, t map[string]interface{}) bool {
 	price := t["trade_price"].(float64)
 	c := t["code"].(string)
 
 	// https://wikidocs.net/21888
-	candles, err := b.QuotationClient.Call(
+	candles, err := b.QuotationClient.call(
 		"/candles/days",
 		struct {
 			Market string `url:"market"`
@@ -60,7 +60,7 @@ type Bot struct {
 }
 
 func (b *Bot) Run() {
-	Logger <- Log{Msg: "Bot started...", Level: logrus.DebugLevel}
+	logger <- log{msg: "Bot started...", level: logrus.DebugLevel}
 
 	// 전략의 사전 준비를 해야한다.
 	//for _, strategy := range b.Strategies {
@@ -68,40 +68,40 @@ func (b *Bot) Run() {
 	//}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
-	err := b.RunStrategyForCoinsInHands()
+	err := b.runStrategyForCoinsInHands()
 	if err != nil {
 		panic(err)
 	}
 	/////
 
 	///// 디텍터
-	detector, err := NewDetector()
+	detector, err := newDetector()
 	if err != nil {
 		panic(err)
 	}
 
-	go detector.Run(b, Market, Predicate) // 종목 찾기 시작!
+	go detector.run(b, Market, predicate) // 종목 찾기 시작!
 	/////
 
 	for {
 		select {
 		// 디텍팅되어 가져온 코인에 대해서 전략 시작 ...
-		case tick := <-detector.D:
+		case tick := <-detector.d:
 			market := tick["code"].(string)
 
 			if _, ok := MarketTrackingStates[market]; !ok && Tracking < Config.Max {
 				//
-				Logger <- Log{
-					Msg: "Detected",
-					Fields: logrus.Fields{
+				logger <- log{
+					msg: "Detected",
+					fields: logrus.Fields{
 						"market":      market,
 						"change-rate": tick["signed_change_rate"].(float64),
 						"price":       tick["trade_price"].(float64),
 					},
-					Level: logrus.DebugLevel,
+					level: logrus.DebugLevel,
 				}
 				//
-				if err := b.Go(market); err != nil {
+				if err := b.launch(market); err != nil {
 					panic(err)
 				}
 			}
@@ -109,29 +109,29 @@ func (b *Bot) Run() {
 	}
 }
 
-func (b *Bot) RunStrategyForCoinsInHands() error {
-	acc, err := b.Accounts.Accounts()
+func (b *Bot) runStrategyForCoinsInHands() error {
+	acc, err := b.Accounts.accounts()
 	if err != nil {
 		return err
 	}
 
-	balances := GetBalances(acc)
+	balances := getBalances(acc)
 	delete(balances, "KRW")
 
 	for coin := range balances {
-		if err := b.Go(Market + "-" + coin); err != nil {
+		if err := b.launch(Market + "-" + coin); err != nil {
 			return err
 		}
 	}
 	//
-	Logger <- Log{Msg: "Run strategy for coins in hands.", Level: logrus.DebugLevel}
+	logger <- log{msg: "Run strategy for coins in hands.", level: logrus.DebugLevel}
 	//
 	return nil
 }
 
-func (b *Bot) Go(market string) error {
+func (b *Bot) launch(market string) error {
 	// 코인 생성
-	coin, err := NewCoin(b.Accounts, market[4:], Config.C)
+	coin, err := newCoin(b.Accounts, market[4:], Config.C)
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func (b *Bot) Go(market string) error {
 	Tracking++
 
 	// 전략에 주기적으로 가격 정보를 보낸다.
-	go b.Tick(coin)
+	go b.tick(coin)
 
 	for _, strategy := range b.Strategies {
 		go b.Strategy(coin, strategy)
@@ -150,40 +150,40 @@ func (b *Bot) Go(market string) error {
 	return nil
 }
 
-func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
-	defer func(coin *Coin) {
+func (b *Bot) Strategy(c *coin, strategy Strategy) {
+	defer func() {
 		if err := recover(); err != nil {
 			//
-			Logger <- Log{
-				Msg: err,
-				Fields: logrus.Fields{
-					"role": "Strategy", "strategy": reflect.TypeOf(strategy).Name(), "coin": coin.Name,
+			logger <- log{
+				msg: err,
+				fields: logrus.Fields{
+					"role": "Strategy", "strategy": reflect.TypeOf(strategy).Name(), "coin": c.name,
 				},
-				Level: logrus.ErrorLevel,
+				level: logrus.ErrorLevel,
 			}
 			//
 		}
-	}(coin)
+	}()
 	//
-	Logger <- Log{
-		Msg:    "STARTED",
-		Fields: logrus.Fields{"strategy": reflect.TypeOf(strategy).Name(), "coin": coin.Name},
-		Level:  logrus.DebugLevel,
+	logger <- log{
+		msg:    "STARTED",
+		fields: logrus.Fields{"strategy": reflect.TypeOf(strategy).Name(), "coin": c.name},
+		level:  logrus.DebugLevel,
 	}
 	//
-	stat, ok := MarketTrackingStates[Market+"-"+coin.Name]
+	stat, ok := MarketTrackingStates[Market+"-"+c.name]
 
 	for ok && stat == TRACKING {
-		t := <-coin.T
+		t := <-c.t
 
-		acc, err := b.Accounts.Accounts()
+		acc, err := b.Accounts.accounts()
 		if err != nil {
 			panic(err)
 		}
 
-		balances := GetBalances(acc)
-		if balances["KRW"] >= MinimumOrderPrice && balances["KRW"] > coin.OnceOrderPrice && coin.OnceOrderPrice > MinimumOrderPrice {
-			if _, err := strategy.Run(b.Accounts, coin, t); err != nil {
+		balances := getBalances(acc)
+		if balances["KRW"] >= MinimumOrderPrice && balances["KRW"] > c.onceOrderPrice && c.onceOrderPrice > MinimumOrderPrice {
+			if _, err := strategy.run(b.Accounts, c, t); err != nil {
 				panic(err)
 			}
 		}
@@ -192,18 +192,18 @@ func (b *Bot) Strategy(coin *Coin, strategy Strategy) {
 	}
 
 	//
-	Logger <- Log{
-		Msg:    "CLOSED",
-		Fields: logrus.Fields{"strategy": reflect.TypeOf(strategy).Name(), "coin": coin.Name},
-		Level:  logrus.DebugLevel,
+	logger <- log{
+		msg:    "CLOSED",
+		fields: logrus.Fields{"strategy": reflect.TypeOf(strategy).Name(), "coin": c.name},
+		level:  logrus.DebugLevel,
 	}
 	//
 }
 
-func (b *Bot) Tick(coin *Coin) {
+func (b *Bot) tick(c *coin) {
 	defer func() {
 		if err := recover(); err != nil {
-			Logger <- Log{Msg: err, Fields: logrus.Fields{"role": "Tick", "coin": coin.Name}, Level: logrus.ErrorLevel}
+			logger <- log{msg: err, fields: logrus.Fields{"role": "Tick", "coin": c.name}, level: logrus.ErrorLevel}
 		}
 	}()
 
@@ -212,7 +212,7 @@ func (b *Bot) Tick(coin *Coin) {
 		panic(err)
 	}
 
-	m := Market + "-" + coin.Name
+	m := Market + "-" + c.name
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
@@ -231,29 +231,29 @@ func (b *Bot) Tick(coin *Coin) {
 			panic(err)
 		}
 
-		Logger <- Log{
-			Msg: coin.Name,
-			Fields: logrus.Fields{
+		logger <- log{
+			msg: c.name,
+			fields: logrus.Fields{
 				"change-rate": r["signed_change_rate"].(float64),
 				"price":       r["trade_price"].(float64),
 			},
-			Level: logrus.TraceLevel,
+			level: logrus.TraceLevel,
 		}
 
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
 		// 전략은 반드시 시작할 때 틱을 소비해야 한다.
 		for range b.Strategies {
-			coin.T <- r
+			c.t <- r
 		}
 
 		time.Sleep(time.Second * 1)
 	}
 
 	//
-	Logger <- Log{
-		Msg:    "CLOSED",
-		Fields: logrus.Fields{"role": "Tick", "coin": coin.Name},
-		Level:  logrus.DebugLevel,
+	logger <- log{
+		msg:    "CLOSED",
+		fields: logrus.Fields{"role": "Tick", "coin": c.name},
+		level:  logrus.DebugLevel,
 	}
 	//
 }

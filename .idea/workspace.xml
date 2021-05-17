@@ -20,47 +20,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce35b2ee-f97b-433c-9288-9ff58054c4e1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/accounts_upbit.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client_quotation.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/upbit/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy_basic.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/strategy_penetration.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/accounts.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/test.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_fake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/cmd/upbit/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/coin.go" beforeDir="false" afterPath="$PROJECT_DIR$/coin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/detector.go" beforeDir="false" afterPath="$PROJECT_DIR$/detector.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/states.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/strategy.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/accounts.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/api.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/candles.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/market.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/order.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/api/ticker.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/query.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/quotation-client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/request.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/response.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/utils.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts_fake.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_fake.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts_fake_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_fake_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts_upbit.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_upbit.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts_utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_utils.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts_utils_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/accounts_utils_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_quotation.go" beforeDir="false" afterPath="$PROJECT_DIR$/client_quotation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_quotation_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client_quotation_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/upbit/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/upbit/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin.go" beforeDir="false" afterPath="$PROJECT_DIR$/coin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coin_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/coin_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detector.go" beforeDir="false" afterPath="$PROJECT_DIR$/detector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/detector_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/detector_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/log.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.log" beforeDir="false" afterPath="$PROJECT_DIR$/log.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/basic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy/penetration.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/upbit.config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/upbit.config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/upbit.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/serialize.go" beforeDir="false" afterPath="$PROJECT_DIR$/serialize.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy.go" beforeDir="false" afterPath="$PROJECT_DIR$/strategy.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy_basic.go" beforeDir="false" afterPath="$PROJECT_DIR$/strategy_basic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strategy_penetration.go" beforeDir="false" afterPath="$PROJECT_DIR$/strategy_penetration.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +81,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -110,25 +92,25 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Development\Projects\upbit-trading-bot\.github" />
-      <recent name="D:\Development\Projects\upbit-trading-bot" />
       <recent name="D:\Development\Projects\upbit-trading-bot\bot" />
-      <recent name="D:\Development\Projects\upbit-trading-bot\accounts" />
       <recent name="D:\Development\Projects\upbit-trading-bot\log" />
+      <recent name="C:\Users\user\Desktop\upbit-trading-bot" />
+      <recent name="C:\Users\user\Desktop\upbit-trading-bot\bot" />
+      <recent name="C:\Users\user\Desktop\upbit-trading-bot\strategy" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="go build github.com/pronist/upbit/bot/cmd/upbit" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build github.com/pronist/upbit/cmd/upbit" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="upbit-trading-bot" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/pronist/upbit/bot/cmd/upbit" />
+      <package value="github.com/pronist/upbit/cmd/upbit" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build github.com/pronist/upbit/bot/cmd/upbit" />
+        <item itemvalue="Go Build.go build github.com/pronist/upbit/cmd/upbit" />
       </list>
     </recent_temporary>
   </component>
@@ -170,50 +152,47 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="505" y="284" key="#Log_Highlighting_(ideolog)/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620733401923" />
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620730026591">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="331" y="109" width="1089" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621226004851">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="331" y="109" width="1089" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1621226004851" />
     <state x="-1506" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620456418710" />
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620730026591" />
-    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1621139410429">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="573" y="254" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1620913122316">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="573" y="254" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1620913122316" />
-    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621139410429" />
+    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620442945428" />
     <state width="759" height="466" key="DebuggerActiveHint" timestamp="1620912835187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="759" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1620912835187" />
     <state width="675" height="589" key="DebuggerActiveHint/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620528137048" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1621048831029">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621048831029" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1620914481016">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1621226058569">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620914481016" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1621226058569" />
     <state width="780" height="912" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649981" />
     <state width="1877" height="349" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620738363423" />
     <state width="1877" height="349" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1620914481016">
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1621226058569">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1620914481016" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1621226058569" />
     <state width="780" height="912" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
     <state width="1877" height="349" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620738363423" />
     <state width="1877" height="349" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1620914481016">
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1621226058569">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1620914481016" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1621226058569" />
     <state width="780" height="912" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
     <state width="1877" height="349" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620738363423" />
     <state width="1877" height="349" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398026" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1620914481016">
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1621226058569">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1620914481016" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1621226058569" />
     <state width="780" height="912" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
     <state width="1877" height="349" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620738363423" />
     <state width="1877" height="349" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
@@ -249,12 +228,12 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="775" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620711335587" />
-    <state x="668" y="223" width="778" height="618" key="find.popup" timestamp="1621177449610">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="534" y="177" width="555" height="594" key="find.popup" timestamp="1621224292881">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="534" y="177" width="555" height="594" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1620912397834" />
+    <state x="534" y="177" width="555" height="594" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1621224292881" />
     <state x="-1252" y="223" width="584" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620461211962" />
-    <state x="668" y="223" width="778" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621177449610" />
+    <state x="668" y="223" width="778" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620731745800" />
     <state x="601" y="246" width="700" height="530" key="recent.locations.popup" timestamp="1620229323961">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
