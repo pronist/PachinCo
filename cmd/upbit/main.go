@@ -1,22 +1,23 @@
 package main
 
 import (
-	"github.com/pronist/upbit"
+	"github.com/pronist/upbit/bot"
+	"github.com/pronist/upbit/client"
+	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
 
 func main() {
-	acc, err := upbit.NewFakeAccounts("accounts.db", 55000.0) // 테스트용 계정
+	acc, err := bot.NewFakeAccounts("accounts.db", 55000.0) // 테스트용 계정
 	if err != nil {
 		logrus.Fatal(err)
 	}
-
-	b := &upbit.Bot{
-		Client:          &upbit.Client{Client: http.DefaultClient, AccessKey: upbit.Config.AccessKey, SecretKey: upbit.Config.SecretKey},
-		QuotationClient: &upbit.QuotationClient{Client: http.DefaultClient},
+	b := &bot.Bot{
+		Client:          &client.Client{Client: http.DefaultClient, AccessKey: static.Config.AccessKey, SecretKey: static.Config.SecretKey},
+		QuotationClient: &client.QuotationClient{Client: http.DefaultClient},
 		Accounts:        acc,
-		Strategies:      []upbit.Strategy{&upbit.Penetration{K: upbit.Config.K, H: 0.03, L: -0.05}}}
+		Strategies:      []bot.Strategy{&bot.Penetration{K: static.Config.K, H: 0.03, L: -0.05}}}
 
 	b.Run()
 }
