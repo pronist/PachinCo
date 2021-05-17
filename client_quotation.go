@@ -17,7 +17,7 @@ func (qc *QuotationClient) call(url string, v interface{}) (interface{}, error) 
 	}
 	encodedQuery := values.Encode()
 
-	req, err := http.NewRequest("GET", apiUrl+"/"+apiVersion+url+"?"+encodedQuery, nil)
+	req, err := http.NewRequest("GET", apiURL+"/"+apiVersion+url+"?"+encodedQuery, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,3 +1,6 @@
 *.exe
-test_*.db
-test_*.db.lock
+
+*.db
+*.db.lock
+
+*.log

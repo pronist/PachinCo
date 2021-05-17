@@ -21,6 +21,7 @@ func getBalances(accounts []map[string]interface{}) map[string]float64 {
 // 해당 코인에 해당 매수 평균가를 얻어온다.
 func getAverageBuyPrice(accounts []map[string]interface{}, coin string) float64 {
 	t := funk.Find(accounts, func(acc map[string]interface{}) bool { return acc["currency"].(string) == coin })
+
 	if t, ok := t.(map[string]interface{}); ok {
 		avgBuyPrice, err := strconv.ParseFloat(t["avg_buy_price"].(string), 64)
 		if err != nil {

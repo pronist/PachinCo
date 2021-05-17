@@ -1,8 +1,6 @@
 package upbit
 
 import (
-	"github.com/gorilla/websocket"
-	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"reflect"
 	"time"
@@ -182,30 +180,24 @@ func (b *Bot) tick(c *coin) {
 		}
 	}()
 
-	ws, _, err := websocket.DefaultDialer.Dial(sockURL+"/"+sockVersion, nil)
-	if err != nil {
-		panic(err)
-	}
-
 	m := targetMarket + "-" + c.name
 
-	data := []map[string]interface{}{
-		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": []string{m}, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
-		// format
+	wsc, err := newWebsocketClient("ticker", []string{m}, true, false)
+	if err != nil {
+		panic(err)
 	}
 
 	for marketTrackingStates[m] == tracking {
 		var r map[string]interface{}
 
-		if err := ws.WriteJSON(data); err != nil {
+		if err := wsc.ws.WriteJSON(wsc.data); err != nil {
 			panic(err)
 		}
 
-		if err := ws.ReadJSON(&r); err != nil {
+		if err := wsc.ws.ReadJSON(&r); err != nil {
 			panic(err)
 		}
-
+		//
 		logger <- log{
 			msg: c.name,
 			fields: logrus.Fields{
@@ -214,7 +206,7 @@ func (b *Bot) tick(c *coin) {
 			},
 			level: logrus.TraceLevel,
 		}
-
+		//
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
 		// 전략은 반드시 시작할 때 틱을 소비해야 한다.
 		for range b.Strategies {
@@ -223,7 +215,9 @@ func (b *Bot) tick(c *coin) {
 
 		time.Sleep(time.Second * 1)
 	}
-
+	if err := wsc.ws.Close(); err != nil {
+		panic(err)
+	}
 	//
 	logger <- log{
 		msg:    "CLOSED",

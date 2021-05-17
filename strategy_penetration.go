@@ -1,12 +1,8 @@
 package upbit
 
 import (
-	"github.com/gorilla/websocket"
-	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"github.com/thoas/go-funk"
 	"math"
-	"strings"
 	"time"
 )
 
@@ -44,35 +40,25 @@ func (p *Penetration) prepare(bot *Bot) {
 	//
 	logger <- log{msg: "Prepare strategy...", fields: logrus.Fields{"strategy": "Penetration"}, level: logrus.DebugLevel}
 	//
-	ws, _, err := websocket.DefaultDialer.Dial(sockURL+"/"+sockVersion, nil)
+
+	markets, err := getMarketNames(bot, targetMarket)
 	if err != nil {
 		panic(err)
 	}
 
-	markets, err := bot.QuotationClient.call("/market/all", struct{ isDetail bool }{false})
+	wsc, err := newWebsocketClient("ticker", markets, true, false)
 	if err != nil {
 		panic(err)
 	}
 
-	targetMarkets := funk.Chain(markets.([]map[string]interface{})).
-		Map(func(market map[string]interface{}) string { return market["market"].(string) }).
-		Filter(func(market string) bool { return strings.HasPrefix(market, targetMarket) }).
-		Value().([]string)
-
-	data := []map[string]interface{}{
-		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": targetMarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
-		// format
-	}
-
-	if err := ws.WriteJSON(data); err != nil {
+	if err := wsc.ws.WriteJSON(wsc.data); err != nil {
 		panic(err)
 	}
 
-	for _, market := range targetMarkets {
+	for _, market := range markets {
 		var r map[string]interface{}
 
-		if err := ws.ReadJSON(&r); err != nil {
+		if err := wsc.ws.ReadJSON(&r); err != nil {
 			panic(err)
 		}
 
@@ -80,7 +66,6 @@ func (p *Penetration) prepare(bot *Bot) {
 		if _, ok := marketTrackingStates[market]; !ok && predicate(bot, r) {
 			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
 			marketTrackingStates[market] = stopped
-
 			//
 			logger <- log{
 				msg: "Stopped",
@@ -94,7 +79,10 @@ func (p *Penetration) prepare(bot *Bot) {
 			//
 		}
 
-		time.Sleep(time.Millisecond * 100)
+		time.Sleep(time.Millisecond * 300)
+	}
+	if err := wsc.ws.Close(); err != nil {
+		panic(err)
 	}
 }
 
