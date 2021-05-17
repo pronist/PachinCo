@@ -40,7 +40,7 @@ type Penetration struct {
 	K float64 // 돌파 상수
 }
 
-func (p *Penetration) prepare(bot *Bot, _ Accounts) {
+func (p *Penetration) prepare(bot *Bot) {
 	//
 	logger <- log{msg: "Prepare strategy...", fields: logrus.Fields{"strategy": "Penetration"}, level: logrus.DebugLevel}
 	//
@@ -54,14 +54,14 @@ func (p *Penetration) prepare(bot *Bot, _ Accounts) {
 		panic(err)
 	}
 
-	targetmarkets := funk.Chain(markets.([]map[string]interface{})).
+	targetMarkets := funk.Chain(markets.([]map[string]interface{})).
 		Map(func(market map[string]interface{}) string { return market["market"].(string) }).
-		Filter(func(market string) bool { return strings.HasPrefix(market, market) }).
+		Filter(func(market string) bool { return strings.HasPrefix(market, targetMarket) }).
 		Value().([]string)
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": targetmarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": targetMarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
@@ -69,7 +69,7 @@ func (p *Penetration) prepare(bot *Bot, _ Accounts) {
 		panic(err)
 	}
 
-	for _, market := range targetmarkets {
+	for _, market := range targetMarkets {
 		var r map[string]interface{}
 
 		if err := ws.ReadJSON(&r); err != nil {
@@ -98,9 +98,9 @@ func (p *Penetration) prepare(bot *Bot, _ Accounts) {
 	}
 }
 
-func (p *Penetration) run(bot *Bot, accounts Accounts, c *coin, t map[string]interface{}) (bool, error) {
+func (p *Penetration) run(bot *Bot, c *coin, t map[string]interface{}) (bool, error) {
+	market := t["code"].(string)
 	price := t["trade_price"].(float64)
-	m := t["code"].(string)
 
 	volume := c.onceOrderPrice / price
 
@@ -108,7 +108,7 @@ func (p *Penetration) run(bot *Bot, accounts Accounts, c *coin, t map[string]int
 		panic("division by zero")
 	}
 
-	acc, err := accounts.accounts()
+	acc, err := bot.Accounts.accounts()
 	if err != nil {
 		return false, err
 	}
@@ -130,18 +130,18 @@ func (p *Penetration) run(bot *Bot, accounts Accounts, c *coin, t map[string]int
 			// 매수평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
 
 			if pp-1 <= p.L {
-				return accounts.order(bot, c, b, volume, price)
+				return bot.Accounts.order(bot, c, b, volume, price)
 			}
 
 			////// 매도 전략
 
 			// 매수 평균가 대비 현재 가격의 '상승률' 이 `p.H` 보다 큰 경우
 			if pp-1 >= p.H {
-				ok, err := accounts.order(bot, c, s, coinBalance, price)
+				ok, err := bot.Accounts.order(bot, c, s, coinBalance, price)
 
 				if ok && err == nil {
 					// 매도 이후에는 추적 상태를 멈춘다.
-					marketTrackingStates[m] = stopped
+					marketTrackingStates[market] = stopped
 					//
 					logger <- log{
 						msg:    "Stopped",
@@ -154,7 +154,7 @@ func (p *Penetration) run(bot *Bot, accounts Accounts, c *coin, t map[string]int
 			}
 		} else {
 			// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
-			return accounts.order(bot, c, b, volume, price)
+			return bot.Accounts.order(bot, c, b, volume, price)
 		}
 	}
 

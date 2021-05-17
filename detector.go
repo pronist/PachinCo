@@ -29,14 +29,22 @@ func newDetector() (*detector, error) {
 	return &detector{ws: ws, d: make(chan map[string]interface{})}, nil
 }
 
-// Search 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
-// Detector.predicate 조건에 부합하는 종목이 검색되면 Detector.D 채널로 해당 tick 을 내보낸다.
 func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			logger <- log{msg: err, fields: logrus.Fields{"role": "Detector"}, level: logrus.ErrorLevel}
+
+			// 디텍터에 문제가 발생하더라도 로그를 남기고 다시 시작한다.
+			d.detect(bot, currency, predicate)
 		}
 	}()
+
+	d.detect(bot, currency, predicate)
+}
+
+// detect 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
+// predicate 조건에 부합하는 종목이 검색되면 detector.d 채널로 해당 tick 을 내보낸다.
+func (d *detector) detect(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
 	//
 	logger <- log{msg: "Detector started...", level: logrus.DebugLevel}
 	//
@@ -47,7 +55,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 	}
 
 	// 현재 타겟으로 하고 있는 마켓에 대해서만 디텍팅 해야 한다.
-	targetmarkets := funk.Chain(markets.([]map[string]interface{})).
+	targetMarkets := funk.Chain(markets.([]map[string]interface{})).
 		Map(func(market map[string]interface{}) string { return market["market"].(string) }).
 		Filter(func(market string) bool { return strings.HasPrefix(market, currency) }).
 		Value().([]string)
@@ -55,7 +63,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 	// https://docs.upbit.com/docs/upbit-quotation-websocket
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
-		{"type": "ticker", "codes": targetmarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
+		{"type": "ticker", "codes": targetMarkets, "isOnlySnapshot": true, "isOnlyRealtime": false}, // type
 		// format
 	}
 
@@ -64,7 +72,7 @@ func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[s
 			panic(err)
 		}
 
-		for range targetmarkets {
+		for range targetMarkets {
 			var r map[string]interface{}
 
 			if err := d.ws.ReadJSON(&r); err != nil {

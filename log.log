@@ -396,3 +396,15 @@
 {"coin":"BTC","level":"warning","msg":"ORDER","price":2750,"side":"bid","time":"2021-05-17 14:34:01","volume":2}
 {"level":"info","limit":5500,"msg":"BTC","order":2750,"time":"2021-05-17 14:34:01","total":55000}
 {"level":"info","limit":5500,"msg":"BTC","order":2750,"time":"2021-05-17 14:34:01","total":55000}
+{"change-rate":0.1042857143,"level":"info","market":"BTC-PAX","msg":"Stopped","price":0.00002319,"time":"2021-05-17 14:34:54"}
+{"change-rate":0,"level":"info","market":"BTC-BTT","msg":"Stopped","price":1.3e-7,"time":"2021-05-17 14:34:55"}
+{"change-rate":0.2936708861,"level":"info","market":"BTC-SOLVE","msg":"Stopped","price":0.00000511,"time":"2021-05-17 14:34:56"}
+{"change-rate":0.1391304348,"level":"info","market":"KRW-SOLVE","msg":"Stopped","price":262,"time":"2021-05-17 14:34:58"}
+{"change-rate":0.0941176471,"level":"info","market":"BTC-HIVE","msg":"Stopped","price":0.00001116,"time":"2021-05-17 14:35:02"}
+{"change-rate":0.1972578932,"level":"info","market":"BTC-CELO","msg":"Stopped","price":0.000124,"time":"2021-05-17 14:35:12"}
+{"level":"error","msg":"websocket: close 1006 (abnormal closure): unexpected EOF","role":"Detector","time":"2021-05-17 15:02:31"}
+{"change-rate":0,"level":"info","market":"BTC-NCASH","msg":"Stopped","price":1.3e-7,"time":"2021-05-17 15:09:47"}
+{"change-rate":0.2050632911,"level":"info","market":"BTC-SOLVE","msg":"Stopped","price":0.00000476,"time":"2021-05-17 15:09:49"}
+{"change-rate":0.1173913043,"level":"info","market":"KRW-SOLVE","msg":"Stopped","price":257,"time":"2021-05-17 15:09:51"}
+{"change-rate":0.0637254902,"level":"info","market":"BTC-HIVE","msg":"Stopped","price":0.00001085,"time":"2021-05-17 15:09:56"}
+{"change-rate":0.1609539442,"level":"info","market":"BTC-CELO","msg":"Stopped","price":0.00012024,"time":"2021-05-17 15:10:09"}

@@ -9,7 +9,7 @@ import (
 )
 
 const minimumOrderPrice = 5000 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
-const market = "KRW"           // 원화 마켓을 추적한다.
+const targetMarket = "KRW"           // 원화 마켓을 추적한다.
 
 const (
 	b = "bid" // 매수
@@ -40,7 +40,7 @@ func (b *Bot) Run() {
 
 	// 전략의 사전 준비를 해야한다.
 	for _, strategy := range b.Strategies {
-		strategy.prepare(b, b.Accounts)
+		strategy.prepare(b)
 	}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
@@ -56,7 +56,7 @@ func (b *Bot) Run() {
 		panic(err)
 	}
 
-	go detector.run(b, market, predicate) // 종목 찾기 시작!
+	go detector.run(b, targetMarket, predicate) // 종목 찾기 시작!
 	/////
 
 	for {
@@ -95,7 +95,7 @@ func (b *Bot) runStrategyForCoinsInHands() error {
 	delete(balances, "KRW")
 
 	for coin := range balances {
-		if err := b.launch(market + "-" + coin); err != nil {
+		if err := b.launch(targetMarket + "-" + coin); err != nil {
 			return err
 		}
 	}
@@ -146,7 +146,7 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 		level:  logrus.DebugLevel,
 	}
 	//
-	stat, ok := marketTrackingStates[market+"-"+c.name]
+	stat, ok := marketTrackingStates[targetMarket+"-"+c.name]
 
 	for ok && stat == tracking {
 		t := <-c.t
@@ -158,7 +158,7 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 
 		balances := getBalances(acc)
 		if balances["KRW"] >= minimumOrderPrice && balances["KRW"] > c.onceOrderPrice && c.onceOrderPrice > minimumOrderPrice {
-			if _, err := strategy.run(b, b.Accounts, c, t); err != nil {
+			if _, err := strategy.run(b, c, t); err != nil {
 				panic(err)
 			}
 		}
@@ -187,7 +187,7 @@ func (b *Bot) tick(c *coin) {
 		panic(err)
 	}
 
-	m := market + "-" + c.name
+	m := targetMarket + "-" + c.name
 
 	data := []map[string]interface{}{
 		{"ticket": uuid.NewV4()}, // ticket
