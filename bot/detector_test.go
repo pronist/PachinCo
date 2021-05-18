@@ -14,7 +14,6 @@ func TestDetector_Run(t *testing.T) {
 
 	go d.run(
 		&Bot{QuotationClient: &client.QuotationClient{Client: http.DefaultClient}},
-		targetMarket,
 		func(b *Bot, t map[string]interface{}) bool {
 			return true
 		})

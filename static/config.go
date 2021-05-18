@@ -19,9 +19,9 @@ var Config = struct {
 }{}
 
 func init() {
-	config := "upbit.config.yml"
+	config := ".upbit.yml"
 
-	if env := os.Getenv("GO_ENV"); env == "test" {
+	if env := os.Getenv("APP_ENV"); env == "test" {
 		config = filepath.Join("..", config)
 	}
 

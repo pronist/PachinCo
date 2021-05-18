@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestGetMarketNames(t *testing.T)  {
+func TestGetMarketNames(t *testing.T) {
 	bot := &Bot{QuotationClient: &client.QuotationClient{Client: http.DefaultClient}}
 
 	markets, err := getMarketNames(bot, targetMarket)

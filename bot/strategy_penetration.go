@@ -66,12 +66,12 @@ func (p *Penetration) prepare(bot *Bot) {
 		}
 
 		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
-		if _, ok := marketTrackingStates[market]; !ok && predicate(bot, r) {
+		if _, ok := stat[market]; !ok && predicate(bot, r) {
 			// 봇 시작시 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
-			marketTrackingStates[market] = stopped
+			stat[market] = untracked
 			//
 			log.Logger <- log.Log{
-				Msg: "Stopped",
+				Msg: "Untracked",
 				Fields: logrus.Fields{
 					"market":      market,
 					"change-rate": r["signed_change_rate"].(float64),
@@ -90,7 +90,7 @@ func (p *Penetration) prepare(bot *Bot) {
 }
 
 func (p *Penetration) run(bot *Bot, c *coin, t map[string]interface{}) (bool, error) {
-	market := t["code"].(string)
+	m := t["code"].(string)
 	price := t["trade_price"].(float64)
 
 	volume := c.onceOrderPrice / price
@@ -132,13 +132,9 @@ func (p *Penetration) run(bot *Bot, c *coin, t map[string]interface{}) (bool, er
 
 				if ok && err == nil {
 					// 매도 이후에는 추적 상태를 멈춘다.
-					marketTrackingStates[market] = stopped
+					stat[m] = untracked
 					//
-					log.Logger <- log.Log{
-						Msg:    "Stopped",
-						Fields: logrus.Fields{"market": c},
-						Level:  logrus.InfoLevel,
-					}
+					log.Logger <- log.Log{Msg: "Untracked", Fields: logrus.Fields{"market": c}, Level: logrus.InfoLevel}
 					//
 				}
 				return ok, err

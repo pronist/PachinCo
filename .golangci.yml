@@ -1,0 +1,6 @@
+linters:
+  enable:
+    - gofumpt
+    - unparam
+    - wastedassign
+    - unconvert

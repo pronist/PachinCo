@@ -5,29 +5,10 @@ import (
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
+	"net/http"
 	"reflect"
 	"time"
 )
-
-const minimumOrderPrice = 5000 // 업비트의 최소 매도/매수 가격은 '5000 KRW'
-const targetMarket = "KRW"     // 원화 마켓을 추적한다.
-
-const (
-	b = "bid" // 매수
-	s = "ask" // 매도
-)
-
-// 추적 상태를 나타내는 상수들
-const (
-	tracking = iota
-	stopped
-)
-
-var marketTrackingStates = make(map[string]int)
-
-//func Predicate(t map[string]interface{}) bool {
-//	return true
-//}
 
 type Bot struct {
 	*client.Client
@@ -36,7 +17,23 @@ type Bot struct {
 	Strategies []Strategy
 }
 
-func (b *Bot) Run() {
+// 새로운 봇을 만든다. 봇에 사용할 계정과 전략을 받는다.
+func NewBot(accounts Accounts, strategies []Strategy) *Bot {
+	c := &client.Client{
+		Client:    http.DefaultClient,
+		AccessKey: static.Config.AccessKey,
+		SecretKey: static.Config.SecretKey,
+	}
+	qc := &client.QuotationClient{Client: http.DefaultClient}
+
+	return &Bot{c, qc, accounts, strategies}
+}
+
+// 봇을 실행한다. 다음과 같은 일이 발생한다.
+//
+// 1. 계좌를 조회하여 현재 가지고 있는 코인에 대해 틱과 전략를 실행한다.
+// 2. 디텍터를 실행하여 predicate 에 부합하는 종목을 탐색하여 보고, 탐색된 종목에 대해 틱과 전략를 실행한다.
+func (b *Bot) Run() error {
 	log.Logger <- log.Log{Msg: "Bot started...", Level: logrus.DebugLevel}
 
 	// 전략의 사전 준비를 해야한다.
@@ -45,19 +42,18 @@ func (b *Bot) Run() {
 	}
 
 	///// 이미 가지고 있는 코인에 대해서는 전략을 시작해야 한다.
-	err := b.runStrategyForCoinsInHands()
-	if err != nil {
-		panic(err)
+	if err := b.inHands(); err != nil {
+		return err
 	}
 	/////
 
 	///// 디텍터
 	detector, err := newDetector()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	go detector.run(b, targetMarket, predicate) // 종목 찾기 시작!
+	go detector.run(b, predicate) // 종목 찾기 시작!
 	/////
 
 	for {
@@ -66,7 +62,7 @@ func (b *Bot) Run() {
 		case tick := <-detector.d:
 			market := tick["code"].(string)
 
-			if _, ok := marketTrackingStates[market]; !ok {
+			if _, ok := stat[market]; !ok {
 				//
 				log.Logger <- log.Log{
 					Msg: "Detected",
@@ -79,14 +75,14 @@ func (b *Bot) Run() {
 				}
 				//
 				if err := b.launch(market); err != nil {
-					panic(err)
+					return err
 				}
 			}
 		}
 	}
 }
 
-func (b *Bot) runStrategyForCoinsInHands() error {
+func (b *Bot) inHands() error {
 	acc, err := b.Accounts.accounts()
 	if err != nil {
 		return err
@@ -114,19 +110,19 @@ func (b *Bot) launch(market string) error {
 	}
 
 	// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-	marketTrackingStates[market] = tracking
+	stat[market] = tracked
 
 	// 전략에 주기적으로 가격 정보를 보낸다.
 	go b.tick(coin)
 
 	for _, strategy := range b.Strategies {
-		go b.Strategy(coin, strategy)
+		go b.strategy(coin, strategy)
 	}
 
 	return nil
 }
 
-func (b *Bot) Strategy(c *coin, strategy Strategy) {
+func (b *Bot) strategy(c *coin, strategy Strategy) {
 	defer func() {
 		if err := recover(); err != nil {
 			//
@@ -147,9 +143,9 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 		Level:  logrus.DebugLevel,
 	}
 	//
-	stat, ok := marketTrackingStates[targetMarket+"-"+c.name]
+	stat, ok := stat[targetMarket+"-"+c.name]
 
-	for ok && stat == tracking {
+	for ok && stat == tracked {
 		t := <-c.t
 
 		acc, err := b.Accounts.accounts()
@@ -158,6 +154,7 @@ func (b *Bot) Strategy(c *coin, strategy Strategy) {
 		}
 
 		balances := getBalances(acc)
+
 		if balances["KRW"] >= minimumOrderPrice && balances["KRW"] > c.onceOrderPrice && c.onceOrderPrice > minimumOrderPrice {
 			if _, err := strategy.run(b, c, t); err != nil {
 				panic(err)
@@ -190,7 +187,7 @@ func (b *Bot) tick(c *coin) {
 		panic(err)
 	}
 
-	for marketTrackingStates[m] == tracking {
+	for stat[m] == tracked {
 		var r map[string]interface{}
 
 		if err := wsc.Ws.WriteJSON(wsc.Data); err != nil {

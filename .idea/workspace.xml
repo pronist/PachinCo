@@ -20,39 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce35b2ee-f97b-433c-9288-9ff58054c4e1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bot/utils_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts_fake.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_fake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts_fake_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_fake_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts_upbit.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_upbit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts_utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts_utils_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_utils_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/bot.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_jwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_jwt_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_jwt_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_quotation.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_quotation.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_quotation_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_quotation_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_websocket.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client_websocket_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_websocket_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/bot.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/detector.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/detector_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/strategy_penetration.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_penetration.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/utils_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/utils_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/client_websocket_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_websocket_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/upbit/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/upbit/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coin.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/coin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coin_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/coin_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/static/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detector.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/detector_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/log.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serialize.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/serialize.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serialize_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/serialize_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy_basic.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_basic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/strategy_penetration.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_penetration.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/static/config.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +76,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="LogHighlighting" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -171,6 +149,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="505" y="284" key="#Log_Highlighting_(ideolog)/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620733401923" />
+    <state x="711" y="343" key="#Notifications" timestamp="1621345134815">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="711" y="343" key="#Notifications/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621345134815" />
     <state x="331" y="109" width="1089" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621226004851">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -240,20 +222,20 @@
     </state>
     <state x="-1187" y="221" key="RollbackChangesDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620819216974" />
     <state x="733" y="221" key="RollbackChangesDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621260784032" />
-    <state x="241" y="230" width="998" height="708" key="SettingsEditor" timestamp="1620733228936">
+    <state x="436" y="144" width="998" height="708" key="SettingsEditor" timestamp="1621345116294">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="241" y="230" width="998" height="708" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620733228936" />
+    <state x="436" y="144" width="998" height="708" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621345116294" />
     <state x="775" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1620711335587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="775" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620711335587" />
-    <state x="968" y="214" width="778" height="618" key="find.popup" timestamp="1621265142254">
+    <state x="968" y="214" width="778" height="618" key="find.popup" timestamp="1621344401171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="534" y="177" width="555" height="594" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1621240650510" />
     <state x="-1252" y="223" width="584" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620461211962" />
-    <state x="968" y="214" width="778" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621265142254" />
+    <state x="968" y="214" width="778" height="618" key="find.popup/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621344401171" />
     <state x="601" y="246" width="700" height="530" key="recent.locations.popup" timestamp="1620229323961">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

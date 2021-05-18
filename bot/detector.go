@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const targetMarket = "KRW" // 원화 마켓을 추적한다.
+
 type detector struct {
 	d chan map[string]interface{}
 }
@@ -16,28 +18,18 @@ func newDetector() (*detector, error) {
 	return &detector{d: make(chan map[string]interface{})}, nil
 }
 
-func (d *detector) run(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
+// run 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
+// predicate 조건에 부합하는 종목이 검색되면 detector.d 채널로 해당 tick 을 내보낸다.
+func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}) bool) {
 	defer func() {
 		if err := recover(); err != nil {
 			//
-			log.Logger <- log.Log{
-				Msg:    err,
-				Fields: logrus.Fields{"role": "Detector"},
-				Level:  logrus.ErrorLevel,
-			}
+			log.Logger <- log.Log{Msg: err, Fields: logrus.Fields{"role": "Detector"}, Level: logrus.ErrorLevel}
 			//
-			// 디텍터에 문제가 발생하더라도 로그를 남기고 다시 시작한다.
-			d.detect(bot, currency, predicate)
 		}
 	}()
 
-	d.detect(bot, currency, predicate)
-}
-
-// detect 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.
-// predicate 조건에 부합하는 종목이 검색되면 detector.d 채널로 해당 tick 을 내보낸다.
-func (d *detector) detect(bot *Bot, currency string, predicate func(b *Bot, t map[string]interface{}) bool) {
-	markets, err := getMarketNames(bot, currency)
+	markets, err := getMarketNames(bot, targetMarket)
 	if err != nil {
 		panic(err)
 	}
@@ -46,6 +38,7 @@ func (d *detector) detect(bot *Bot, currency string, predicate func(b *Bot, t ma
 	if err != nil {
 		panic(err)
 	}
+
 	defer wsc.Ws.Close()
 
 	//

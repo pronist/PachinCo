@@ -42,7 +42,7 @@ func init() {
 			select {
 			// 지속적으로 로그를 받아온다. 이 시점에서 가장 깔끔한 로그 처리방법인 듯보인다.
 			case log := <-Logger:
-				if env := os.Getenv("GO_ENV"); env != "test" {
+				if env := os.Getenv("APP_ENV"); env != "test" {
 					logger.WithFields(log.Fields).Log(log.Level, log.Msg)
 				}
 			}
