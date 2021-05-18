@@ -2,12 +2,13 @@ package bot
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/boltdb/bolt"
 	"github.com/fatih/structs"
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/utils"
 	"github.com/sirupsen/logrus"
-	"strconv"
 )
 
 const faccAccountsBucketName = "accounts"
@@ -30,7 +31,7 @@ type FakeAccounts struct {
 // NewFakeAccounts 는 새로운 FakeAccounts 를 만든다.
 // faccDbName 에 해당하는 boltDB 를 만들고 krw 만큼의 자금을 faccAccountsBucketName 에 할당한다.
 func NewFakeAccounts(dbname string, krw float64) (*FakeAccounts, error) {
-	db, err := bolt.Open(dbname, 0666, nil)
+	db, err := bolt.Open(dbname, 0o666, nil)
 	if err != nil {
 		return nil, err
 	}

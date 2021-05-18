@@ -1,8 +1,9 @@
 package bot
 
 import (
-	"github.com/thoas/go-funk"
 	"strings"
+
+	"github.com/thoas/go-funk"
 )
 
 // 업비트에서 지원하는 모든 마켓 중 currency 에 해당하는 마켓 이름만 얻어온다.

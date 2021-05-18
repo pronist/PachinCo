@@ -1,10 +1,11 @@
 package bot
 
 import (
-	"github.com/pronist/upbit/client"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/pronist/upbit/client"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetMarketNames(t *testing.T) {

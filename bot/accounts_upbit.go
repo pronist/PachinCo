@@ -1,10 +1,11 @@
 package bot
 
 import (
+	"time"
+
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 // UpbitAccounts 는 실제 업비트 계정을 의미한다.
@@ -121,7 +122,6 @@ func (acc *UpbitAccounts) wait(b *Bot, done chan int, uuid string) {
 		order, err := b.Client.Call("GET", "/order", struct {
 			Uuid string `url:"uuid"`
 		}{uuid})
-
 		if err != nil {
 			log.Logger <- log.Log{Msg: err, Level: logrus.ErrorLevel}
 		}

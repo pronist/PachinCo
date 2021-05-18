@@ -5,11 +5,12 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/go-querystring/query"
 	uuid "github.com/satori/go.uuid"
-	"io/ioutil"
-	"net/http"
 )
 
 const (

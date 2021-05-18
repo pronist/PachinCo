@@ -1,9 +1,10 @@
 package client
 
 import (
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var qc = &QuotationClient{http.DefaultClient}

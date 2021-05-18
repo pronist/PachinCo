@@ -1,11 +1,12 @@
 package bot
 
 import (
-	"github.com/pronist/upbit/static"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/pronist/upbit/static"
+	"github.com/stretchr/testify/assert"
 )
 
 var c *coin

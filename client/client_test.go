@@ -1,10 +1,11 @@
 package client
 
 import (
-	"github.com/pronist/upbit/static"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/pronist/upbit/static"
+	"github.com/stretchr/testify/assert"
 )
 
 var c *Client

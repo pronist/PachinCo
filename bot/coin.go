@@ -1,10 +1,11 @@
 package bot
 
 import (
+	"sync"
+
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
-	"sync"
 )
 
 // Coin 은 전략이 보내는 사인을 받아야하고, 받은 사인을 upbit.Bot 으로 보내야하므로
@@ -23,7 +24,7 @@ type coin struct {
 func newCoin(accounts Accounts, name string, rate float64) (*coin, error) {
 	coin := coin{name: name, rate: rate, t: make(chan map[string]interface{})}
 	if err := coin.refresh(accounts); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return &coin, nil

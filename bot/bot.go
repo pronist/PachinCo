@@ -1,13 +1,14 @@
 package bot
 
 import (
+	"net/http"
+	"reflect"
+	"time"
+
 	"github.com/pronist/upbit/client"
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
-	"net/http"
-	"reflect"
-	"time"
 )
 
 type Bot struct {
@@ -48,38 +49,33 @@ func (b *Bot) Run() error {
 	/////
 
 	///// 디텍터
-	detector, err := newDetector()
-	if err != nil {
-		return err
-	}
-
-	go detector.run(b, predicate) // 종목 찾기 시작!
+	d := newDetector()
+	go d.run(b, predicate) // 종목 찾기 시작!
 	/////
 
-	for {
-		select {
+	for tick := range d.d {
 		// 디텍팅되어 가져온 코인에 대해서 전략 시작 ...
-		case tick := <-detector.d:
-			market := tick["code"].(string)
+		market := tick["code"].(string)
 
-			if _, ok := stat[market]; !ok {
-				//
-				log.Logger <- log.Log{
-					Msg: "Detected",
-					Fields: logrus.Fields{
-						"market":      market,
-						"change-rate": tick["signed_change_rate"].(float64),
-						"price":       tick["trade_price"].(float64),
-					},
-					Level: logrus.DebugLevel,
-				}
-				//
-				if err := b.launch(market); err != nil {
-					return err
-				}
+		if _, ok := stat[market]; !ok {
+			//
+			log.Logger <- log.Log{
+				Msg: "Detected",
+				Fields: logrus.Fields{
+					"market":      market,
+					"change-rate": tick["signed_change_rate"].(float64),
+					"price":       tick["trade_price"].(float64),
+				},
+				Level: logrus.DebugLevel,
+			}
+			//
+			if err := b.launch(market); err != nil {
+				return err
 			}
 		}
 	}
+
+	return nil
 }
 
 func (b *Bot) inHands() error {

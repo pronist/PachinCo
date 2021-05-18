@@ -1,11 +1,12 @@
 package static
 
 import (
-	"github.com/jinzhu/configor"
-	"github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/jinzhu/configor"
+	"github.com/sirupsen/logrus"
 )
 
 var Config = struct {
@@ -26,7 +27,6 @@ func init() {
 	}
 
 	err := configor.New(&configor.Config{Silent: true}).Load(&Config, config)
-
 	if err != nil {
 		logrus.Fatal(err)
 	}

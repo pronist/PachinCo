@@ -1,16 +1,16 @@
 package bot
 
 import (
-	"github.com/pronist/upbit/client"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/pronist/upbit/client"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDetector_Run(t *testing.T) {
-	d, err := newDetector()
-	assert.NoError(t, err)
+	d := newDetector()
 
 	go d.run(
 		&Bot{QuotationClient: &client.QuotationClient{Client: http.DefaultClient}},

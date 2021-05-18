@@ -1,10 +1,11 @@
 package client
 
 import (
+	"testing"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pronist/upbit/static"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestNewHS256Token(t *testing.T) {

@@ -1,8 +1,9 @@
 package bot
 
 import (
-	"github.com/thoas/go-funk"
 	"strconv"
+
+	"github.com/thoas/go-funk"
 )
 
 // 현재 계좌가 가진 자금 현황을 Map 형태로 바꾼다.

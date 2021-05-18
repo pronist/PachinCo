@@ -1,16 +1,19 @@
 package bot
 
 import (
-	"github.com/boltdb/bolt"
-	"github.com/pronist/upbit/utils"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/boltdb/bolt"
+	"github.com/pronist/upbit/utils"
+	"github.com/stretchr/testify/assert"
 )
 
-var facc *FakeAccounts
-var tmpfile *os.File
+var (
+	facc    *FakeAccounts
+	tmpfile *os.File
+)
 
 func TestNewFakeAccounts(t *testing.T) {
 	var err error

@@ -1,12 +1,13 @@
 package bot
 
 import (
+	"math"
+	"time"
+
 	"github.com/pronist/upbit/client"
 	"github.com/pronist/upbit/log"
 	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
-	"math"
-	"time"
 )
 
 // 트래킹할 종목에 대한 조건이다.

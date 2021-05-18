@@ -1,10 +1,11 @@
 package bot
 
 import (
+	"time"
+
 	"github.com/pronist/upbit/client"
 	"github.com/pronist/upbit/log"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 const targetMarket = "KRW" // 원화 마켓을 추적한다.
@@ -14,8 +15,8 @@ type detector struct {
 }
 
 // newDetector 는 새로운 detector 를 만들고 detector.ws 에 웹소켓을 설정한다.
-func newDetector() (*detector, error) {
-	return &detector{d: make(chan map[string]interface{})}, nil
+func newDetector() *detector {
+	return &detector{d: make(chan map[string]interface{})}
 }
 
 // run 는 화폐(KRW, BTC, USDT)에 대응하는 마켓에 대해 종목을 검색한다.

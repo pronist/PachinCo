@@ -1,8 +1,9 @@
 package client
 
 import (
-	"github.com/google/go-querystring/query"
 	"net/http"
+
+	"github.com/google/go-querystring/query"
 )
 
 type QuotationClient struct {
