@@ -14,7 +14,7 @@ func main() {
 	/////
 
 	///// 봇에 사용할 계정을 설정한다.
-	// acc, err := bot.NewUpbitAccounts(b)
+	//acc, err := bot.NewUpbitAccounts(b)
 	acc, err := bot.NewFakeAccounts("accounts.db", 55000.0) // 테스트용 계정
 	if err != nil {
 		logrus.Fatal(err)
@@ -23,5 +23,5 @@ func main() {
 	b.SetAccounts(acc)
 	/////
 
-	logrus.Fatal(b.Run())
+	logrus.Panic(b.Run())
 }

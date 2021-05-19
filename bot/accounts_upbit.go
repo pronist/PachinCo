@@ -22,6 +22,10 @@ func NewUpbitAccounts(b *Bot) (*UpbitAccounts, error) {
 
 	log.Logger <- log.Log{Msg: "Brought about Accounts From Upbit.", Level: logrus.DebugLevel}
 
+	if _, ok := accounts.([]map[string]interface{}); !ok {
+		log.Logger <- log.Log{Msg: accounts, Level: logrus.PanicLevel}
+	}
+
 	return &UpbitAccounts{accounts.([]map[string]interface{})}, nil
 }
 

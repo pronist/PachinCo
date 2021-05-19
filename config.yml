@@ -1,17 +1,18 @@
-keypair:
-  accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4 # 엑세스키
-  secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn # 시크릿키
+# 엑세스키와 비밀키를 설정해야 한다.
+#keypair:
+#  accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4
+#  secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn
 
 # 코인이 가질 자금 대비 최대 보유비중,
 # KRW 100, 값이 0.2 일때 'A' 코인이 가질 수 있는 최대 비중은 20%
-tradablebalanceratio: 0.2
+#tradablebalanceratio: 0.2
 
 # 'A' 코인에 10 만큼 할당이 되었을 때, 0.5 이라면 50% 인 5 를 사용하여 주문
 # 업비트의 최소 주문가격이 5000 KRW 이므로 주의할 것.
-orderratio: 0.5
+#orderratio: 0.5
 
 # 추적 할 최대 마켓의 수
-maxtrackedmarket: 5
+#maxtrackedmarket: 5
 
 # 수동으로 추적할 마켓
 #whitelist:
