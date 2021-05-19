@@ -25,7 +25,7 @@ func init() {
 			},
 		})
 		if err != nil {
-			logrus.Fatal(err)
+			logrus.Panic(err)
 		}
 
 		logger := &logrus.Logger{

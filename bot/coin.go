@@ -51,9 +51,8 @@ func (c *coin) refresh(accounts Accounts) error {
 
 	// 한번에 주문할 수 있는 가격, `maxBalance` 에서 `R` 만큼만 주문한다.
 	// 총 자금이 100, `maxBalance` 가 10인 경우 `R` 이 .2 이므로 10의 20% 에 해당하는 2 만큼만 주문
-	c.onceOrderPrice = c.limit * static.Config.R
+	c.onceOrderPrice = c.limit * static.Config.OrderRatio
 
-	//
 	log.Logger <- log.Log{
 		Msg: c.name,
 		Fields: logrus.Fields{
@@ -61,7 +60,6 @@ func (c *coin) refresh(accounts Accounts) error {
 		},
 		Level: logrus.InfoLevel,
 	}
-	//
 
 	return nil
 }

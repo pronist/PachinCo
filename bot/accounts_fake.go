@@ -63,7 +63,6 @@ func NewFakeAccounts(dbname string, krw float64) (*FakeAccounts, error) {
 		return nil, err
 	}
 
-	//
 	log.Logger <- log.Log{
 		Msg: "Creating new accounts for Testing.",
 		Fields: logrus.Fields{
@@ -71,7 +70,6 @@ func NewFakeAccounts(dbname string, krw float64) (*FakeAccounts, error) {
 		},
 		Level: logrus.DebugLevel,
 	}
-	//
 
 	return &FakeAccounts{db}, nil
 }
@@ -168,7 +166,7 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 		if err != nil {
 			return false, err
 		}
-		//
+
 		log.Logger <- log.Log{
 			Msg: "ORDER",
 			Fields: logrus.Fields{
@@ -176,7 +174,6 @@ func (acc *FakeAccounts) order(_ *Bot, coin *coin, side string, volume, price fl
 			},
 			Level: logrus.WarnLevel,
 		}
-		//
 	}
 
 	return true, nil

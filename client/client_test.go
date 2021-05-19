@@ -3,7 +3,7 @@ package client
 //var c *Client
 //
 //func init() {
-//	c = &Client{http.DefaultClient, static.Config.AccessKey, static.Config.SecretKey}
+//	c = &Client{http.DefaultClient, static.Config.KeyPair.AccessKey, static.Config.KeyPair.SecretKey}
 //}
 //
 //func TestClient_Call(t *testing.T) {

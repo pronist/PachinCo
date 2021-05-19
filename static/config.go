@@ -3,7 +3,6 @@ package static
 import (
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/pronist/upbit/log"
 
@@ -12,28 +11,30 @@ import (
 )
 
 var Config = struct {
-	AccessKey string        `required:"true"` // 엑세스 키
-	SecretKey string        `required:"true"` // 비밀 키
-	C         float64       `required:"true"` // 비중
-	R         float64       `required:"true"` // 주문 가격 비중
-	K         float64       `required:"true"` // 변동성 돌파 상수
-	Timeout   time.Duration `required:"true"` // 주문 대기 중인 경우 최대 대기시간
-	Watch     int           `required:"true"` // 추적할 코인의 갯수 (분산투자 비율하고도 관련있음)
+	KeyPair struct {
+		AccessKey string `required:"true"` // 엑세스 키
+		SecretKey string `required:"true"` // 비밀 키
+	}
+	TradableBalanceRatio float64 `required:"true"` // 비중
+	OrderRatio           float64 `required:"true"` // 주문 가격 비중
+	// 선택적으로 사용할 수 있는 옵션들
+	MaxTrackedMarket int      // 추적할 코인의 갯수 (분산투자 비율하고도 관련있음)
+	Whitelist        []string // 마켓을 전략을 실행할 마켓을 수동으로 설정한다.
+	Blacklist        []string // 해당 마켓은 제외한다.
 }{}
 
 func init() {
-	config := ".upbit.yml"
+	config := "config.yml"
 
 	if env := os.Getenv("APP_ENV"); env == "test" {
 		config = filepath.Join("..", config)
 	}
 
-	err := configor.New(&configor.Config{Silent: true}).Load(&Config, config)
+	err := configor.New(&configor.Config{Silent: true, ErrorOnUnmatchedKeys: true}).Load(&Config, config)
 	if err != nil {
-		log.Logger <- log.Log{Msg: err, Level: logrus.FatalLevel}
+		log.Logger <- log.Log{Msg: err, Level: logrus.PanicLevel}
 	}
 
-	//
 	log.Logger <- log.Log{
 		Msg: "Opened Configuration.",
 		Fields: logrus.Fields{
@@ -41,5 +42,4 @@ func init() {
 		},
 		Level: logrus.DebugLevel,
 	}
-	//
 }

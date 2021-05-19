@@ -5,7 +5,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/pronist/upbit/static"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -34,7 +33,7 @@ func TestCoin_Refresh(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, getTotalBalance(acc, getBalances(acc))*c.rate, c.limit)
-	assert.Equal(t, c.limit*static.Config.R, c.onceOrderPrice)
+	assert.Equal(t, c.limit*0.5, c.onceOrderPrice)
 
 	err = facc.db.Close()
 	assert.NoError(t, err)

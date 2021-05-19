@@ -24,9 +24,7 @@ func newDetector() *detector {
 func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}) bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			//
 			log.Logger <- log.Log{Msg: err, Fields: logrus.Fields{"role": "Detector"}, Level: logrus.ErrorLevel}
-			//
 		}
 	}()
 
@@ -42,9 +40,8 @@ func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}
 
 	defer wsc.Ws.Close()
 
-	//
 	log.Logger <- log.Log{Msg: "Detector started...", Level: logrus.DebugLevel}
-	//
+
 	for {
 		if err := wsc.Ws.WriteJSON(wsc.Data); err != nil {
 			panic(err)

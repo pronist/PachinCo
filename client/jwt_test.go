@@ -11,10 +11,10 @@ import (
 func TestNewHS256Token(t *testing.T) {
 	claims := claims{StandardClaims: jwt.StandardClaims{}}
 
-	signedString, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(static.Config.SecretKey))
+	signedString, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(static.Config.KeyPair.SecretKey))
 	assert.NoError(t, err)
 
-	token, err := newHS256Token(static.Config.SecretKey, claims)
+	token, err := newHS256Token(static.Config.KeyPair.SecretKey, claims)
 	assert.NoError(t, err)
 
 	assert.Equal(t, "Bearer", token.Type)

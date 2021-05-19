@@ -7,6 +7,7 @@ import "github.com/thoas/go-funk"
 const (
 	tracked = iota
 	untracked
+	excluded
 )
 
 // tracked 상태인 마켓에 대해서는 전략 및 틱이 실행될 것이며

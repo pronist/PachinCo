@@ -8,6 +8,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/google/go-querystring v1.1.0
 	github.com/gorilla/websocket v1.4.2
+	github.com/jasonlvhit/gocron v0.0.1
 	github.com/jinzhu/configor v1.2.1
 	github.com/mattn/go-colorable v0.1.8
 	github.com/satori/go.uuid v1.2.0

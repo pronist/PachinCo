@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/pronist/upbit/log"
-	"github.com/pronist/upbit/static"
 	"github.com/sirupsen/logrus"
 )
 
@@ -20,9 +19,8 @@ func NewUpbitAccounts(b *Bot) (*UpbitAccounts, error) {
 	if err != nil {
 		return nil, err
 	}
-	//
+
 	log.Logger <- log.Log{Msg: "Brought about Accounts From Upbit.", Level: logrus.DebugLevel}
-	//
 
 	return &UpbitAccounts{accounts.([]map[string]interface{})}, nil
 }
@@ -54,14 +52,13 @@ func (acc *UpbitAccounts) order(b *Bot, coin *coin, side string, volume, price f
 		uuid := order.(map[string]interface{})["uuid"].(string)
 
 		if err != nil {
-			log.Logger <- log.Log{Msg: err, Level: logrus.ErrorLevel}
+			return false, err
 		}
 
-		timer := time.NewTimer(time.Second * static.Config.Timeout)
+		timer := time.NewTimer(time.Second * 30)
 
 		go acc.wait(b, done, uuid)
 
-		//
 		log.Logger <- log.Log{
 			Msg: "ORDER",
 			Fields: logrus.Fields{
@@ -69,7 +66,6 @@ func (acc *UpbitAccounts) order(b *Bot, coin *coin, side string, volume, price f
 			},
 			Level: logrus.WarnLevel,
 		}
-		//
 
 		select {
 		// 주문이 체결되지 않고 무기한 기다리는 것을 방지하기 위해 타임아웃을 지정한다.
@@ -79,13 +75,13 @@ func (acc *UpbitAccounts) order(b *Bot, coin *coin, side string, volume, price f
 				Uuid string `url:"uuid"`
 			}{uuid})
 			if err != nil {
-				log.Logger <- log.Log{Msg: err, Level: logrus.ErrorLevel}
+				return false, err
 			}
 
 			log.Logger <- log.Log{
 				Msg: "CANCEL",
 				Fields: logrus.Fields{
-					"coin": coin.name, "side": side, "timeout": time.Second * static.Config.Timeout,
+					"coin": coin.name, "side": side, "timeout": time.Second * 30,
 				},
 				Level: logrus.WarnLevel,
 			}
@@ -123,7 +119,7 @@ func (acc *UpbitAccounts) wait(b *Bot, done chan int, uuid string) {
 			Uuid string `url:"uuid"`
 		}{uuid})
 		if err != nil {
-			log.Logger <- log.Log{Msg: err, Level: logrus.ErrorLevel}
+			panic(err)
 		}
 
 		if order, ok := order.(map[string]interface{}); ok {
@@ -131,6 +127,7 @@ func (acc *UpbitAccounts) wait(b *Bot, done chan int, uuid string) {
 				done <- 1
 			}
 		}
+
 		time.Sleep(1 * time.Second)
 	}
 }
