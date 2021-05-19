@@ -36,10 +36,7 @@ func predicate(b *Bot, t map[string]interface{}) bool {
 }
 
 // 변동성 돌파전략이다. 상승장에 구입한다.
-type PenetrationStrategy struct {
-	H float64 // 판매 상승 기준
-	L float64 // 구입 하락 기준
-}
+type PenetrationStrategy struct{}
 
 // 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
 func (p *PenetrationStrategy) register(bot *Bot) error {
@@ -117,16 +114,6 @@ func (p *PenetrationStrategy) run(bot *Bot, c *coin, t map[string]interface{}) (
 	if predicate(bot, t) {
 		if _, ok := balances[c.name]; ok {
 			// 이미 코인을 가지고 있는 경우
-
-			avgBuyPrice := getAverageBuyPrice(acc, c.name)
-
-			pp := price / avgBuyPrice
-
-			// 분할 매수 (하락시 평균 단가를 낮추는)
-			// 매수 평균가보다 현재 코인의 가격의 하락률이 `L` 보다 높은 경우
-			if pp-1 <= p.L {
-				return bot.accounts.order(bot, c, b, volume, price)
-			}
 		} else {
 			// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
 			return bot.accounts.order(bot, c, b, volume, price)

@@ -9,7 +9,7 @@ func main() {
 	///// 봇에 사용할 전략을 설정한다.
 	b := bot.NewBot([]bot.Strategy{
 		// https://wikidocs.net/21888
-		&bot.PenetrationStrategy{H: 0.05, L: -0.05},
+		&bot.PenetrationStrategy{},
 	})
 	/////
 
