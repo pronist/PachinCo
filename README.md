@@ -215,7 +215,6 @@ func (b *Bot) strategy(c *coin, strategy Strategy) {
 
 	for ok && stat == tracked {
 		t := <-c.t
-        // ...
 	}
 }
 ```
@@ -225,11 +224,8 @@ func (b *Bot) strategy(c *coin, strategy Strategy) {
 ```go
 func (b *Bot) tick(c *coin) {
 	m := targetMarket + "-" + c.name
-    // ...
-
+ 
 	for stat[m] == tracked {
-        // ...
-
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
 		// 전략은 반드시 시작할 때 틱을 소비해야 한다.
 		for range b.strategies {
@@ -240,6 +236,9 @@ func (b *Bot) tick(c *coin) {
 	}
 }
 ```
+
+따라서 정리해보면, ```Bot.run``` 이 실행되면 ```detector.run``` 이 실행되고 ```bot.predicate``` 의 조건에 부합하는 마켓을 감지하여 `detector.d` 채널에 보고합니다.
+그 이후 ```strategy.run```, ```bot.tick``` 이 실행된다는 것을 알 수 있습니다.
 
 ## 저작권
  
