@@ -1,12 +1,12 @@
 # 업비트 트레이딩 봇
 
 업비트에서 트레이딩 봇을 구동하기 위해 만든 봇입니다. 
-업비트는 어차피 한국인만 대부분 사용하므로 README 도 한국어로 작성합니다. 물론 소스코드의 주석도 한국어로 작성되었습니다.
+업비트는 어차피 한국인만 대부분 사용하므로 README 도 **한국어**로 작성합니다. 물론 소스코드의 주석도 한국어로 작성되었습니다.
 
 ## 설치
 
-이 프로젝트를 올바르게 동작시키기 위해서는 먼저 소스코드를 다운로드 받을 필요가 있습니다. 
-또한 일반적인 라이브러리나 ```Go install``` 로 바로 설치하여 사용하는 프로그램이 아닌 만큼, 소스코드를 직접 다운받고 컴파일해야 합니다.
+이 프로젝트를 올바르게 동작시키기 위해서는 먼저 **소스코드를 다운로드** 받을 필요가 있습니다. 
+또한 일반적인 라이브러리나 ```go install``` 로 바로 설치하여 사용하는 프로그램이 아닌 만큼, 소스코드를 직접 다운받고 **컴파일**해야 합니다.
 
 ```bash
 $ git clone https://github.com/pronist/upbit-trading-bot
@@ -36,6 +36,7 @@ $ go build && ./upbit
 
 봇을 동작시키기 이전에 일부 환경설정에 대해 이해할 필요가 있습니다. 
 환경설정은 키를 설정하거나 자금의 비율을 설정하는 등 봇을 운영함에 있어 중요한 부분을 설정할 수 있도록 합니다.
+환경설정은 [bot/upbit.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.yml) 에 정의합니다.
 
 아래의 환경설정을 참고해보십시오. 접근하려면 ```static.Config``` 전역변수로 접근합니다.
 
@@ -67,33 +68,33 @@ $ go build && ./upbit
 #  - KRW-DOGE
 ```
 
-*keypair*
+**keypair**
 
 ```keypair``` 에는 ```accesskey```, ```secretkey``` 를 설정해야 합니다. 이는 [업비트 Open API](https://upbit.com/service_center/open_api_guide) 사용에서 참고할 수 있습니다.
 
-*tradablebalanceratio*
+**tradablebalanceratio**
 
 ```tradablebalanceratio``` 는 보유 비중입니다. 가지고 있는 KRW 에 대해 분산하여 투자할 때 사용합니다. 값이 ```0.1``` 이라면 하나의 마켓에 대해 ```10%``` 를 적용하고, ```1.0``` 을 적용하면 하나에 몰빵을 말합니다. ```최대 주문 금액 = 총 자금 * tradablebalanceratio```, 기본값은 ```0.1``` 입니다.
 
-*orderratio*
+**orderratio**
 
 ```orderratio``` 는 주문 비중입니다. 예를 들어 KRW 100 이 있고, ```tradablebalanceratio``` 에 ```0.1``` 이 설정되어 ```KRW-BTC``` 마켓에 ```10``` 만큼을 사용할 수 있는 경우, 이 설정의 값이 ```0.5``` 로 설정되어 있다면 주문은 ```5``` 만큼만 가능합니다. ```최소 주문 가격 = 최대 주문 금액 * orderratio```, 추가적으로 업비트의 최소 주문 가격은 5000 KRW 이므로 이를 주의하십시오. 기본값은 ```0.5``` 입니다.
 
-*maxtrackedmarket*
+**maxtrackedmarket**
 
 ```maxtrackedmarket``` 는 추적할 최대 마켓의 수입니다. 설정하지 않으면 기본 값으로 ```10``` 이 적용됩니다.
 
-*whitelist*
+**whitelist**
 
 ```whitelist``` 가 설정되어 있다면 해당 마켓만 추적합니다. ```blacklist``` 보다 우선순위가 낮습니다. 같은 마켓이 ```whitelist``` 와 ```blacklist``` 에 설정되어 있다면 ```blacklist``` 가 먼저 적용됩니다.
 
-*blacklist*
+**blacklist**
 
 ```blacklist``` 가 설정되어 있다면 해당 마켓은 추적하지 않습니다. 
 
 ### 새로운 환경설정 추가하기
 
-자신만의 환경설정을 추가하려면 [static/config.go](https://github.com/pronist/upbit-trading-bot/blob/main/static/config.go) 에 
+새로운 환경설정을 추가하려면 [static/config.go](https://github.com/pronist/upbit-trading-bot/blob/main/static/config.go) 에 
 ```Config``` 전역변수에 필드를 추가하면 새로운 환경변수를 얻어올 수 있습니다.
 
 ## 봇
@@ -103,8 +104,8 @@ $ go build && ./upbit
 이때, 봇에서 사용할 전략을 넘겨주는데, 
 이러한 전략들은 모두 ```bot.Strategy``` 인터페이스를 만족해야 합니다.
 
-또한 봇을 만든 이후에는 봇이 사용할 계정을 설정해야 하는데, ```NewUpbitAccounts``` 를 통해 실제 업비트 계정을 사용하거나 
-```NewFakeAccounts``` 를 통해 가상계좌를 사용할 수 있습니다.
+또한 봇을 만든 이후에는 봇이 사용할 계정을 설정해야 하는데, ```NewUpbitAccounts``` 를 통해 실제 **업비트 계정**을 사용하거나 
+```NewFakeAccounts``` 를 통해 **가상계좌**를 사용할 수 있습니다.
 첫번째 파라매터로 받는 것은 업비트의 서버에 저장하는 것 대신 로컬에 데이터베이스에 저장하도록 할 수 있습니다.
 
 ```bot.Run``` 메서드를 사용하면 봇을 실행합니다.
@@ -165,7 +166,9 @@ for tick := range d.d {
 
 [bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 에는 
 전략 뿐만 아니라 ```bot.predicate``` 함수도 예시로 작성되어 있습니다. 
-전략을 만들기 위해서는 이러한 *전략*과 *마켓 탐지* 가 구현되어 있어야 합니다.
+전략을 만들기 위해서는 이러한 **전략**과 **마켓 탐지** 가 구현되어 있어야 합니다.
+
+### 전략을 만들기 위한 팁
 
 일반적으로 전략에 자주 사용되는 함수들은 [bot/accounts_utils.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/accounts_utils.go) 또는
 [bot/utils.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/utils.go) 를 사용하고, 
@@ -174,7 +177,9 @@ for tick := range d.d {
 시세 정보를 얻고 싶은 때는 ```client.WebsocketClient``` 를 사용합니다. 
 이 경우 [WebSocket을 이용한 업비트 시세수신](https://docs.upbit.com/docs/upbit-quotation-websocket) 을 참고하십시오.
 
-*주문*을 할 때는 ```Accounts.order``` 를 사용하십시오. *매수*할 때는 `b`, *매도*할 때는 `s` 상수를 ```side``` 에 넘깁니다.
+그 외의 API 는 [업비트 Open API 레퍼런스](https://docs.upbit.com/reference) 를 참고합니다.
+
+**주문**을 할 때는 ```Accounts.order``` 를 사용하십시오. **매수**할 때는 `b`, **매도**할 때는 `s` 상수를 ```side``` 에 넘깁니다.
 
 ## 로깅
 
