@@ -1,11 +1,11 @@
 # 업비트 트레이딩 봇
 
 업비트에서 트레이딩 봇을 구동하기 위해 만든 봇입니다. 
-업비트는 어차피 한국인만 대부분 사용하므로 README 도 **한국어**로 작성합니다. 물론 소스코드의 주석도 한국어로 작성되었습니다.
+업비트는 어차피 한국인이 대부분 사용하므로 README 도 **한국어**로 작성합니다. 물론 소스코드의 주석도 한국어로 작성되었습니다.
 
 ## 설치
 
-이 프로젝트를 올바르게 동작시키기 위해서는 먼저 **소스코드를 다운로드** 받을 필요가 있습니다. 
+이 프로젝트를 올바르게 동작시키기 위해서는 먼저 소스코드를 다운로드 받을 필요가 있습니다. 
 또한 일반적인 라이브러리나 ```go install``` 로 바로 설치하여 사용하는 프로그램이 아닌 만큼, 소스코드를 직접 다운받고 **컴파일**해야 합니다.
 
 ```bash
@@ -74,19 +74,26 @@ $ go build && ./upbit
 
 **tradablebalanceratio**
 
-```tradablebalanceratio``` 는 보유 비중입니다. 가지고 있는 KRW 에 대해 분산하여 투자할 때 사용합니다. 값이 ```0.1``` 이라면 하나의 마켓에 대해 ```10%``` 를 적용하고, ```1.0``` 을 적용하면 하나에 몰빵을 말합니다. ```최대 주문 금액 = 총 자금 * tradablebalanceratio```, 기본값은 ```0.1``` 입니다.
+```tradablebalanceratio``` 는 보유 비중입니다. 가지고 있는 KRW 에 대해 분산하여 투자할 때 사용합니다. 
+값이 ```0.1``` 이라면 하나의 마켓에 대해 ```10%``` 를 적용하고, ```1.0``` 을 적용하면 하나에 몰빵을 말합니다. 
+```최대 주문 금액 = 총 자금 * tradablebalanceratio```, 기본값은 ```0.1``` 입니다.
 
 **orderratio**
 
-```orderratio``` 는 주문 비중입니다. 예를 들어 KRW 100 이 있고, ```tradablebalanceratio``` 에 ```0.1``` 이 설정되어 ```KRW-BTC``` 마켓에 ```10``` 만큼을 사용할 수 있는 경우, 이 설정의 값이 ```0.5``` 로 설정되어 있다면 주문은 ```5``` 만큼만 가능합니다. ```최소 주문 가격 = 최대 주문 금액 * orderratio```, 추가적으로 업비트의 최소 주문 가격은 5000 KRW 이므로 이를 주의하십시오. 기본값은 ```0.5``` 입니다.
+```orderratio``` 는 주문 비중입니다. 예를 들어 KRW 100 이 있고, 
+```tradablebalanceratio``` 에 ```0.1``` 이 설정되어 ```KRW-BTC``` 마켓에 ```10``` 만큼을 사용할 수 있는 경우, 
+이 설정의 값이 ```0.5``` 로 설정되어 있다면 주문은 ```5``` 만큼만 가능합니다. ```주문 가격 = 최대 주문 금액 * orderratio```, 
+추가적으로 업비트의 최소 주문 가격은 5000 KRW 이므로 이를 주의하십시오. 기본값은 ```0.5``` 입니다.
 
 **maxtrackedmarket**
 
-```maxtrackedmarket``` 는 추적할 최대 마켓의 수입니다. 설정하지 않으면 기본 값으로 ```10``` 이 적용됩니다.
+```maxtrackedmarket``` 는 추적할 최대 마켓의 수입니다. 
+설정하지 않으면 기본 값으로 ```10``` 이 적용됩니다.
 
 **whitelist**
 
-```whitelist``` 가 설정되어 있다면 해당 마켓만 추적합니다. ```blacklist``` 보다 우선순위가 낮습니다. 같은 마켓이 ```whitelist``` 와 ```blacklist``` 에 설정되어 있다면 ```blacklist``` 가 먼저 적용됩니다.
+```whitelist``` 가 설정되어 있다면 해당 마켓만 추적합니다. ```blacklist``` 보다 우선순위가 낮습니다. 
+같은 마켓이 ```whitelist``` 와 ```blacklist``` 에 설정되어 있다면 ```blacklist``` 가 먼저 적용됩니다.
 
 **blacklist**
 
@@ -115,7 +122,7 @@ func main() {
 	///// 봇에 사용할 전략을 설정한다.
 	b := bot.NewBot([]bot.Strategy{
 		// https://wikidocs.net/21888
-		&bot.PenetrationStrategy{H: 0.05, L: -0.05},
+		&bot.PenetrationStrategy{},
 	})
 	/////
 
@@ -242,6 +249,6 @@ func (b *Bot) tick(c *coin) {
 
 ## 저작권
  
-[MIT](https://github.com/github/upbit-trading-bot/blob/master/LICENSE)
+[MIT](https://github.com/pronist/upbit-trading-bot/blob/master/LICENSE)
  
 Copyright 2021. [SangWoo Jeong](https://github.com/pronist). All rights reserved.
