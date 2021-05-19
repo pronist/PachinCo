@@ -35,10 +35,7 @@ func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}
 		panic(err)
 	}
 
-	targetMarkets, err := getMarketNames(markets.([]map[string]interface{}), targetMarket)
-	if err != nil {
-		panic(err)
-	}
+	targetMarkets := getMarketNames(markets.([]map[string]interface{}), targetMarket)
 
 	wsc, err := client.NewWebsocketClient("ticker", targetMarkets, true, false)
 	if err != nil {

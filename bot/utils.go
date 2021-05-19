@@ -7,7 +7,7 @@ import (
 )
 
 // currency 에 해당하는 마켓 이름만 얻어온다.
-func getMarketNames(markets []map[string]interface{}, currency string) ([]string, error) {
+func getMarketNames(markets []map[string]interface{}, currency string) []string {
 	chain := funk.Chain(markets)
 
 	targetMarkets := chain.Map(func(market map[string]interface{}) string {
@@ -16,5 +16,5 @@ func getMarketNames(markets []map[string]interface{}, currency string) ([]string
 		return strings.HasPrefix(market, currency)
 	}).Value().([]string)
 
-	return targetMarkets, nil
+	return targetMarkets
 }

@@ -18,8 +18,7 @@ func TestGetMarketNames(t *testing.T) {
 		panic(err)
 	}
 
-	targetMarkets, err := getMarketNames(markets.([]map[string]interface{}), targetMarket)
-	assert.NoError(t, err)
+	targetMarkets := getMarketNames(markets.([]map[string]interface{}), targetMarket)
 
 	assert.Contains(t, targetMarkets, "KRW-BTC")
 	assert.Contains(t, targetMarkets, "KRW-ETH")
