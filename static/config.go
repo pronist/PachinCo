@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/pronist/upbit/log"
+
 	"github.com/jinzhu/configor"
 	"github.com/sirupsen/logrus"
 )
@@ -16,7 +18,7 @@ var Config = struct {
 	R         float64       `required:"true"` // 주문 가격 비중
 	K         float64       `required:"true"` // 변동성 돌파 상수
 	Timeout   time.Duration `required:"true"` // 주문 대기 중인 경우 최대 대기시간
-	Max       int           `required:"true"` // 최대 추적할 코인의 갯수 (분산투자 비율하고도 관련있음)
+	Watch     int           `required:"true"` // 추적할 코인의 갯수 (분산투자 비율하고도 관련있음)
 }{}
 
 func init() {
@@ -28,6 +30,16 @@ func init() {
 
 	err := configor.New(&configor.Config{Silent: true}).Load(&Config, config)
 	if err != nil {
-		logrus.Fatal(err)
+		log.Logger <- log.Log{Msg: err, Level: logrus.FatalLevel}
 	}
+
+	//
+	log.Logger <- log.Log{
+		Msg: "Opened Configuration.",
+		Fields: logrus.Fields{
+			"name": config,
+		},
+		Level: logrus.DebugLevel,
+	}
+	//
 }

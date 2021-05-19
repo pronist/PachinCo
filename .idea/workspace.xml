@@ -20,31 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce35b2ee-f97b-433c-9288-9ff58054c4e1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/go.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/go.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts_fake.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_fake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts_fake_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_fake_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts_upbit.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_upbit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts_utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/accounts_utils_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/accounts_utils_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.upbit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.upbit.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/bot.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/coin.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/coin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/coin_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/coin_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/detector.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot/detector_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/detector_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/strategy_basic.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_basic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/strategy_penetration.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/strategy_penetration.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/utils_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/utils_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_jwt_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_jwt_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_quotation.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_quotation.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_quotation_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_quotation_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot/states.go" beforeDir="false" afterPath="$PROJECT_DIR$/bot/stat.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_websocket_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_websocket_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/logger.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/static/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/serialize_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/serialize_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,13 +75,13 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+    <property name="settings.editor.selected.configurable" value="preference.GoLinterConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Development\Projects\upbit-trading-bot\bot" />
       <recent name="D:\Development\Projects\upbit-trading-bot\cmd\upbit" />
       <recent name="D:\Development\Projects\upbit-trading-bot" />
-      <recent name="D:\Development\Projects\upbit-trading-bot\bot" />
       <recent name="D:\Development\Projects\upbit-trading-bot\static" />
       <recent name="D:\Development\Projects\upbit-trading-bot\client" />
     </key>
@@ -149,10 +131,14 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="838" y="418" key="#Custom_Plugin_Repositories" timestamp="1620729903843">
+    <state x="838" y="418" key="#Custom_Plugin_Repositories" timestamp="1621399374256">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="838" y="418" key="#Custom_Plugin_Repositories/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620729903843" />
+    <state x="838" y="418" key="#Custom_Plugin_Repositories/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621399374256" />
+    <state x="670" y="400" key="#Go_Linter" timestamp="1621399311536">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="670" y="400" key="#Go_Linter/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621399311536" />
     <state x="505" y="284" key="#Log_Highlighting_(ideolog)" timestamp="1620733401923">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -167,11 +153,11 @@
     <state x="331" y="109" width="1089" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1621226004851" />
     <state x="-1506" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620456418710" />
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621348057391" />
-    <state x="573" y="254" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1620913122316">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1621349812169">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="573" y="254" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1620913122316" />
-    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1620442945428" />
+    <state x="716" y="320" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621349812169" />
     <state x="715" y="322" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1621347206106">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -189,33 +175,33 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="715" y="253" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621347439036" />
-    <state width="579" height="520" key="GridCell.Tab.0.bottom" timestamp="1621266404852">
+    <state width="861" height="639" key="GridCell.Tab.0.bottom" timestamp="1621401868922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1621252271323" />
     <state width="780" height="912" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649981" />
-    <state width="579" height="520" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621266404852" />
+    <state width="861" height="639" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621401868922" />
     <state width="1877" height="349" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
-    <state width="579" height="520" key="GridCell.Tab.0.center" timestamp="1621266404852">
+    <state width="861" height="639" key="GridCell.Tab.0.center" timestamp="1621401868922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1621252271323" />
     <state width="780" height="912" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
-    <state width="579" height="520" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621266404852" />
+    <state width="861" height="639" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621401868922" />
     <state width="1877" height="349" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
-    <state width="579" height="520" key="GridCell.Tab.0.left" timestamp="1621266404851">
+    <state width="861" height="639" key="GridCell.Tab.0.left" timestamp="1621401868922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1621252271323" />
     <state width="780" height="912" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
-    <state width="579" height="520" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621266404851" />
+    <state width="861" height="639" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621401868922" />
     <state width="1877" height="349" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398026" />
-    <state width="579" height="520" key="GridCell.Tab.0.right" timestamp="1621266404852">
+    <state width="861" height="639" key="GridCell.Tab.0.right" timestamp="1621401868922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1621252271323" />
     <state width="780" height="912" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620829649980" />
-    <state width="579" height="520" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621266404852" />
+    <state width="861" height="639" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621401868922" />
     <state width="1877" height="349" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@1920.0.1920.1040" timestamp="1620540398027" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1620913133085">
       <screen x="0" y="0" width="1536" height="824" />
@@ -242,10 +228,10 @@
     </state>
     <state x="-1187" y="221" key="RollbackChangesDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1620819216974" />
     <state x="733" y="221" key="RollbackChangesDialog/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621260784032" />
-    <state x="436" y="144" width="998" height="708" key="SettingsEditor" timestamp="1621347771532">
+    <state x="436" y="144" width="998" height="708" key="SettingsEditor" timestamp="1621399386969">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="436" y="144" width="998" height="708" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621347771532" />
+    <state x="436" y="144" width="998" height="708" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1621399386969" />
     <state x="775" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1620711335587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

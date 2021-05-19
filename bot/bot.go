@@ -57,7 +57,7 @@ func (b *Bot) Run() error {
 		// 디텍팅되어 가져온 코인에 대해서 전략 시작 ...
 		market := tick["code"].(string)
 
-		if _, ok := stat[market]; !ok {
+		if _, ok := stat[market]; !ok && len(getMarketsFromStat(tracked)) <= static.Config.Watch {
 			//
 			log.Logger <- log.Log{
 				Msg: "Detected",
