@@ -28,12 +28,19 @@ func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}
 		}
 	}()
 
-	markets, err := getMarketNames(bot, targetMarket)
+	markets, err := bot.QuotationClient.Call("/market/all", struct {
+		IsDetail bool `url:"isDetail"`
+	}{false})
 	if err != nil {
 		panic(err)
 	}
 
-	wsc, err := client.NewWebsocketClient("ticker", markets, true, false)
+	targetMarkets, err := getMarketNames(markets.([]map[string]interface{}), targetMarket)
+	if err != nil {
+		panic(err)
+	}
+
+	wsc, err := client.NewWebsocketClient("ticker", targetMarkets, true, false)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +54,7 @@ func (d *detector) run(bot *Bot, predicate func(b *Bot, t map[string]interface{}
 			panic(err)
 		}
 
-		for range markets {
+		for range targetMarkets {
 			var r map[string]interface{}
 
 			if err := wsc.Ws.ReadJSON(&r); err != nil {

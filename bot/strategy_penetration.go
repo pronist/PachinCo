@@ -40,12 +40,19 @@ type PenetrationStrategy struct{}
 
 // 이미 돌파된 종목에 대해서는 추적을 하지 안도록 한다.
 func (p *PenetrationStrategy) register(bot *Bot) error {
-	markets, err := getMarketNames(bot, targetMarket)
+	markets, err := bot.QuotationClient.Call("/market/all", struct {
+		IsDetail bool `url:"isDetail"`
+	}{false})
 	if err != nil {
-		return err
+		panic(err)
 	}
 
-	wsc, err := client.NewWebsocketClient("ticker", markets, true, false)
+	targetMarkets, err := getMarketNames(markets.([]map[string]interface{}), targetMarket)
+	if err != nil {
+		panic(err)
+	}
+
+	wsc, err := client.NewWebsocketClient("ticker", targetMarkets, true, false)
 	if err != nil {
 		return err
 	}
@@ -54,7 +61,7 @@ func (p *PenetrationStrategy) register(bot *Bot) error {
 		return err
 	}
 
-	for _, market := range markets {
+	for _, market := range targetMarkets {
 		var r map[string]interface{}
 
 		if err := wsc.Ws.ReadJSON(&r); err != nil {

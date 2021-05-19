@@ -11,11 +11,18 @@ import (
 func TestGetMarketNames(t *testing.T) {
 	bot := &Bot{QuotationClient: &client.QuotationClient{Client: http.DefaultClient}}
 
-	markets, err := getMarketNames(bot, targetMarket)
+	markets, err := bot.QuotationClient.Call("/market/all", struct {
+		IsDetail bool `url:"isDetail"`
+	}{false})
+	if err != nil {
+		panic(err)
+	}
+
+	targetMarkets, err := getMarketNames(markets.([]map[string]interface{}), targetMarket)
 	assert.NoError(t, err)
 
-	assert.Contains(t, markets, "KRW-BTC")
-	assert.Contains(t, markets, "KRW-ETH")
-	assert.NotContains(t, markets, "USDT-BTC")
-	assert.NotContains(t, markets, "BTC-MKR")
+	assert.Contains(t, targetMarkets, "KRW-BTC")
+	assert.Contains(t, targetMarkets, "KRW-ETH")
+	assert.NotContains(t, targetMarkets, "USDT-BTC")
+	assert.NotContains(t, targetMarkets, "BTC-MKR")
 }
