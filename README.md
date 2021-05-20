@@ -3,6 +3,10 @@
 업비트에서 트레이딩 봇을 구동하기 위해 만든 봇입니다. 
 업비트는 어차피 한국인이 대부분 사용하므로 README 도 **한국어**로 작성합니다. 물론 소스코드의 주석도 한국어로 작성되었습니다.
 
+<div align=center>
+    <img src="https://blog.kakaocdn.net/dn/rnYj6/btq5k0aOyfk/owkkNDdBK91OLXZt48O5D0/img.gif">
+</div>
+
 ## 설치
 
 이 프로젝트를 올바르게 동작시키기 위해서는 먼저 소스코드를 다운로드 받을 필요가 있습니다. 
@@ -160,7 +164,7 @@ type Strategy interface {
 
 ### 탐지
 
-```bot.predicate``` 함수를 작성하면 *디텍터가 감지할 마켓에 대한 조건*을 설정할 수 있습니다. 
+```bot.predicate``` 함수를 작성하면 **디텍터가 감지할 마켓에 대한 조건**을 설정할 수 있습니다. 
 또한 ```bot.run``` 에서는 ```detector.d``` 채널로 감지된 마켓의 틱을 얻어옵니다.
 
 ```go
@@ -169,7 +173,7 @@ for tick := range d.d {
 }
 ```
 
-마켓이 감지되면 ```bot.tick``` 이 같이 실행되며 이 함수는 시세정보를 *매초*마다 얻어와 ```strategy.run``` 에 넘겨줍니다.
+마켓이 감지되면 ```bot.tick``` 이 같이 실행되며 이 함수는 시세정보를 **매초**마다 얻어와 ```strategy.run``` 에 넘겨줍니다.
 
 [bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 에는 
 전략 뿐만 아니라 ```bot.predicate``` 함수도 예시로 작성되어 있습니다. 
@@ -226,7 +230,7 @@ func (b *Bot) strategy(c *coin, strategy Strategy) {
 }
 ```
 
-```bot.tick``` 또한 마찬가지입니다.
+```bot.tick``` 또한 마찬가지로 마켓의 추적 상태에 따라 멈추거나 지속적으로 실행됩니다.
 
 ```go
 func (b *Bot) tick(c *coin) {
