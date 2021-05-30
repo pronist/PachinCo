@@ -40,7 +40,7 @@ $ go build && ./upbit
 
 봇을 동작시키기 이전에 일부 환경설정에 대해 이해할 필요가 있습니다. 
 환경설정은 키를 설정하거나 자금의 비율을 설정하는 등 봇을 운영함에 있어 중요한 부분을 설정할 수 있도록 합니다.
-환경설정은 [bot/upbit.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.yml) 에 정의합니다.
+환경설정은 [config.example.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.example.yml) 에 정의합니다.
 
 아래의 환경설정을 참고해보십시오. 접근하려면 ```static.Config``` 전역변수로 접근합니다.
 
