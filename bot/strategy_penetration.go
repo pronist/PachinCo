@@ -4,6 +4,8 @@ import (
 	"math"
 	"time"
 
+	"github.com/pronist/upbit/static"
+
 	"github.com/pronist/upbit/client"
 
 	"github.com/jasonlvhit/gocron"
@@ -58,6 +60,9 @@ func (p *PenetrationStrategy) register(bot *Bot) error {
 		return err
 	}
 
+	bkl := make([]string, len(static.Config.Blacklist))
+	copy(bkl, static.Config.Blacklist)
+
 	for _, market := range targetMarkets {
 		var r map[string]interface{}
 
@@ -66,11 +71,13 @@ func (p *PenetrationStrategy) register(bot *Bot) error {
 		}
 
 		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
+		// 봇 실행 시점에서 돌파된 코인은 매수 제외
 		if _, ok := stat[market]; !ok && predicate(bot, r) {
-			stat[market] = excluded
+			// 마켓을 일시적으로 블랙리스트에 추가한다.
+			static.Config.Blacklist = append(static.Config.Blacklist, market)
 
 			log.Logger <- log.Log{
-				Msg: "Excluded",
+				Msg: "Appended market in Blacklist",
 				Fields: logrus.Fields{
 					"market":      market,
 					"change-rate": r["signed_change_rate"].(float64),
@@ -83,7 +90,27 @@ func (p *PenetrationStrategy) register(bot *Bot) error {
 		time.Sleep(time.Millisecond * 300)
 	}
 
+	s := gocron.NewScheduler()
+
+	// 오전 9시에 블랙리스트를 원상 복귀시킨다.
+	err = s.Every(1).Day().At("09:00").Do(p.recover, bkl, s)
+	if err != nil {
+		return err
+	}
+	s.Start()
+
 	return wsc.Ws.Close()
+}
+
+// 블랙리스트를 원상 복구시킨다.
+func (p *PenetrationStrategy) recover(blacklist []string, scheduler *gocron.Scheduler) {
+	static.Config.Blacklist = blacklist
+
+	scheduler.Remove(p.recover)
+
+	log.Logger <- log.Log{
+		Msg: "Recover blacklist", Level: logrus.WarnLevel,
+	}
 }
 
 // 오전 9시에 매도 주문을 낸다.
@@ -116,10 +143,10 @@ func (p *PenetrationStrategy) run(bot *Bot, c *coin, t map[string]interface{}) (
 
 	// 변동성 돌파는 전략의 기본 조건이다.
 	if predicate(bot, t) {
+		// 코인을 가지고 있지 않고
 		if _, ok := balances[c.name]; ok {
-			// 이미 코인을 가지고 있는 경우
+			//
 		} else {
-			// 현재 코인을 가지고 있지 않고, 돌파했다면 '매수'
 			return bot.accounts.order(bot, c, b, volume, price)
 		}
 	}

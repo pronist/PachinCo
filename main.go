@@ -7,7 +7,7 @@ import (
 
 func main() {
 	///// 봇에 사용할 전략을 설정한다.
-	b := bot.NewBot([]bot.Strategy{
+	b := bot.New([]bot.Strategy{
 		// https://wikidocs.net/21888
 		&bot.PenetrationStrategy{},
 	})

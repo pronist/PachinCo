@@ -3,14 +3,13 @@ package bot
 import "github.com/thoas/go-funk"
 
 // 마켓의 추적 상태를 나타내는 상수다.
-// 추적된 마켓에 대해서는 tracked 상수가, 해제된 마켓에 대해서는 untracked 가 사용된다.
+// 디렉트된 마켓에 대해서는 staged 상수가, 해제된 마켓에 대해서는 untracked 가 사용된다.
 const (
-	tracked = iota
+	staged = iota
 	untracked
-	excluded
 )
 
-// tracked 상태인 마켓에 대해서는 전략 및 틱이 실행될 것이며
+// staged 상태인 마켓에 대해서는 전략 및 틱이 실행될 것이며
 // 그렇지 않은 마켓에 대해서는 중지 될 것이다.
 var stat = make(map[string]int)
 

@@ -7,9 +7,9 @@ import (
 )
 
 func init() {
-	stat["KRW-BTC"] = tracked
-	stat["KRW-BTT"] = tracked
-	stat["KRW-ADA"] = tracked
+	stat["KRW-BTC"] = staged
+	stat["KRW-BTT"] = staged
+	stat["KRW-ADA"] = staged
 
 	stat["KRW-ETH"] = untracked
 }
@@ -19,7 +19,7 @@ func TestGetMarketsFromStat(t *testing.T) {
 		stat    int
 		markets []string
 	}{
-		{tracked, []string{"KRW-ADA", "KRW-BTC", "KRW-BTT"}},
+		{staged, []string{"KRW-ADA", "KRW-BTC", "KRW-BTT"}},
 		{untracked, []string{"KRW-ETH"}},
 	}
 

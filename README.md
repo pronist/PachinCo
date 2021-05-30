@@ -111,7 +111,7 @@ $ go build && ./upbit
 ## 봇
 
 먼저 예제로 작성된 [main.go](https://github.com/pronist/upbit-trading-bot/blob/main/main.go) 를 살펴보면 아래와 같은 코드가 있습니다. 
-봇에 대한 것은 ```bot``` 패키지에 정의되어 있으며 ```bot.NewBot``` 으로 봇을 만듭니다. 
+봇에 대한 것은 ```bot``` 패키지에 정의되어 있으며 ```bot.New``` 으로 봇을 만듭니다. 
 이때, 봇에서 사용할 전략을 넘겨주는데, 
 이러한 전략들은 모두 ```bot.Strategy``` 인터페이스를 만족해야 합니다.
 
@@ -124,7 +124,7 @@ $ go build && ./upbit
 ```go
 func main() {
 	///// 봇에 사용할 전략을 설정한다.
-	b := bot.NewBot([]bot.Strategy{
+	b := bot.New([]bot.Strategy{
 		// https://wikidocs.net/21888
 		&bot.PenetrationStrategy{},
 	})
@@ -146,7 +146,7 @@ func main() {
 
 ## 전략
 
-전략을 만들고, 마켓을 감지하는 일은 트레이딩 봇의 핵심 요소입니다. 모든 전략은 ```bot.Strategy``` 인터페이스를 만족해야 하여 ```NewBot``` 을 사용하여 봇을 만들때 사용됩니다.
+전략을 만들고, 마켓을 감지하는 일은 트레이딩 봇의 핵심 요소입니다. 모든 전략은 ```bot.Strategy``` 인터페이스를 만족해야 하여 **bot** 디렉토리 아래에 위치합니다. ```bot.New``` 을 사용하여 봇을 만들때 사용됩니다.
 
 ```go
 type Strategy interface {
@@ -211,20 +211,20 @@ log.Logger <- log.Log{
 마켓의 추적 상태를 변경하여 전략을 실행하거나 멈추는 것을 제어합니다.
 이러한 상태는 [bot/stat.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/stat.go) 에 정의되어 있습니다.
 
-기본적으로 전략이 시작되면 해당 마켓은 ```tracked``` 상태가 되며 임의로 전략 내부에서 다음과 같이 상태를 조정할 수도 있습니다.
+기본적으로 전략이 시작되면 해당 마켓은 ```staged``` 상태가 되며 임의로 전략 내부에서 다음과 같이 상태를 조정할 수도 있습니다.
 
 ```go
 stat["KRW-BTC"] = untracked
 ```
 
-모든 전략과 틱은 마켓의 상태가 ```tracked``` 상태인 경우에는 동작하며 외부 요인에 의해 상태가 변하는 경우 종료됩니다.
+모든 전략과 틱은 마켓의 상태가 ```staged``` 상태인 경우에는 동작하며 외부 요인에 의해 상태가 변하는 경우 종료됩니다.
 ```bot.strategy``` 에서는 다음과 같이 작동하여 상태가 변하면 반복문이 멈추게됩니다.
 
 ```go
 func (b *Bot) strategy(c *coin, strategy Strategy) {
 	stat, ok := stat[targetMarket+"-"+c.name]
 
-	for ok && stat == tracked {
+	for ok && stat == staged {
 		t := <-c.t
 	}
 }
@@ -236,7 +236,7 @@ func (b *Bot) strategy(c *coin, strategy Strategy) {
 func (b *Bot) tick(c *coin) {
 	m := targetMarket + "-" + c.name
  
-	for stat[m] == tracked {
+	for stat[m] == staged {
 		// 실행 중인 전략의 수 만큼 보내면 코인에 적용된 모든 전략이 틱을 수신할 수 있다.
 		// 전략은 반드시 시작할 때 틱을 소비해야 한다.
 		for range b.strategies {
