@@ -12,8 +12,8 @@ import (
 
 var Config = struct {
 	KeyPair struct {
-		AccessKey string `required:"true"` // 엑세스 키
-		SecretKey string `required:"true"` // 비밀 키
+		AccessKey string // 엑세스 키
+		SecretKey string // 비밀 키
 	}
 	TradableBalanceRatio float64 `default:"0.1"` // 비중
 	OrderRatio           float64 `default:"0.5"` // 주문 가격 비중

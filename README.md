@@ -18,7 +18,7 @@ $ git clone https://github.com/pronist/upbit-trading-bot
 
 ## 시작하기
 
-미리 작성되어 있는 예제 봇을 실행시키려면 다음과 같이 실행하십시오.
+미리 작성되어 있는 예제 봇을 실행시키려면 다음과 같이 실행하십시오. 
 
 ```bash
 $ go build && ./upbit
@@ -44,8 +44,8 @@ $ go build && ./upbit
 
 아래의 환경설정을 참고해보십시오. 접근하려면 ```static.Config``` 전역변수로 접근합니다.
 
-```yml
-# 엑세스키와 비밀키를 설정해야 한다.
+```yaml
+# 실제 업비트 계좌를 통해 거래를 하기 위해서는 엑세스키와 비밀키를 반드시 설정해야 한다.
 #keypair:
 #  accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4
 #  secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn
@@ -115,10 +115,6 @@ $ go build && ./upbit
 이때, 봇에서 사용할 전략을 넘겨주는데, 
 이러한 전략들은 모두 ```bot.Strategy``` 인터페이스를 만족해야 합니다.
 
-또한 봇을 만든 이후에는 봇이 사용할 계정을 설정해야 하는데, ```NewUpbitAccounts``` 를 통해 실제 **업비트 계정**을 사용하거나 
-```NewFakeAccounts``` 를 통해 **가상계좌**를 사용할 수 있습니다.
-첫번째 파라매터로 받는 것은 업비트의 서버에 저장하는 것 대신 로컬에 데이터베이스에 저장하도록 할 수 있습니다.
-
 ```bot.Run``` 메서드를 사용하면 봇을 실행합니다.
 
 ```go
@@ -144,6 +140,52 @@ func main() {
 }
 ```
 
+## 계좌
+
+또한 봇을 만든 이후에는 봇이 사용할 계정을 설정해야 하는데, 실제 **업비트계좌**을 사용하거나 **가상계좌**를 사용할 수 있습니다.
+
+### 가상
+
+```NewFakeAccounts``` 를 사용하면 **가장계좌**를 만들 수 있고
+첫번째 파라매터로 받는 것은 업비트의 서버에 저장하는 것 대신 로컬에 데이터베이스에 저장하도록 할 수 있습니다.
+
+아래의 코드는 자산데이터를 ```accounts.db``` 에 저장하고 ```55000.0``` KRW 로 할당함을 의미합니다.
+
+```go
+func main() {
+	acc, err := bot.NewFakeAccounts("accounts.db", 55000.0) // 테스트용 계정
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
+	b.SetAccounts(acc)
+}
+```
+
+### 업비트
+
+```NewUpbitAccounts``` 를 통해 실제 **업비트**에서 거래를 하려고 하는 경우 아래와 같이 생성하고,
+
+```go
+func main() {
+	acc, err := bot.NewUpbitAccounts(b)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
+	b.SetAccounts(acc)
+}
+```
+[config.example.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.example.yml) 에 
+업비트에서 발급받은 ```accesskey```, ```secretkey``` 가 설정되어 있아야 합니다. 아래의 설정은 키값의 **예**입니다.
+
+```yaml
+# 엑세스키와 비밀키를 설정해야 한다.
+keypair:
+  accesskey: UyGWYAEVN3PRDDo3Y3pJnV6DWn69k17gVs1X47p4
+  secretkey: 2FjMz4yBOuHqzpwGUdkEu0WJF5g30Z8Wx71cJbxn
+```
+
 ## 전략
 
 전략을 만들고, 마켓을 감지하는 일은 트레이딩 봇의 핵심 요소입니다. 모든 전략은 ```bot.Strategy``` 인터페이스를 만족해야 하여 **bot** 디렉토리 아래에 위치합니다. ```bot.New``` 을 사용하여 봇을 만들때 사용됩니다.
@@ -160,7 +202,7 @@ type Strategy interface {
 ```Strategy.boot``` 매 전략이 시작되기 전에 호출됩니다. 디텍터가 마켓을 감지하여 전략을 실행하기 직전에 실행됩니다.
 ```Strategy.run``` 은 전략의 본체입니다. 여기서 실제로 주문을 하고 그 결과를 반환해야 합니다.
 
-[bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 는 *변동성 돌파전략* 을 사용하도록 예시로 작성되었습니다.
+[bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 에는 **변동성 돌파전략** 을 사용하도록 예시로 작성되었습니다.
 
 ### 탐지
 
@@ -194,7 +236,7 @@ for tick := range d.d {
 
 ## 로깅
 
-봇에 *로그*를 남기고 싶을 때는 ```log.Logger``` 를 통해 넘길 수 있습니다. 
+봇에 **로그**를 남기고 싶을 때는 ```log.Logger``` 를 통해 넘길 수 있습니다. 
 이는 [logrus](https://github.com/sirupsen/logrus) 로거입니다.
 로그 자체는 [log/logger.go](https://github.com/pronist/upbit-trading-bot/blob/main/log/logger.go) 에서 처리됩니다.
 
