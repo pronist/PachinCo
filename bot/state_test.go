@@ -7,14 +7,14 @@ import (
 )
 
 func init() {
-	stat["KRW-BTC"] = staged
-	stat["KRW-BTT"] = staged
-	stat["KRW-ADA"] = staged
+	states["KRW-BTC"] = staged
+	states["KRW-BTT"] = staged
+	states["KRW-ADA"] = staged
 
-	stat["KRW-ETH"] = untracked
+	states["KRW-ETH"] = untracked
 }
 
-func TestGetMarketsFromStat(t *testing.T) {
+func TestGetMarketsFromStates(t *testing.T) {
 	testCases := []struct {
 		stat    int
 		markets []string
@@ -24,7 +24,7 @@ func TestGetMarketsFromStat(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		for _, m := range getMarketsFromStat(tc.stat) {
+		for _, m := range getMarketsFromStates(tc.stat) {
 			assert.Contains(t, tc.markets, m)
 		}
 	}

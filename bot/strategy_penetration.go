@@ -72,7 +72,7 @@ func (p *PenetrationStrategy) register(bot *Bot) error {
 
 		// 현재 매수/매도를 위해 트래킹 중인 코인이 아니어야 하며
 		// 봇 실행 시점에서 돌파된 코인은 매수 제외
-		if _, ok := stat[market]; !ok && predicate(bot, r) {
+		if _, ok := states[market]; !ok && predicate(bot, r) {
 			// 마켓을 일시적으로 블랙리스트에 추가한다.
 			static.Config.Blacklist = append(static.Config.Blacklist, market)
 
@@ -181,7 +181,7 @@ func (p *PenetrationStrategy) s(bot *Bot, c *coin, scheduler *gocron.Scheduler) 
 		if err == nil {
 			// 매도 이후에는 추적 상태를 멈춘다.
 			// 시가에 처분한 이후 다시 변동성 돌파하면 언제든 다시 추적할 수 있다.
-			stat[t[0]["market"].(string)] = untracked
+			states[t[0]["market"].(string)] = untracked
 
 			log.Logger <- log.Log{
 				Msg:    "Untracked",

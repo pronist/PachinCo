@@ -86,7 +86,7 @@ func (b *Bot) Run() error {
 func (b *Bot) trackable(market string) bool {
 	// 최대 추적 마켓이 정해져 있는 경우
 	if static.Config.MaxTrackedMarket > 0 {
-		if len(getMarketsFromStat(staged)) >= static.Config.MaxTrackedMarket {
+		if len(getMarketsFromStates(staged)) >= static.Config.MaxTrackedMarket {
 			return false
 		}
 	}
@@ -101,7 +101,7 @@ func (b *Bot) trackable(market string) bool {
 
 	// 화이트리스트가 없거나, 또는 화이트리스트가 존재하여 포함된 경우
 	if len(static.Config.Whitelist) < 1 || included {
-		if s, ok := stat[market]; ok {
+		if s, ok := states[market]; ok {
 			return s == untracked // 상태가 'untracked' 상태면 가능
 		} else {
 			return true // 상태에 등록되어 있지 않더라도 가능
@@ -138,7 +138,7 @@ func (b *Bot) launch(market string) error {
 	}
 
 	// 여기서 담아둔 값은 별도의 고루틴에서 돌고 있는 전략의 실행 여부를 결정하게 된다.
-	stat[market] = staged
+	states[market] = staged
 
 	// 전략에 주기적으로 가격 정보를 보낸다.
 	go b.tick(coin)
@@ -177,7 +177,7 @@ func (b *Bot) strategy(c *coin, strategy Strategy) {
 		Level:  logrus.DebugLevel,
 	}
 
-	stat, ok := stat[targetMarket+"-"+c.name]
+	stat, ok := states[targetMarket+"-"+c.name]
 
 	for ok && stat == staged {
 		t := <-c.t
@@ -217,7 +217,7 @@ func (b *Bot) tick(c *coin) {
 		panic(err)
 	}
 
-	for stat[m] == staged {
+	for states[m] == staged {
 		var r map[string]interface{}
 
 		if err := wsc.Ws.WriteJSON(wsc.Data); err != nil {
