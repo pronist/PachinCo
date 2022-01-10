@@ -297,4 +297,4 @@ func (b *Bot) tick(c *coin) {
  
 [MIT](https://github.com/pronist/upbit-trading-bot/blob/master/LICENSE)
  
-Copyright 2021. [SangWoo Jeong](https://github.com/pronist). All rights reserved.
+Copyright 2021-2022. [SangWoo Jeong](https://github.com/pronist). All rights reserved.
