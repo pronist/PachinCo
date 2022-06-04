@@ -13,7 +13,7 @@
 또한 일반적인 라이브러리나 ```go install``` 로 바로 설치하여 사용하는 프로그램이 아닌 만큼, 소스코드를 직접 다운받고 **컴파일**해야 합니다.
 
 ```bash
-$ git clone https://github.com/pronist/upbit-trading-bot
+$ git clone https://github.com/pronist/PachinCo
 ```
 
 ## 시작하기
@@ -40,7 +40,7 @@ $ go build && ./upbit
 
 봇을 동작시키기 이전에 일부 환경설정에 대해 이해할 필요가 있습니다. 
 환경설정은 키를 설정하거나 자금의 비율을 설정하는 등 봇을 운영함에 있어 중요한 부분을 설정할 수 있도록 합니다.
-환경설정은 [config.example.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.example.yml) 에 정의합니다.
+환경설정은 [config.example.yml](https://github.com/pronist/PachinCo/blob/main/config.example.yml) 에 정의합니다.
 
 아래의 환경설정을 참고해보십시오. 접근하려면 ```static.Config``` 전역변수로 접근합니다.
 
@@ -105,12 +105,12 @@ $ go build && ./upbit
 
 ### 새로운 환경설정 추가하기
 
-새로운 환경설정을 추가하려면 [static/config.go](https://github.com/pronist/upbit-trading-bot/blob/main/static/config.go) 에 
+새로운 환경설정을 추가하려면 [static/config.go](https://github.com/pronist/PachinCo/blob/main/static/config.go) 에 
 ```Config``` 전역변수에 필드를 추가하면 새로운 환경변수를 얻어올 수 있습니다.
 
 ## 봇
 
-먼저 예제로 작성된 [main.go](https://github.com/pronist/upbit-trading-bot/blob/main/main.go) 를 살펴보면 아래와 같은 코드가 있습니다. 
+먼저 예제로 작성된 [main.go](https://github.com/pronist/PachinCo/blob/main/main.go) 를 살펴보면 아래와 같은 코드가 있습니다. 
 봇에 대한 것은 ```bot``` 패키지에 정의되어 있으며 ```bot.New``` 으로 봇을 만듭니다. 
 이때, 봇에서 사용할 전략을 넘겨주는데, 
 이러한 전략들은 모두 ```bot.Strategy``` 인터페이스를 만족해야 합니다.
@@ -146,7 +146,7 @@ func main() {
 
 ### 가상
 
-```NewFakeAccounts``` 를 사용하면 **가장계좌**를 만들 수 있고
+```NewFakeAccounts``` 를 사용하면 **가상계좌**를 만들 수 있고
 첫번째 파라매터로 받는 것은 업비트의 서버에 저장하는 것 대신 로컬에 데이터베이스에 저장하도록 할 수 있습니다.
 
 아래의 코드는 자산데이터를 ```accounts.db``` 에 저장하고 ```55000.0``` KRW 로 할당함을 의미합니다.
@@ -176,7 +176,7 @@ func main() {
 	b.SetAccounts(acc)
 }
 ```
-[config.example.yml](https://github.com/pronist/upbit-trading-bot/blob/main/config.example.yml) 에 
+[config.example.yml](https://github.com/pronist/PachinCo/blob/main/config.example.yml) 에 
 업비트에서 발급받은 ```accesskey```, ```secretkey``` 가 설정되어 있아야 합니다. 아래의 설정은 키값의 **예**입니다.
 
 ```yaml
@@ -202,7 +202,7 @@ type Strategy interface {
 ```Strategy.boot``` 매 전략이 시작되기 전에 호출됩니다. 디텍터가 마켓을 감지하여 전략을 실행하기 직전에 실행됩니다.
 ```Strategy.run``` 은 전략의 본체입니다. 여기서 실제로 주문을 하고 그 결과를 반환해야 합니다.
 
-[bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 에는 **변동성 돌파전략** 을 사용하도록 예시로 작성되었습니다.
+[bot/strategy_penetration.go](https://github.com/pronist/PachinCo/blob/main/bot/strategy_penetration.go) 에는 **변동성 돌파전략** 을 사용하도록 예시로 작성되었습니다.
 
 ### 탐지
 
@@ -217,14 +217,14 @@ for tick := range d.d {
 
 마켓이 감지되면 ```bot.tick``` 이 같이 실행되며 이 함수는 시세정보를 **매초**마다 얻어와 ```strategy.run``` 에 넘겨줍니다.
 
-[bot/strategy_penetration.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/strategy_penetration.go) 에는 
+[bot/strategy_penetration.go](https://github.com/pronist/PachinCo/blob/main/bot/strategy_penetration.go) 에는 
 전략 뿐만 아니라 ```bot.predicate``` 함수도 예시로 작성되어 있습니다. 
 전략을 만들기 위해서는 이러한 **전략**과 **마켓 탐지** 가 구현되어 있어야 합니다.
 
 ### 전략을 만들기 위한 팁
 
-일반적으로 전략에 자주 사용되는 함수들은 [bot/accounts_utils.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/accounts_utils.go) 또는
-[bot/utils.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/utils.go) 를 사용하고, 
+일반적으로 전략에 자주 사용되는 함수들은 [bot/accounts_utils.go](https://github.com/pronist/PachinCo/blob/main/bot/accounts_utils.go) 또는
+[bot/utils.go](https://github.com/pronist/PachinCo/blob/main/bot/utils.go) 를 사용하고, 
 ```bot``` 에 있고 ```client``` 패키지에 있는  ```Client.Call```, ```QuotationClient.Call``` 을 주로 사용하여 업비트 서버에 요청합니다.
 
 시세 정보를 얻고 싶은 때는 ```client.WebsocketClient``` 를 사용합니다. 
@@ -238,7 +238,7 @@ for tick := range d.d {
 
 봇에 **로그**를 남기고 싶을 때는 ```log.Logger``` 를 통해 넘길 수 있습니다. 
 이는 [logrus](https://github.com/sirupsen/logrus) 로거입니다.
-로그 자체는 [log/logger.go](https://github.com/pronist/upbit-trading-bot/blob/main/log/logger.go) 에서 처리됩니다.
+로그 자체는 [log/logger.go](https://github.com/pronist/PachinCo/blob/main/log/logger.go) 에서 처리됩니다.
 
 ```go
 log.Logger <- log.Log{
@@ -251,7 +251,7 @@ log.Logger <- log.Log{
 ## 상태
 
 마켓의 추적 상태를 변경하여 전략을 실행하거나 멈추는 것을 제어합니다.
-이러한 상태는 [bot/stat.go](https://github.com/pronist/upbit-trading-bot/blob/main/bot/stat.go) 에 정의되어 있습니다.
+이러한 상태는 [bot/stat.go](https://github.com/pronist/PachinCo/blob/main/bot/stat.go) 에 정의되어 있습니다.
 
 기본적으로 전략이 시작되면 해당 마켓은 ```staged``` 상태가 되며 임의로 전략 내부에서 다음과 같이 상태를 조정할 수도 있습니다.
 
@@ -295,6 +295,6 @@ func (b *Bot) tick(c *coin) {
 
 ## 저작권
  
-[MIT](https://github.com/pronist/upbit-trading-bot/blob/master/LICENSE)
+[MIT](https://github.com/pronist/PachinCo/blob/master/LICENSE)
  
 Copyright 2021-2022. [SangWoo Jeong](https://github.com/pronist). All rights reserved.
